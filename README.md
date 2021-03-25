@@ -1,1 +1,4 @@
-# intership-management
+## Intership Management System
+# Technologies
+- NodeJS
+- MongoDB
