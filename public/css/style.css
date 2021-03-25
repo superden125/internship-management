@@ -152,7 +152,7 @@ ul ul a {
 
 
 /* Content Style */
-#container {
+#content {
   width: calc(100% - 250px);
   padding: 30px;
   min-height: 100vh;
@@ -162,7 +162,7 @@ ul ul a {
   right: 0;
 }
 
-#container.active {
+#content.active {
   width: 100%;
 }
 
@@ -173,10 +173,10 @@ ul ul a {
   #sidebar.active {
       margin-left: 0;
   }
-  #container {
+  #content {
       width: 100%;
   }
-  #container.active {
+  #content.active {
       width: calc(100% - 250px);
   }
   #sidebarCollapse span {
