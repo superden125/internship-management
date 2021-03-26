@@ -1,5 +1,5 @@
 <!-- JQuery -->
-<script type="text/javascript" src="../vendor/js/jquery-3.6.0.slim.min.js"></script>
+<script type="text/javascript" src="../vendor/js/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap 4 -->
 <script type="text/javascript" src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- jQuery Custom Scroller CDN -->
@@ -7,8 +7,8 @@
 <!-- Custom JS -->
 <script type="text/javascript">
   $(document).ready(function () {
-    $("#sidebar").mCustomScrollbar({
-      theme: "minimal"
+    $('#sidebar').mCustomScrollbar({
+      theme: 'minimal'
     });
 
     $('#sidebarCollapse').on('click', function () {
@@ -16,5 +16,17 @@
       $('.collapse.in').toggleClass('in');
       $('a[aria-expanded=true]').attr('aria-expanded', 'false');
     });
+  });
+
+  $(window).scroll(() => {
+    if ($(this).scrollTop() >= 100) {
+      $('#scrollToTop').fadeIn(200);
+    } else {
+      $('#scrollToTop').fadeOut(200);
+    }
+  });
+
+  $('#scrollToTop').click(() => {
+    $('html, body').animate({ scrollTop: 0 }, 450);
   });
 </script>

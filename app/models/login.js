@@ -10,7 +10,7 @@ const LoginSchema = mongoose.Schema({
     require: true,
   },
   role: {
-    type: int, // 0 - student, 1 - teacher
+    type: Number, // 0 - student, 1 - teacher
     require: true,
   },
 });
