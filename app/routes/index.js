@@ -5,19 +5,19 @@ import bcryptjs from "bcryptjs";
 
 const router = Router();
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  const role = req.session.user ? req.session.user.role : -1;
-
-  if (role == 0) {
+router.get("/", async function (req, res, next) {
+  if (!req.session.user) return res.redirect("/login");
+  const user = req.session.user;
+  if (user.role == 0) {
     return res.redirect("/student");
   }
-  if (role == 1) {
-    return res.redirect("/teacher");
-  }
-  if (role == 3) {
+  // if (user.role == 1) {
+  //   return res.redirect("/teacher");
+  // }
+  if (user.role == 3) {
     return res.redirect("/admin");
   }
-  res.redirect("/login");
+  // res.redirect("/login");
 });
 
 router.get("/login", (req, res) => {
@@ -32,6 +32,7 @@ router.post("/login", async (req, res) => {
   const user = await login(username, password);
   if (user.err) return res.json(user.err);
   req.session.user = user;
+  //res.send(req.session.user);
   res.redirect("/");
 });
 
