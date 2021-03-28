@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const LoginSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
   username: {
     type: String,
     require: true,
@@ -15,4 +15,4 @@ const LoginSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Login", LoginSchema);
+module.exports = mongoose.model("User", UserSchema);

@@ -2,11 +2,14 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import Student from "../models/student";
 import Major from "../models/major";
-import Login from "../models/login";
+import User from "../models/user";
+import { isStudent } from "../../middleware/auth";
 
 const router = express.Router();
 
 const pwd = "ims123";
+
+router.use(isStudent);
 
 router.get("/", (req, res) => {
   res.render("student/home", {
@@ -62,13 +65,13 @@ router.get("/mock", async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashPass = await bcrypt.hash(pwd, salt);
-    const login = new Login({
+    const user = new User({
       username: item.mssv,
       password: hashPass,
       role: 0,
     });
     await student.save();
-    await login.save();
+    await user.save();
   });
   res.send("done");
 });
@@ -78,5 +81,19 @@ router.get("/mock", async (req, res) => {
 //   await major.save();
 //   res.send("ok");
 // });
+
+router.get("/register-internship", (req, res) => {
+  let data = {
+    title: "Internship Management System",
+    roleName: "Sinh viên",
+    urlInfo: "Đăng ký thực tập",
+  };
+  res.render("student/register-internship", data);
+});
+
+router.post("/register-internship", (req, res) => {
+  console.log(req.body);
+  res.send(req.body);
+});
 
 module.exports = router;
