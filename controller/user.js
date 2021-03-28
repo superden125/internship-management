@@ -8,7 +8,7 @@ module.exports = {
     if (username === "") return { err: "username empty" };
     if (password === "") return { err: "password empty" };
     if (username == adminUser && password == adminPwd)
-      return { username: "admin", role: "3" };
+      return { username: "admin", role: 3 };
     let user = await User.findOne({ username });
 
     if (!user) return { err: "user not found" };
