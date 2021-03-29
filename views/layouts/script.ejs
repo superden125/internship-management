@@ -20,13 +20,13 @@
 
   $(window).scroll(() => {
     if ($(this).scrollTop() >= 100) {
-      $('#scrollToTop').fadeIn(200);
+      $('#scrollToTop').fadeIn(150);
     } else {
-      $('#scrollToTop').fadeOut(200);
+      $('#scrollToTop').fadeOut(150);
     }
   });
 
   $('#scrollToTop').click(() => {
-    $('html, body').animate({ scrollTop: 0 }, 450);
+    $('html, body').animate({ scrollTop: 0 }, 400);
   });
 </script>
