@@ -4,12 +4,13 @@ import Student from "../models/student";
 import Major from "../models/major";
 import User from "../models/user";
 import { isStudent } from "../../middleware/auth";
+import { registerInternship } from "../../controller/student";
 
 const router = express.Router();
 
 const pwd = "ims123";
 
-router.use(isStudent);
+//router.use(isStudent);
 
 router.get("/", (req, res) => {
   res.render("student/home", {
@@ -92,7 +93,8 @@ router.get("/register-internship", (req, res) => {
 });
 
 router.post("/register-internship", (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
+  registerInternship(req.body);
   res.send(req.body);
 });
 

@@ -9,6 +9,8 @@
   --background: #f5f5f5;
   --black: #1f1f1f;
   --grey: #89919d;
+  --btn-sub: #17a2b8;
+  --btn-reset: #6c757d;
 }
 
 body {
@@ -208,11 +210,30 @@ ul ul a {
 }
 
 .sd-form {
-  width: 100%;
-  max-width: 500px;
-  min-width: 300px;
+  padding: 15px 20px;
+  background: var(--background);
 }
 
+.btn-sub {
+  color: #fff;
+  background: var(--btn-sub);
+  width: 100px;
+}
+
+.btn-reset {
+  color: #fff;
+  background: var(--btn-reset);
+  width: 100px;
+}
+
+.group-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.intern-new {
+  display: none;
+}
 /* Content Style */
 #content {
   width: calc(100% - 250px);
