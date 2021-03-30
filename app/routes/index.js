@@ -1,7 +1,5 @@
 import { Router } from "express";
-import { login, testFn } from "../../controller/user";
-import User from "../models/user";
-import bcryptjs from "bcryptjs";
+import { login } from "../../controller/user";
 
 const router = Router();
 /* GET home page. */
@@ -33,6 +31,11 @@ router.post("/login", async (req, res) => {
   if (user.err) return res.json(user.err);
   req.session.user = user;
   //res.send(req.session.user);
+  res.redirect("/");
+});
+
+router.get("/logout", (req, res) => {
+  req.session.destroy();
   res.redirect("/");
 });
 
