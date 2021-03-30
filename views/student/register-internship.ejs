@@ -9,9 +9,224 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
 
-      <form action="/student/register-internship" method="post">
-        <input type="text" name="name" />
-        <input type="submit" value="Gửi" />
+      <form action="/student/register-internship" method="post" class="sd-form">
+        <div class="mb-3">
+          <label for="svPhone" class="form-label"
+            >Số điện thoại của SV (SĐT thường sử dụng để GV có thể liên
+            hệ)</label
+          >
+          <input type="text" class="form-control" id="svPhone" name="svPhone" />
+        </div>
+        <div class="mb-3">
+          <label for="internshipUnit" class="form-label">Đơn vị thực tập</label>
+          <select
+            class="form-control"
+            id="internshipUnit"
+            name="internshipUnit"
+          >
+            <option value="0">Chọn đơn vị thực tập từ khoa ...</option>
+            <option value="1">Test1</option>
+            <option value="1">Test1</option>
+          </select>
+        </div>
+
+        <div class="form-check md-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="isSelf"
+            name="isSelf"
+          />
+          <label class="form-check-label" for="isSelf">
+            Đơn vị sinh viên tự liên hệ
+          </label>
+        </div>
+
+        <div class="mb-3 mt-3">
+          <label for="internName" class="form-label">Tên công ty</label>
+          <input
+            type="text"
+            class="form-control"
+            id="internName"
+            name="internName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="internAddress">Địa chỉ công ty</label>
+          <textarea
+            class="form-control"
+            id="internAddress"
+            name="internAddress"
+            style="height: 100px"
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="internshipUnit" class="form-label"
+            >Tỉnh/ Thành phố
+          </label>
+          <select
+            class="form-control"
+            id="internshipUnit"
+            name="internshipUnit"
+          >
+            <option value="0">Chọn Tỉnh/ Thành phố ...</option>
+            <option value="1">Test1</option>
+            <option value="1">Test1</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="internPhone" class="form-label"
+            >Số điện thoại đơn vị thực tập</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="internPhone"
+            name="internPhone"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="internEmail" class="form-label"
+            >Email đơn vị thực tập</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="internEmail"
+            name="internEmail"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="mentorName" class="form-label">Tên người hướng dẫn</label>
+          <input
+            type="text"
+            class="form-control"
+            id="mentorName"
+            name="mentorName"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="mentorPhone" class="form-label"
+            >Số điện thoại người hướng dẫn</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="mentorPhone"
+            name="mentorPhone"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="mentorEmail" class="form-label"
+            >Email người hướng dẫn</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="mentorEmail"
+            name="mentorEmail"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="internRequire" class="form-label"
+            >Yêu cầu của đơn vị thực tập</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="internRequire"
+            name="internRequire"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="internBenefit" class="form-label"
+            >Hỗ trợ của đơn vị thực tập</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="internBenefit"
+            name="internBenefit"
+          />
+        </div>
+        <div class="mb-3">
+          <p class="form-label">Môi trường làm việc</p>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="inlineCheckbox1"
+              value="true"
+              name="haveRoom"
+            />
+            <label class="form-check-label" for="inlineCheckbox1"
+              >Có phòng làm việc</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="inlineCheckbox2"
+              value="true"
+              name="havePc"
+            />
+            <label class="form-check-label" for="inlineCheckbox2"
+              >Có máy tính</label
+            >
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="shiftPerWeek" class="form-label"
+            >Số buổi thực tập trên tuần (>= 6 mới chấp nhập thực tập)</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="shiftPerWeek"
+            name="shiftPerWeek"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="work1" class="form-label">Công việc tuần 1</label>
+          <input type="text" class="form-control" id="work1" name="work1" />
+        </div>
+        <div class="mb-3">
+          <label for="work2" class="form-label">Công việc tuần 2</label>
+          <input type="text" class="form-control" id="work2" name="work2" />
+        </div>
+        <div class="mb-3">
+          <label for="work3" class="form-label">Công việc tuần 3</label>
+          <input type="text" class="form-control" id="work3" name="work3" />
+        </div>
+        <div class="mb-3">
+          <label for="work4" class="form-label">Công việc tuần 4</label>
+          <input type="text" class="form-control" id="work4" name="work4" />
+        </div>
+        <div class="mb-3">
+          <label for="work5" class="form-label">Công việc tuần 5</label>
+          <input type="text" class="form-control" id="work5" name="work5" />
+        </div>
+        <div class="mb-3">
+          <label for="work6" class="form-label">Công việc tuần 6</label>
+          <input type="text" class="form-control" id="work6" name="work6" />
+        </div>
+        <div class="mb-3">
+          <label for="work7" class="form-label">Công việc tuần 7</label>
+          <input type="text" class="form-control" id="work7" name="work7" />
+        </div>
+        <div class="mb-3">
+          <label for="work8" class="form-label">Công việc tuần 8</label>
+          <input type="text" class="form-control" id="work8" name="work8" />
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-primary">Gửi</button>
+          <button type="button" class="btn btn-dark">Huỷ bỏ</button>
+        </div>
       </form>
     </div>
 
