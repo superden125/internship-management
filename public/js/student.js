@@ -41,7 +41,14 @@ function validFormTTT(data) {
       key !== "internName" &&
       key !== "internPhone" &&
       key !== "internEmail" &&
-      key !== "isSelf"
+      key !== "internWebsite" &&
+      key !== "isSelf" &&
+      key !== "mentorName" &&
+      key !== "mentorPhone" &&
+      key !== "mentorEmail" &&
+      key !== "internRequire" &&
+      key !== "internBenefit" &&
+      key !== "internReqTime"
     ) {
       error[key] = "Required";
     }
@@ -57,6 +64,13 @@ function validFormTTT(data) {
     error.internName = data.internName == "" ? "Required" : "";
     error.internPhone = data.internPhone == "" ? "Required" : "";
     error.internEmail = data.internEmail == "" ? "Required" : "";
+    error.internWebsite = data.internWebsite == "" ? "Required" : "";
+    error.mentorName = data.mentorName == "" ? "Required" : "";
+    error.mentorPhone = data.mentorPhone == "" ? "Required" : "";
+    error.mentorEmail = data.mentorEmail == "" ? "Required" : "";
+    error.internRequire = data.internRequire == "" ? "Required" : "";
+    error.internBenefit = data.internBenefit == "" ? "Required" : "";
+    error.internReqTime = data.internReqTime == "" ? "Required" : "";
   }
 
   var check = 0;

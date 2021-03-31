@@ -1,8 +1,10 @@
 import express from "express";
 import bcrypt from "bcryptjs";
+import tinh from "../../lib/tinh";
 import Student from "../models/student";
 import Major from "../models/major";
 import User from "../models/user";
+import { getAllInternshipUnit } from "../../controller/internshipUnit";
 import { isStudent } from "../../middleware/auth";
 import { registerInternship } from "../../controller/student";
 
@@ -61,19 +63,21 @@ router.get("/mock", async (req, res) => {
     },
   ];
   let count = 0;
-  listStudent.forEach(async (item) => {
-    const student = new Student(item);
+  // listStudent.forEach(async (item) => {
+  //   const student = new Student(item);
+  //   const result = await student.save();
+  //   const salt = await bcrypt.genSalt(10);
+  //   const hashPass = await bcrypt.hash(pwd, salt);
 
-    const salt = await bcrypt.genSalt(10);
-    const hashPass = await bcrypt.hash(pwd, salt);
-    const user = new User({
-      username: item.mssv,
-      password: hashPass,
-      role: 0,
-    });
-    await student.save();
-    await user.save();
-  });
+  //   const user = new User({
+  //     username: item.mssv,
+  //     password: hashPass,
+  //     ids: result._id,
+  //     role: 0,
+  //   });
+
+  //   await user.save();
+  // });
   res.send("done");
 });
 
@@ -83,19 +87,24 @@ router.get("/mock", async (req, res) => {
 //   res.send("ok");
 // });
 
-router.get("/register-internship", (req, res) => {
+router.get("/register-internship", async (req, res) => {
   let data = {
     title: "Internship Management System",
     roleName: "Sinh viên",
     urlInfo: "Đăng ký thực tập",
   };
+
+  const internshipUnit = await getAllInternshipUnit({ introBy: "admin" });
+  data.internshipUnit = internshipUnit;
+  data.tinh = tinh.sort((a, b) => a.name - b.name);
   res.render("student/register-internship", data);
 });
 
-router.post("/register-internship", (req, res) => {
+router.post("/register-internship", async (req, res) => {
   //console.log(req.body);
-  registerInternship(req.body);
-  res.send(req.body);
+  const result = await registerInternship(req.body);
+  if (result.err) return res.send(result.err);
+  res.send(result);
 });
 
 module.exports = router;

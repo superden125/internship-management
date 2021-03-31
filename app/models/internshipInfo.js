@@ -40,13 +40,9 @@ const InternshipInfoSchema = mongoose.Schema({
     type: Boolean,
     require: true,
   },
-  benefit: {
-    type: String,
-    require: true,
-  },
   timestamp: {
     type: Date,
-    require: true,
+    default: Date.now,
   },
 });
 

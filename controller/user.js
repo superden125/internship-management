@@ -15,6 +15,7 @@ module.exports = {
 
     let match = await bcryptjs.compare(password, user.password);
     if (!match) return { err: "password not match" };
-    return { username: user.username, role: user.role };
+
+    return { username: user.username, role: user.role, userId: user.ids };
   },
 };

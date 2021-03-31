@@ -39,8 +39,10 @@
                 name="internshipUnit"
               >
                 <option value="0">Chọn đơn vị thực tập từ khoa ...</option>
-                <option value="1">Test1</option>
-                <option value="1">Test1</option>
+
+                <% internshipUnit.forEach((unit)=>{%>
+                <option value="<%= unit._id%>"><%-unit.name%></option>
+                <%});%>
               </select>
               <span class="text-danger" id="err-internshipUnit"></span>
             </div>
@@ -88,8 +90,10 @@
                   name="internshipCity"
                 >
                   <option value="0">Chọn Tỉnh/ Thành phố ...</option>
-                  <option value="1">Test1</option>
-                  <option value="1">Test1</option>
+
+                  <% tinh.forEach((val)=>{ %>
+                  <option value="<%= val.id%>"><%= val.name%></option>
+                  <% })%>
                 </select>
               </div>
 
@@ -117,68 +121,96 @@
                 />
                 <span class="text-danger" id="err-internEmail"></span>
               </div>
+
+              <div class="mb-3">
+                <label for="internWebsite" class="form-label"
+                  >Website đơn vị thực tập</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="internWebsite"
+                  name="internWebsite"
+                />
+                <span class="text-danger" id="err-internWebsite"></span>
+              </div>
+
+              <div class="mb-3">
+                <label for="mentorName" class="form-label"
+                  >Tên người hướng dẫn</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="mentorName"
+                  name="mentorName"
+                />
+                <span class="text-danger" id="err-mentorName"></span>
+              </div>
+              <div class="mb-3">
+                <label for="mentorPhone" class="form-label"
+                  >Số điện thoại người hướng dẫn</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="mentorPhone"
+                  name="mentorPhone"
+                />
+                <span class="text-danger" id="err-mentorPhone"></span>
+              </div>
+              <div class="mb-3">
+                <label for="mentorEmail" class="form-label"
+                  >Email người hướng dẫn</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="mentorEmail"
+                  name="mentorEmail"
+                />
+                <span class="text-danger" id="err-mentorEmail"></span>
+              </div>
+
+              <div class="mb-3">
+                <label for="internRequire" class="form-label"
+                  >Yêu cầu của đơn vị thực tập</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="internRequire"
+                  name="internRequire"
+                />
+                <span class="text-danger" id="err-internRequire"></span>
+              </div>
+              <div class="mb-3">
+                <label for="internBenefit" class="form-label"
+                  >Hỗ trợ của đơn vị thực tập</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="internBenefit"
+                  name="internBenefit"
+                />
+                <span class="text-danger" id="err-internBenefit"></span>
+              </div>
+
+              <div class="mb-3">
+                <label for="internReqTime" class="form-label"
+                  >Số giờ thực tập trên tuần</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="internReqTime"
+                  name="internReqTime"
+                />
+                <span class="text-danger" id="err-internReqTime"></span>
+              </div>
             </div>
 
-            <div class="mb-3">
-              <label for="mentorName" class="form-label"
-                >Tên người hướng dẫn</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="mentorName"
-                name="mentorName"
-              />
-              <span class="text-danger" id="err-mentorName"></span>
-            </div>
-            <div class="mb-3">
-              <label for="mentorPhone" class="form-label"
-                >Số điện thoại người hướng dẫn</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="mentorPhone"
-                name="mentorPhone"
-              />
-              <span class="text-danger" id="err-mentorPhone"></span>
-            </div>
-            <div class="mb-3">
-              <label for="mentorEmail" class="form-label"
-                >Email người hướng dẫn</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="mentorEmail"
-                name="mentorEmail"
-              />
-              <span class="text-danger" id="err-mentorEmail"></span>
-            </div>
-            <div class="mb-3">
-              <label for="internRequire" class="form-label"
-                >Yêu cầu của đơn vị thực tập</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="internRequire"
-                name="internRequire"
-              />
-              <span class="text-danger" id="err-internRequire"></span>
-            </div>
-            <div class="mb-3">
-              <label for="internBenefit" class="form-label"
-                >Hỗ trợ của đơn vị thực tập</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="internBenefit"
-                name="internBenefit"
-              />
-              <span class="text-danger" id="err-internBenefit"></span>
-            </div>
             <div class="mb-3">
               <p class="form-label">Môi trường làm việc</p>
               <div class="form-check form-check-inline">
@@ -204,6 +236,7 @@
                 >
               </div>
             </div>
+
             <div class="mb-3">
               <label for="shiftPerWeek" class="form-label"
                 >Số buổi thực tập trên tuần (>= 6 mới chấp nhập thực tập)</label
