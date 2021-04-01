@@ -1,13 +1,15 @@
-import { Router } from 'express';
+import authRoute from './auth';
 
-const router = Router();
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('student/home', {
-    title: 'Internship Management System',
-    roleName: 'Sinh viên',
-    urlInfo: 'Thông tin thực tập'
-  });
-});
+import dbRoute from './db.route';
+import adminRoute from './admin';
+import teacherRoute from './teacher';
+import studentRoute from './student';
 
-module.exports = router;
+module.exports = (app) => {
+  app.use('/db', dbRoute);
+  app.use('/admin', adminRoute);
+  app.use('/teacher', teacherRoute);
+  app.use('/student', studentRoute);
+  
+  app.use('/', authRoute);
+}

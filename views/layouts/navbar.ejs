@@ -1,12 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-
     <div class="mr-auto">
       <button type="button" id="sidebarCollapse" class="btn btn-collapse">
         <i class="fas fa-sliders-h"></i>
       </button>
-      <span class="text-muted ml-3">Sinh viên / </span>
-      
+      <span class="normal-text ml-3"><%= roleName %> / <%= urlInfo %></span>
     </div>
 
     <div class="avatar ml-auto">
@@ -15,7 +13,10 @@
           <img class="m-1" src="img/default.jpg" alt="avatar">
           <span class="mr-2 black-text">Tran Thanh Huy</span>
         </button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+        <div
+          class="dropdown-menu dropdown-menu-right"
+          aria-labelledby="dropdownMenuButton"
+        >
           <a class="dropdown-item" href="#">
             <i class="far fa-user text-muted"></i>
             <span class="text-muted ml-2">Tài khoản</span>
