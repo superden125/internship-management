@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../layouts/meta') %>
+  </head>
+  <body>
+    <%- include('../layouts/student-sidebar') %>
+
+    <div id="content">
+      <%- include('../layouts/navbar') %>
+      <div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Tên đơn vị</th>
+              <th>Tỉnh/Thành phố</th>
+              <th>Số lượng sv tối đa</th>
+              <th>Số lượng sv đã đăng ký</th>
+              <th>Số giờ thực tập trên tuần</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% internUnits.forEach((internUnit)=>{%>
+            <tr
+              onclick="window.location.href='/student/internship-unit/<%= internUnit._id%>';"
+            >
+              <td><%= internUnit.name %></td>
+              <td><%= internUnit.city %></td>
+              <td><%= internUnit.maxSv %></td>
+              <td><%= internUnit.currentSv %></td>
+              <td><%= internUnit.reqTime %></td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <%- include('../layouts/script') %>
+  </body>
+</html>

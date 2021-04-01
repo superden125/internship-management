@@ -4,22 +4,39 @@ import tinh from "../../lib/tinh";
 import Student from "../models/student";
 import Major from "../models/major";
 import User from "../models/user";
-import { getAllInternshipUnit } from "../../controller/internshipUnit";
+import {
+  getAllInternshipUnit,
+  getOneInternshipUnit,
+} from "../../controller/internshipUnit";
 import { isStudent } from "../../middleware/auth";
 import { registerInternship } from "../../controller/student";
-
+import { getInternshipInfo } from "../../controller/internshipInfo";
 const router = express.Router();
 
 const pwd = "ims123";
 
-//router.use(isStudent);
+router.use(isStudent);
 
-router.get("/", (req, res) => {
-  res.render("student/home", {
+router.get("/", async (req, res) => {
+  let data = {
     title: "Internship Management System",
     roleName: "Sinh viên",
     urlInfo: "Thông tin thực tập",
-  });
+  };
+  const internshipInfo = await getInternshipInfo(req.session.userId);
+  if (!internshipInfo.err) {
+    data = Object.assign(data, internshipInfo);
+    data.error = {
+      err: false,
+    };
+  } else {
+    data.error = {
+      err: true,
+      msg: "Không tìm thấy thông tin đăng ký thực tập",
+    };
+  }
+
+  res.render("student/home", data);
 });
 
 router.get("/mock", async (req, res) => {
@@ -102,9 +119,38 @@ router.get("/register-internship", async (req, res) => {
 
 router.post("/register-internship", async (req, res) => {
   //console.log(req.body);
-  const result = await registerInternship(req.body);
+  const data = req.body;
+  data.idSv = req.session.userId;
+  const result = await registerInternship(data);
   if (result.err) return res.send(result.err);
   res.send(result);
+});
+
+router.get("/internship-unit", async (req, res) => {
+  let data = {
+    title: "Internship Management System",
+    roleName: "Sinh viên",
+    urlInfo: "Danh sách đơn vị thực tập",
+  };
+  const internUnits = await getAllInternshipUnit({ introBy: "admin" });
+  internUnits.forEach((internUnit) => {
+    internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
+  });
+  data.internUnits = internUnits;
+  res.render("student/internship-unit", data);
+});
+
+router.get("/internship-unit/:id", async (req, res) => {
+  let data = {
+    title: "Internship Management System",
+    roleName: "Sinh viên",
+    urlInfo: "Danh sách đơn vị thực tập",
+  };
+  const internUnit = await getOneInternshipUnit({ _id: req.params.id });
+  internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
+  data.internUnit = internUnit;
+
+  res.render("student/internship-unit-id", data);
 });
 
 module.exports = router;
