@@ -6,10 +6,7 @@ import mongoose from "mongoose";
 
 import { url, options } from "./app/config/mongodb";
 
-import indexRouter from "./app/routes/index";
-import studentRouter from "./app/routes/student";
-import teacherRouter from "./app/routes/teacher";
-import adminRouter from "./app/routes/admin";
+import route from "./app/routes";
 
 const PORT = process.env.PORT || "3000";
 
@@ -27,14 +24,16 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
+);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/student", studentRouter);
-app.use("/teacher", teacherRouter);
-app.use("/admin", adminRouter);
+// Route
+route(app);
 
 mongoose.connect(url, options, (err) => {
   if (err) return console.log(err);

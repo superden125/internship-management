@@ -1,38 +1,15 @@
-import { Router } from "express";
-import { login } from "../controller/user";
+import authRoute from "./auth";
 
-const router = Router();
-/* GET home page. */
-router.get("/", async function (req, res, next) {
-  if (!req.session.user) return res.redirect("/login");
-  const user = req.session.user;
-  if (user.role == 0) {
-    return res.redirect("/student");
-  }
-  if (user.role == 3) {
-    return res.redirect("/admin");
-  }
-});
+import dbRoute from "./db.route";
+import adminRoute from "./admin";
+import teacherRoute from "./teacher";
+import studentRoute from "./student";
 
-router.get("/login", (req, res) => {
-  res.render("login");
-});
+module.exports = (app) => {
+  app.use("/db", dbRoute);
+  app.use("/admin", adminRoute);
+  app.use("/teacher", teacherRoute);
+  app.use("/student", studentRoute);
 
-router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  if (username === "") return res.json({ err: "username empty" });
-  if (password === "") return res.json({ err: "password empty" });
-
-  const user = await login(username, password);
-  if (user.err) return res.json(user.err);
-  req.session.user = user;
-  //res.send(req.session.user);
-  res.redirect("/");
-});
-
-router.get("/logout", (req, res) => {
-  req.session.destroy();
-  res.redirect("/");
-});
-
-module.exports = router;
+  app.use("/", authRoute);
+};

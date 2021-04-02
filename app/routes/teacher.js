@@ -1,17 +1,11 @@
 import express from "express";
 
-import { isTeacher } from "../middleware/auth";
+import * as teacherController from "../controller/teacher.controller";
+
+import auth from "../middleware/auth";
 
 const router = express.Router();
 
-router.use(isTeacher);
-
-router.get("/", (req, res) => {
-  res.render("teacher/home", {
-    title: "Internship Management System",
-    roleName: "Sinh viên",
-    urlInfo: "Thông tin thực tập",
-  });
-});
+router.get("/", auth.isTeacher, teacherController.index);
 
 module.exports = router;

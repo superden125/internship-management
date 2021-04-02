@@ -1,7 +1,7 @@
 import mongoose, { mongo } from "mongoose";
 
 const TeacherSchema = mongoose.Schema({
-  mscd: {
+  mscb: {
     type: String,
     require: true,
   },
