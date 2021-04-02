@@ -1,8 +1,5 @@
-import InternshipUnit from "../app/models/internshipUnit";
-import InternshipInfo from "../app/models/internshipInfo";
-import Teacher from "../app/models/teacher";
-
-import tinh from "../lib/tinh";
+import InternshipUnit from "../models/internshipUnit";
+import InternshipInfo from "../models/internshipInfo";
 
 module.exports = {
   registerInternship: async (data) => {

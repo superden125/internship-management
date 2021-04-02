@@ -1,4 +1,4 @@
-import User from "../app/models/user";
+import User from "../models/user";
 import bcryptjs from "bcryptjs";
 
 import { adminUser, adminPwd } from "../config/host";

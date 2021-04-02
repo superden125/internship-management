@@ -1,7 +1,7 @@
 import express from "express";
 import InternshipUnit from "../models/internshipUnit";
 
-import { isAdmin } from "../../middleware/auth";
+import { isAdmin } from "../middleware/auth";
 
 const router = express.Router();
 

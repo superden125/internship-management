@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import mongoose from "mongoose";
 
-import { url, options } from "./config/mongodb";
+import { url, options } from "./app/config/mongodb";
 
 import indexRouter from "./app/routes/index";
 import studentRouter from "./app/routes/student";

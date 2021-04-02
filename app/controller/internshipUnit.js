@@ -1,4 +1,4 @@
-import InternshipUnit from "../app/models/internshipUnit";
+import InternshipUnit from "../models/internshipUnit";
 
 module.exports = {
   getAllInternshipUnit: async (query) => {

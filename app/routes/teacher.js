@@ -1,6 +1,6 @@
 import express from "express";
 
-import { isTeacher } from "../../middleware/auth";
+import { isTeacher } from "../middleware/auth";
 
 const router = express.Router();
 

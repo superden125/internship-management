@@ -1,6 +1,6 @@
-import InternshipInfo from "../app/models/internshipInfo";
-import InternshipUnit from "../app/models/internshipUnit";
-import Teacher from "../app/models/teacher";
+import InternshipInfo from "../models/internshipInfo";
+import InternshipUnit from "../models/internshipUnit";
+import Teacher from "../models/teacher";
 import tinh from "../lib/tinh";
 
 module.exports = {

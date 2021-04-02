@@ -1,16 +1,16 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import tinh from "../../lib/tinh";
+import tinh from "../lib/tinh";
 import Student from "../models/student";
 import Major from "../models/major";
 import User from "../models/user";
 import {
   getAllInternshipUnit,
   getOneInternshipUnit,
-} from "../../controller/internshipUnit";
-import { isStudent } from "../../middleware/auth";
-import { registerInternship } from "../../controller/student";
-import { getInternshipInfo } from "../../controller/internshipInfo";
+} from "../controller/internshipUnit";
+import { isStudent } from "../middleware/auth";
+import { registerInternship } from "../controller/student";
+import { getInternshipInfo } from "../controller/internshipInfo";
 const router = express.Router();
 
 const pwd = "ims123";

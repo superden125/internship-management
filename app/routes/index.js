@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login } from "../../controller/user";
+import { login } from "../controller/user";
 
 const router = Router();
 /* GET home page. */
@@ -9,13 +9,9 @@ router.get("/", async function (req, res, next) {
   if (user.role == 0) {
     return res.redirect("/student");
   }
-  // if (user.role == 1) {
-  //   return res.redirect("/teacher");
-  // }
   if (user.role == 3) {
     return res.redirect("/admin");
   }
-  // res.redirect("/login");
 });
 
 router.get("/login", (req, res) => {
