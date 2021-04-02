@@ -11,13 +11,10 @@ router.get("/", async function (req, res, next) {
   if (user.role == 0) {
     return res.redirect("/student");
   }
-  // if (user.role == 1) {
-  //   return res.redirect("/teacher");
-  // }
+
   if (user.role == 3) {
     return res.redirect("/admin");
   }
-  // res.redirect("/login");
 });
 
 router.get("/login", (req, res) => {
@@ -33,6 +30,11 @@ router.post("/login", async (req, res) => {
   if (user.err) return res.json(user.err);
   req.session.user = user;
   //res.send(req.session.user);
+  res.redirect("/");
+});
+
+router.get("/logout", (req, res) => {
+  req.session.destroy();
   res.redirect("/");
 });
 
