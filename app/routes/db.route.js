@@ -1,6 +1,6 @@
 import express from 'express';
 
-import * as dbController from '../controller/db.controller';
+import * as dbController from '../controllers/db.controller';
 
 const router = express.Router();
 

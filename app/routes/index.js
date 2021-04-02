@@ -1,9 +1,9 @@
-import authRoute from './auth';
+import authRoute from './auth.route';
 
 import dbRoute from './db.route';
-import adminRoute from './admin';
-import teacherRoute from './teacher';
-import studentRoute from './student';
+import adminRoute from './admin.route';
+import teacherRoute from './teacher.route';
+import studentRoute from './student.route';
 
 module.exports = (app) => {
   app.use('/db', dbRoute);

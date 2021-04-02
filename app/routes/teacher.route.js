@@ -1,6 +1,6 @@
 import express from 'express';
 
-import * as teacherController from '../controller/teacher.controller';
+import * as teacherController from '../controllers/teacher.controller';
 
 import auth from '../middleware/auth';
 

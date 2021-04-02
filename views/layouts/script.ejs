@@ -1,9 +1,9 @@
 <!-- JQuery -->
-<script type="text/javascript" src="../vendor/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/vendor/js/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap 4 -->
-<script type="text/javascript" src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- jQuery Custom Scroller CDN -->
-<script type="text/javascript" src="../vendor/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="/vendor/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- Custom JS -->
 <script type="text/javascript">
   $(document).ready(function () {
@@ -28,5 +28,9 @@
 
   $('#scrollToTop').click(() => {
     $('html, body').animate({ scrollTop: 0 }, 400);
+  });
+
+  $(function() {
+    $('#sidebar li').has('a[href="' + location.pathname + '"]').addClass('active');
   });
 </script>
