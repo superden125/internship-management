@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose, { mongo, Schema } from "mongoose";
 
 const InternshipInfoSchema = mongoose.Schema({
   idSv: {
@@ -10,6 +10,10 @@ const InternshipInfoSchema = mongoose.Schema({
     require: true,
   },
   idIntern: {
+    type: String,
+    require: true,
+  },
+  idMilestone: {
     type: String,
     require: true,
   },
