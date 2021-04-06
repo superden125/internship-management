@@ -1,25 +1,24 @@
-import express from "express";
-import InternshipUnit from "../models/internshipUnit";
+import express from 'express';
 
-import { isAdmin } from "../middleware/auth";
+import { isAdmin } from '../middleware/auth';
+
+import * as adminController from '../controllers/admin';
 
 const router = express.Router();
 
-//router.use(isAdmin);
+router.use(isAdmin);
 
-router.get("/", (req, res) => {
-  res.render("admin/index", {
-    title: "Internship Management System",
-    roleName: "Sinh viên",
-    urlInfo: "Thông tin thực tập",
-  });
-});
+// Manage
+router.get('/manage/teachers', adminController.getAllTeachers);
+router.get('/manage/students', adminController.getAllStudents);
+router.get('/manage/internship-unit', adminController.getAllInternshipUnit);
 
-//router.get("/mockInternUnit", );
+// Internship
+router.get('/internship/approve', adminController.showAllApproveInternshipUnit);
+router.get('/internship/approve/:id', adminController.detailApproveInternshipUnit);
 
-router.get("/internship-unit", async (req, res) => {
-  const data = await InternshipUnit.find({ mentor: { name: "Lê Bằng Thanh" } });
-  res.json(data);
-});
+router.get('/internship/assign', adminController.assignTeacher);
+
+router.get('/', adminController.index);
 
 module.exports = router;

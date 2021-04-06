@@ -1,39 +1,46 @@
 <!-- JQuery -->
-<script type="text/javascript" src="../vendor/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/vendor/js/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap 4 -->
-<script
-  type="text/javascript"
-  src="../vendor/bootstrap/js/bootstrap.bundle.min.js"
-></script>
+<script type="text/javascript" src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- jQuery Custom Scroller CDN -->
-<script
-  type="text/javascript"
-  src="../vendor/js/jquery.mCustomScrollbar.concat.min.js"
-></script>
+<script type="text/javascript" src="/vendor/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- Custom JS -->
 <script type="text/javascript">
   $(document).ready(function () {
-    $("#sidebar").mCustomScrollbar({
-      theme: "minimal",
+    $('#sidebar').mCustomScrollbar({
+      theme: 'minimal'
     });
 
-    $("#sidebarCollapse").on("click", function () {
-      $("#sidebar, #content").toggleClass("active");
-      $(".collapse.in").toggleClass("in");
-      $("a[aria-expanded=true]").attr("aria-expanded", "false");
+    $('#sidebarCollapse').on('click', function () {
+      $('#sidebar, #content').toggleClass('active');
+      $('.collapse.in').toggleClass('in');
+      $('a[aria-expanded=true]').attr('aria-expanded', 'false');
     });
   });
 
   $(window).scroll(() => {
     if ($(this).scrollTop() >= 100) {
-      $("#scrollToTop").fadeIn(150);
+      $('#scrollToTop').fadeIn(150);
     } else {
-      $("#scrollToTop").fadeOut(150);
+      $('#scrollToTop').fadeOut(150);
     }
   });
 
-  $("#scrollToTop").click(() => {
-    $("html, body").animate({ scrollTop: 0 }, 400);
+  $('#scrollToTop').click(() => {
+    $('html, body').animate({ scrollTop: 0 }, 400);
+  });
+
+  $(function() {
+    $('#sidebar li').has('a[href="' + location.pathname + '"]').addClass('active');
+  });
+
+  // $('#checkAllApprove').click(function() {
+  //   $('input[type=checkbox]').prop('checked', $(this).prop('checked'));
+  // });
+
+  $('#approve-internship tr').click(function() {
+    var id = $(this).attr('id');
+    window.location.href = window.location + `/${id}`;
   });
 </script>
 <script src="/js/student.js"></script>

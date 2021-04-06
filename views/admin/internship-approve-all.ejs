@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../layouts/meta') %>
+  </head>
+  <body>
+    <%- include('../layouts/admin-sidebar') %>
+
+    <div id="content">
+      <%- include('../layouts/navbar') %>
+
+      <table class="table table-hover" id="approve-internship">
+        <thead>
+          <tr>
+            <th class="text-left align-middle" scope="col">#</th>
+            <th class="text-left align-middle" scope="col">
+              Mã số sinh viên
+              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="text-left align-middle" scope="col">
+              Họ và tên
+              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="text-left align-middle" scope="col">
+              Tên công ty
+              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="text-left align-middle" scope="col">
+              Tỉnh/ Thành phố
+              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="text-left align-middle" scope="col">
+              Trạng thái
+              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="1">
+            <td class="text-left align-middle font-weight-bold">1</td>
+            <td class="text-left align-middle font-weight-bold">B1704814</td>
+            <td class="text-left align-middle font-weight-bold">Tran Thanh Huy</td>
+            <td class="text-left align-middle font-weight-bold">TechBase Viet Nam</td>
+            <td class="text-left align-middle font-weight-bold">TP HCM</td>
+            <td class="text-left align-middle font-weight-bold">Chờ xét duyệt</td>
+          </tr>
+
+          <tr id="2">
+            <td class="text-left align-middle">2</td>
+            <td class="text-left align-middle">B1704835</td>
+            <td class="text-left align-middle">Trieu Duc Minh</td>
+            <td class="text-left align-middle">TechBase Viet Nam</td>
+            <td class="text-left align-middle">TP HCM</td>
+            <td class="text-left align-middle">Đã xét duyệt</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <%- include('../layouts/script') %>
+  </body>
+</html>

@@ -209,8 +209,7 @@ ul ul a {
 }
 
 .avatar .btn-img {
-  border-radius: 50%;
-  border: 2px solid var(--background);
+  border-radius: 8px;
 }
 
 .avatar img {
@@ -263,6 +262,14 @@ ul ul a {
 
 #content.active {
   width: 100%;
+}
+
+#approve-internship th {
+  cursor: default;
+}
+
+#approve-internship tr {
+  cursor: pointer;
 }
 
 /* Media Custom */
