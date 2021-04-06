@@ -1,4 +1,4 @@
-import { login, testFn } from './user.controller';
+import { login, testFn } from './user';
 
 // [GET] /
 module.exports.index =  async (req, res) => {
@@ -33,4 +33,9 @@ module.exports.login = async (req, res) => {
     //res.send(req.session.user);
     res.redirect('/');
   }
+}
+
+module.exports.logout = (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
 }

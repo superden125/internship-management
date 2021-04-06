@@ -7,8 +7,8 @@
     <%- include('../layouts/student-sidebar') %>
 
     <div id="content">
-      <%- include('../layouts/navbar') %> <%if(error.err){%> <%-
-      include("../error.ejs") %> <%}else{%>
+      <%- include('../layouts/navbar') %>
+
       <div class="card border-light card-content">
         <div class="card-body">
           <h5 class="card-title mb-4">Thông tin công ty</h5>
@@ -103,25 +103,46 @@
           <h5 class="card-title mb-4">Thông tin thực tập</h5>
           <div class="row">
             <div class="offset-1 col-md-2">
-              <p class="black-text">Trạng thái</p>
+              <p class="black-text">Số giờ thực tập trên tuần</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internInfo.statusStr%></p>
+              <p class="grey-text"><%= internUnit.reqTime %></p>
             </div>
           </div>
           <div class="row">
             <div class="offset-1 col-md-2">
-              <p class="black-text">Kết quả</p>
+              <p class="black-text">Yêu cầu của đơn vị thực tập</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text">
-                <%= internInfo.core === -1 ? "Chưa có" : internInfo.core;%>
-              </p>
+              <p class="grey-text"><%= internUnit.reqInfo%></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Môi trường làm việc</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internUnit.workEnv%></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Nội dung thực tập</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internUnit.workContent%></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Hỗ trợ của đơn vị</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internUnit.benefit%></p>
             </div>
           </div>
         </div>
       </div>
-      <% } %>
     </div>
 
     <%- include('../layouts/script') %>

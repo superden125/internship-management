@@ -9,6 +9,10 @@ const UserSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  ids: {
+    type: String,
+    require: true,
+  },
   role: {
     type: Number, // 0 - student, 1 - teacher
     require: true,

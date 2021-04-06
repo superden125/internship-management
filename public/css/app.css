@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");
 
 /* Common Components */
 :root {
   --sidebar-color: #34495e;
   --sidebar-color-hover: #2c3e50;
   --white: #fafafa;
-  --background: #FAFAFA;
+  --background: #fafafa;
   --black: #1f1f1f;
-  --grey: #89919D;
+  --grey: #89919d;
 }
 
 body {
-  font: 16px 'Roboto', sans-serif;;
+  font: 16px "Roboto", sans-serif;
 }
 
 h1,
@@ -47,13 +47,13 @@ p {
   border-radius: 4px;
   width: 45px;
   height: 45px;
-  opacity: .75;
+  opacity: 0.75;
 }
 
 #scrollToTop:hover {
   background-color: var(--sidebar-color-hover);
   color: var(--white);
-  opacity: .9;
+  opacity: 0.9;
 }
 
 /* Navbar Style */
@@ -134,7 +134,7 @@ p {
   z-index: 999;
   background: var(--sidebar-color);
   color: var(--white);
-  transition: all .5s;
+  transition: all 0.5s;
 }
 
 #sidebar.active {
@@ -164,7 +164,7 @@ p {
 
 #sidebar ul li a {
   color: var(--white);
-  opacity: .65;
+  opacity: 0.65;
   padding: 15px;
   text-decoration: none;
   display: block;
@@ -176,7 +176,7 @@ p {
   background: var(--sidebar-color-hover);
 }
 
-#sidebar ul li.active>a,
+#sidebar ul li.active > a,
 a[aria-expanded="true"] {
   color: var(--white);
   opacity: 1;
@@ -201,6 +201,47 @@ ul ul a {
   background: var(--sidebar-color-hover);
 }
 
+.avatar button {
+  border: none;
+  padding: 0;
+}
+
+.avatar .btn-img {
+  border-radius: 8px;
+}
+
+.avatar img {
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+}
+
+.sd-form {
+  padding: 15px 20px;
+  background: var(--background);
+}
+
+.btn-sub {
+  color: #fff;
+  background: var(--btn-sub);
+  width: 100px;
+}
+
+.btn-reset {
+  color: #fff;
+  background: var(--btn-reset);
+  width: 100px;
+}
+
+.group-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.intern-new {
+  display: none;
+}
+
 /* Content Style */
 #content {
   width: calc(100% - 250px);
@@ -219,6 +260,14 @@ ul ul a {
 
 #content.active {
   width: 100%;
+}
+
+#approve-internship th {
+  cursor: default;
+}
+
+#approve-internship tr {
+  cursor: pointer;
 }
 
 /* Media Custom */
