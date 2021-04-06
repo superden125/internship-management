@@ -7,12 +7,13 @@ import tinh from "../lib/tinh";
 
 export async function registerInternshipPost(req, res) {
   try {
-    let idUnit = req.session.userId;
+    let idSv = req.session.userId;
     let data = {
       error: { err: false },
       title: "Internship Management System",
       roleName: "Sinh viên",
       urlInfo: "Thông tin thực tập",
+      idSv: idSv
     };
     data = Object.assign(data, req.body);
     if (data.internshipUnit == "0") {
@@ -32,13 +33,13 @@ export async function registerInternshipPost(req, res) {
         reqTime: parseInt(data.internReqTime),
         reqInfo: data.internRequire,
         benefit: data.internBenefit,
-        introBy: data.isSv,
+        introBy: data.idSv,
       });
       const result = await internshipUnit.save();
-      idUnit = result._id;
+      data.idUnit = result._id
     }
 
-    const idIntern = data.internshipUnit !== "0" ? data.internshipUnit : idUnit;
+    const idIntern = data.internshipUnit !== "0" ? data.internshipUnit : data.idUnit;
     const internshipInfo = new InternshipInfo({
       idSv: data.idSv,
       idGv: "none",

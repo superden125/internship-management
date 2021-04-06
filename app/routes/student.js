@@ -1,13 +1,8 @@
 import express from "express";
-import tinh from "../lib/tinh";
 
-import {
-  getAllInternshipUnit,
-  getOneInternshipUnit,
-} from "../controller/internshipUnit";
 import { isStudent } from "../middleware/auth";
-import * as studentController from "../controller/student";
-import * as internInfoController from "../controller/internshipInfo";
+import * as studentController from "../controllers/student";
+import * as internInfoController from "../controllers/internshipInfo";
 const router = express.Router();
 
 router.use(isStudent);
