@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../layouts/meta') %>
+  </head>
+  <body>
+    <%- include('../layouts/admin-sidebar') %>
+
+    <div id="content">
+      <%- include('../layouts/navbar') %>
+
+      <div class="row mb-4">
+          
+          <div class="col-md-2">
+              <label>Năm học</label>
+              <select name="" id="" class="custom-select">
+                  <% milestones.forEach((val)=>{ %> 
+                    <option value="<%= val.semester %>"><%= val.semester %></option>
+                  <% }); %>   
+              </select>
+          </div>
+
+          <div class="col-md-1">
+            <label>Học kỳ</label>
+            <select name="" id="" class="custom-select">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+          </div>
+          
+          <div class="col-md-1 offset-8 mt-3"><button class="btn btn-sub" onclick="addMilestone()">Thêm</button></div>
+      </div>
+
+      <table class="table table-hover" id="table-milestone">
+          <thead>
+            <tr>
+                <th>Năm học</th>
+                <th>Học kỳ</th>
+                <th>Hạn đăng ký</th>
+                <th>Thời gian bắt đầu</th>
+                <th>Thời gian kết thúc</th>
+                <th></th>
+            </tr>              
+          </thead>
+          <tbody>
+              <tr id="addMilestone">
+                <!-- <td class="edit"> 
+                    <select name="semester" id="semester" class="custom-select"> 
+                        <option value="${semester1}">${semester1}</option>
+                        <option value="${semester2}">${semester2}</option> 
+                    </select> 
+                </td>
+                <td class="edit">
+                    <select name="hk" id="hk" class="custom-select">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </td>
+                <td class="edit">
+                    <input type="date" name="endRegister" id="endRegister">
+                </td>
+                <td class="edit">
+                    <input type="date" name="startIntern" id="startIntern">
+                </td>
+                <td class="edit">
+                    <input type="date" name="endIntern" id="endIntern">
+                </td>
+                <td class="edit">
+                    <span class="sd-icon mr-4" onclick="saveMilestone(${id})">
+                        <i class="fas fa-save"></i>
+                    </span><span class="sd-icon" onclick="deleteMilestone(${id})">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                </td> -->
+              </tr>
+            <% milestones.forEach((val)=>{ %> 
+                <tr id="<%= val._id %>">
+                    <td><%= val.semester %></td>
+                    <td><%= val.hk %></td>
+                    <td><%= val.endRegister %></td>
+                    <td><%= val.startIntern %></td>
+                    <td><%= val.endIntern %></td>
+                    <td><span class="sd-icon" id="editMilestone" onclick="editMilestone('<%= val._id %>')"><i class="fas fa-edit"></i></span></td>
+                </tr>
+            <% }); %> 
+          </tbody>
+      </table>
+    </div>
+
+    <%- include('../layouts/script') %>
+    <script src="/js/admin/milestone.js"></script>
+  </body>
+</html>

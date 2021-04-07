@@ -244,6 +244,10 @@ ul ul a {
   display: none;
 }
 
+.sd-icon:hover{
+  cursor: pointer;
+}
+
 /* Content Style */
 #content {
   width: calc(100% - 250px);

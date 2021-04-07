@@ -26,7 +26,6 @@ module.exports.login = async (req, res) => {
     const { username, password } = req.body;
     if (username === '') return res.json({ err: 'username empty' });
     if (password === '') return res.json({ err: 'password empty' });
-
     const user = await login(username, password);
     if (user.err) return res.json(user.err);
     req.session.user = user;
