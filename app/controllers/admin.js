@@ -121,8 +121,9 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
       });
   } else if (req.method == 'POST') {
     var idInternInfo = req.body.idInternInfo;
-    var approveType = req.body.approve;
     var refuseType = req.body.refuse;
+
+    // return res.json(!approveType);
 
     if (!refuseType) {
       await InternshipInfo
@@ -135,17 +136,18 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
         .then(() => {
           res.redirect('/admin/internship/approve');
         });
-    } else if (!approveType) {
-      await InternshipInfo
-        .findOne({
-          shortId: idInternInfo
-        })
-        .updateOne({
-          status: 0
-        })
-        .then(() => {
-          res.redirect('/admin/internship/approve');
-        });
+    } else {
+        console.log('Change status to 0');
+        await InternshipInfo
+          .findOne({
+            shortId: idInternInfo
+          })
+          .updateOne({
+            status: 0
+          })
+          .then(() => {
+            res.redirect('/admin/internship/approve');
+          });
     }
   }
 }
