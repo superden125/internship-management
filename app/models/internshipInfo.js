@@ -1,8 +1,14 @@
 import mongoose, { mongo, Schema } from "mongoose";
+import shortid from 'shortid';
 
 const InternshipInfoSchema = mongoose.Schema({
-  idSv: {
+  shortId: {
     type: String,
+    unique: true,
+    default: shortid.generate
+  },
+  idSv: {
+    type: Schema.Types.ObjectId, ref: 'Student',
     require: true,
   },
   idGv: {
@@ -10,7 +16,7 @@ const InternshipInfoSchema = mongoose.Schema({
     require: true,
   },
   idIntern: {
-    type: String,
+    type: Schema.Types.ObjectId, ref: 'InternshipUnit',
     require: true,
   },
   idMilestone: {

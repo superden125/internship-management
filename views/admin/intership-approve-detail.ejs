@@ -9,7 +9,16 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
 
-
+      <!-- Trạng thái -->
+      <% if (internInfo.status == 0) { %>
+        <div class="alert alert-warning" role="alert">
+          <strong><%= internInfo.statusString %></strong>
+        </div>
+      <% } else { %>
+        <div class="alert alert-success" role="alert">
+          <strong><%= internInfo.statusString %></strong>
+        </div>
+      <% } %>
 
       <!-- Thông tin sinh viên -->
       <div class="card border-black card-content">
@@ -22,7 +31,7 @@
               <span class="">Mã số sinh viên</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">B1704814</span>
+              <span class="text-muted"><%= internInfo.idSv.mssv %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -30,7 +39,7 @@
               <span class="">Họ và tên</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">Tran Thanh Huy</span>
+              <span class="text-muted"><%= internInfo.idSv.name %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -38,7 +47,7 @@
               <span class="">Mã lớp</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">DI1796A2</span>
+              <span class="text-muted"><%= internInfo.idSv.idClass %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -46,7 +55,7 @@
               <span class="">Ngành học</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">Kỹ thuật phần mềm</span>
+              <span class="text-muted"><%= internInfo.idSv.idMajor.name %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -54,7 +63,15 @@
               <span class="">Số điện thoại</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">0865791317</span>
+              <span class="text-muted"><%= internInfo.phone %></span>
+            </div>
+          </div>
+          <div class="row m-3">
+            <div class="col-md-3">
+              <span class="">Email</span>
+            </div>
+            <div class="col-md-8">
+              <span class="text-muted"><%= internInfo.idSv.email %></span>
             </div>
           </div>
         </div>
@@ -71,7 +88,7 @@
               <span class="">Tên đơn vị thực tập</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">Công ty TechCome</span>
+              <span class="text-muted"><%= internInfo.idIntern.name %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -79,7 +96,15 @@
               <span class="">Địa chỉ</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">123 Khu công nghệ cao, Đại học Quốc gia TP HCM</span>
+              <span class="text-muted"><%= internInfo.idIntern.address %></span>
+            </div>
+          </div>
+          <div class="row m-3">
+            <div class="col-md-3">
+              <span class="">Tỉnh/ Thành phố</span>
+            </div>
+            <div class="col-md-8">
+              <span class="text-muted"><%= internInfo.city %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -87,7 +112,7 @@
               <span class="">Số điện thoại</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">01234423442</span>
+              <span class="text-muted"><%= internInfo.idIntern.phone %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -95,7 +120,7 @@
               <span class="">Website</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">www.techcome.com</span>
+              <span class="text-muted"><%= internInfo.idIntern.website %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -103,7 +128,7 @@
               <span class="">Số buổi thực tập trong tuần</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">6 buổi/tuần</span>
+              <span class="text-muted"><%= internInfo.shiftPerWeek %> buổi/ tuần</span>
             </div>
           </div>
           <div class="row m-3">
@@ -111,7 +136,7 @@
               <span class="">Có phòng làm việc</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">Có</span>
+              <span class="text-muted"><%= internInfo.haveRoomString %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -119,7 +144,7 @@
               <span class="">Có máy tính</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">Không</span>
+              <span class="text-muted"><%= internInfo.havePCString %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -127,15 +152,15 @@
               <span class="">Yêu cầu của công ty thực tập</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">GPA > 3.0</span>
+              <span class="text-muted"><%= internInfo.idIntern.reqInfo %></span>
             </div>
           </div>
           <div class="row m-3">
             <div class="col-md-3">
-              <span class="">Hổ trợ của đơn vị thực tập</span>
+              <span class="">Hỗ trợ của đơn vị thực tập</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">3 000 000 VND/tháng</span>
+              <span class="text-muted"><%= internInfo.idIntern.benefit %></span>
             </div>
           </div>
         </div>
@@ -152,7 +177,7 @@
               <span class="">Tên người hướng dẫn</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">Phan Văn C</span>
+              <span class="text-muted"><%= internInfo.idIntern.mentor.name %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -160,7 +185,7 @@
               <span class="">Số điện thoại</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">0987123332</span>
+              <span class="text-muted"><%= internInfo.idIntern.mentor.phone %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -168,7 +193,7 @@
               <span class="">Email</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted">phanvanc@techcome.com</span>
+              <span class="text-muted"><%= internInfo.idIntern.mentor.email %></span>
             </div>
           </div>
         </div>
@@ -180,83 +205,27 @@
           <h5 class="card-title">Thông tin công việc theo tuần</h5>
         </div>
         <div class="card-body">
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tuần 1</span>
+          <% internInfo.work.forEach((item, index) => { %>
+            <div class="row m-3">
+              <div class="col-md-3">
+                <span class="">Tuần <%= index + 1 %></span>
+              </div>
+              <div class="col-md-8">
+                <span class="text-muted"><%= item %></span>
+              </div>
             </div>
-            <div class="col-md-8">
-              <span class="text-muted">Tìm hiểu quy trình làm việc của công ty</span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tuần 2</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted">Xem các dự án mẫu của công ty</span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tuần 3</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted">Thực hiện các dự án công ty giao</span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tuần 4</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted">Thực hiện các dự án công ty giao</span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tuần 5</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted">Thực hiện các dự án công ty giao</span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tuần 6</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted">Thực hiện các dự án công ty giao</span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tuần 7</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted">Thực hiện các dự án công ty giao</span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tuần 8</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted">Viết báo cáo cuối đợt thực tập</span>
-            </div>
-          </div>
+          <% }) %>
         </div>
-      </div>
-
-      <!-- Trạng thái -->
-      <div class="alert alert-warning" role="alert">
-        <strong>Chờ xét duyệt</strong>
-      </div>
+      </div>      
 
       <!-- Button -->
-      <div class="m-auto" style="width: fit-content">
-        <button class="m-2 btn btn-info">Xét duyệt</button>
-        <button class="m-2 btn btn-secondary">Hủy bỏ</button>
-      </div>
+      <form method="POST" action="">
+        <input type="hidden" name="idInternInfo" value="<%= internInfo.shortId %>">
+        <div class="m-auto" style="width: fit-content">
+          <button class="m-2 btn btn-info" name="approve" value="approve" type="submit" <%= internInfo.disabledApproveButton %>>Xét duyệt</button>
+          <button class="m-2 btn btn-secondary" name="refuse" value="refuse" type="submit" <%= internInfo.disabledCancelButton %>>Hủy bỏ</button>
+        </div>
+      </form>
     </div>
 
     <%- include('../layouts/script') %>

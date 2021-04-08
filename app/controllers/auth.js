@@ -27,8 +27,10 @@ module.exports.login = async (req, res) => {
     if (username === '') return res.json({ err: 'username empty' });
     if (password === '') return res.json({ err: 'password empty' });
     const user = await login(username, password);
+    // console.log(user);
     if (user.err) return res.json(user.err);
     req.session.user = user;
+    console.log(req.session.user);
     //res.send(req.session.user);
     res.redirect('/');
   }

@@ -32,7 +32,7 @@ export async function registerInternshipPost(req, res) {
         reqTime: parseInt(data.internReqTime),
         reqInfo: data.internRequire,
         benefit: data.internBenefit,
-        introBy: data.isSv,
+        introBy: data.idSv,
       });
       const result = await internshipUnit.save();
       data.idUnit = result._id;

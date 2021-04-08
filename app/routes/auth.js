@@ -2,7 +2,6 @@ import { Router } from "express";
 
 import * as authController from '../controllers/auth';
 
-
 const router = Router();
 /* GET home page. */
 router.get('/', authController.index);

@@ -16,6 +16,10 @@ body {
   font: 16px "Roboto", sans-serif;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
 h1,
 h2,
 h3,

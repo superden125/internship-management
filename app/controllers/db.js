@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs";
 
-import Major from "../models/major";
-import User from "../models/user";
-import Teacher from "../models/teacher";
-import InternshipInfo from "../models/internshipInfo";
-import InternshipUnit from "../models/internshipUnit";
-import Milestone from "../models/milestone";
+import Major from '../models/major';
+import User from '../models/user';
+import Teacher from '../models/teacher';
+import Student from '../models/student';
+import Milestone from '../models/milestone';
+import InternshipUnit from '../models/internshipUnit';
 
 // [GET] /db/major
 module.exports.mockMajorDB = (req, res) => {
@@ -111,6 +111,13 @@ module.exports.mockStudentDB = async (req, res) => {
       email: "minhb1704835@student.ctu.edu.vn",
     },
     {
+      mssv: "B1704814",
+      name: "Tran Thanh Huy",
+      idClass: "DI1796A2",
+      idMajor: major._id,
+      email: "huyb1704814@student.ctu.edu.vn",
+    },
+    {
       mssv: "B1234242",
       name: "Nguyen Thanh Nam",
       idClass: "DI1796A2",
@@ -165,7 +172,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
       address:
         "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
       email: "teachbase@techbase.com",
-      city: "Hồ Chí Minh",
+      city: "79",
       phone: "039394928492",
       website: "techbase.com",
       mentor: {
@@ -187,7 +194,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
       address:
         "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
       email: "Fujinet@Fujinet.com",
-      city: "Hồ Chí Minh",
+      city: "79",
       phone: "039394928492",
       website: "Fujinet.com",
       mentor: {
@@ -209,7 +216,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
       address:
         "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
       email: "vnpt@vnpt.vn",
-      city: "Cần Thơ",
+      city: "65",
       phone: "039394928492",
       website: "vnpt.com",
       mentor: {

@@ -3,6 +3,8 @@ import InternshipUnit from '../models/internshipUnit';
 import Teacher from '../models/teacher';
 import Student from '../models/student';
 import Milestone from '../models/milestone';
+import InternshipInfo from '../models/internshipInfo';
+import tinh from "../lib/tinh";
 
 
 module.exports.index = async (req, res) => {
@@ -50,20 +52,125 @@ module.exports.getAllStudents = async (req, res) => {
   });
 }
 
-module.exports.showAllApproveInternshipUnit = (req, res) => {
-  res.render('admin/internship-approve-all', {
-    roleName: 'Giáo vụ khoa',
-    urlInfo: 'Xét duyệt điểm thực tập',
-  });
+module.exports.showAllApproveInternshipUnit = async (req, res) => {
+  var sortType = {
+    column: 'timestamp',
+    type: -1,
+    icon: 'fas fa-sort'  
+  }
+
+  if (req.query.hasOwnProperty('_sort')) {
+    Object.assign(sortType, {
+      column: req.query.column,
+      type: parseInt(req.query.type),
+    });
+
+    // sortType.icon = sortType.type == -1 ? 'fas fa-sort-down': 'fas fa-sort-up';
+  }
+
+  var lookupStudent = {
+    $lookup: {
+      from: 'students',
+      localField: 'idSv',
+      foreignField: '_id',
+      as: 'student'
+    }
+  }, lookupInternshipUnit = {
+    $lookup: {
+      from: 'internshipunits',
+      localField: 'idIntern',
+      foreignField: '_id',
+      as: 'internshipUnit'
+    }
+  }, sortOperator = {
+    $sort: { }
+  }, sort = sortType.column;
+
+  sortOperator['$sort'][sort] = sortType.type;
+
+  await InternshipInfo
+    .aggregate([ lookupStudent, lookupInternshipUnit, sortOperator ])
+    .exec(function (err, internInfos) {
+      internInfos.forEach(obj => {
+        obj.statusString = obj.status == 0 ? 'Chờ xét duyệt' : 'Đã xét duyệt';
+        obj.styleClass = obj.status == 0 ? 'font-weight-bold' : '';
+        obj.city = tinh.find((tinh) => tinh.id == obj.internshipUnit[0].city).name;
+      });
+
+      return res.render('admin/internship-approve-all', {
+        roleName: 'Giáo vụ khoa',
+        urlInfo: 'Xét duyệt điểm thực tập',
+        internInfos,
+        type: -(sortType.type),
+        icon: sortType.icon
+      });
+    });
 }
 
-module.exports.detailApproveInternshipUnit = (req, res) => {
-  var id = req.params.id;
-  res.render('admin/intership-approve-detail', {
-    id,
-    roleName: 'Giáo vụ khoa',
-    urlInfo: 'Xét duyệt điểm thực tập / Chi tiết'
-  });
+module.exports.detailApproveInternshipUnit = async (req, res) => {
+  if (req.method == 'GET') {
+    await InternshipInfo
+      .findOne({
+        shortId: req.params.id
+      })
+      .populate({
+        path:'idSv',
+        populate: {
+          path: 'idMajor'
+        }
+      })
+      .populate('idIntern')
+      .exec(function (error, internInfo) {
+        internInfo.haveRoomString = !internInfo.haveRoom ? 'Không' : 'Có';
+        internInfo.havePCString = !internInfo.havePC ? 'Không' : 'Có';
+        internInfo.city = tinh.find((tinh) => tinh.id == internInfo.idIntern.city).name;
+
+        if (internInfo.status == 0) {
+          internInfo.statusString = 'Chờ xét duyệt';
+          internInfo.disabledApproveButton = '';
+          internInfo.disabledCancelButton = 'disabled';
+        } else {
+          internInfo.statusString = 'Đã xét duyệt';
+          internInfo.disabledApproveButton = 'disabled';
+          internInfo.disabledCancelButton = '';
+        }
+
+        res.render('admin/intership-approve-detail', {
+          roleName: 'Giáo vụ khoa',
+          urlInfo: 'Xét duyệt điểm thực tập / Chi tiết',
+          internInfo
+        })
+      });
+  } else if (req.method == 'POST') {
+    var idInternInfo = req.body.idInternInfo;
+    var refuseType = req.body.refuse;
+
+    // return res.json(!approveType);
+
+    if (!refuseType) {
+      await InternshipInfo
+        .findOne({
+          shortId: idInternInfo
+        })
+        .updateOne({
+          status: 1
+        })
+        .then(() => {
+          res.redirect('/admin/internship/approve');
+        });
+    } else {
+        await InternshipInfo
+          .findOne({
+            shortId: idInternInfo
+          })
+          .updateOne({
+            status: 0
+          })
+          .then(() => {
+            res.redirect('/admin/internship/approve');
+          });
+    }
+  }
 }
 
 module.exports.assignTeacher = (req, res) => {

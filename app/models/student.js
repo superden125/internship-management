@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose, { mongo, Schema } from "mongoose";
 
 const StudentSchema = mongoose.Schema({
   mssv: {
@@ -14,7 +14,7 @@ const StudentSchema = mongoose.Schema({
     require: true,
   },
   idMajor: {
-    type: String,
+    type: Schema.Types.ObjectId, ref: 'Major',
     require: true,
   },
   email: {
