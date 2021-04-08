@@ -9,7 +9,16 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
 
-
+      <!-- Trạng thái -->
+      <% if (internInfo.status == 0) { %>
+        <div class="alert alert-warning" role="alert">
+          <strong><%= internInfo.statusString %></strong>
+        </div>
+      <% } else { %>
+        <div class="alert alert-success" role="alert">
+          <strong><%= internInfo.statusString %></strong>
+        </div>
+      <% } %>
 
       <!-- Thông tin sinh viên -->
       <div class="card border-black card-content">
@@ -207,19 +216,7 @@
             </div>
           <% }) %>
         </div>
-      </div>
-
-      <!-- Trạng thái -->
-      <% if (internInfo.status == 0) { %>
-        <div class="alert alert-warning" role="alert">
-          <strong><%= internInfo.statusString %></strong>
-        </div>
-      <% } else { %>
-        <div class="alert alert-success" role="alert">
-          <strong><%= internInfo.statusString %></strong>
-        </div>
-      <% } %>
-      
+      </div>      
 
       <!-- Button -->
       <form method="POST" action="">

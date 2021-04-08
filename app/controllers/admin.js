@@ -51,25 +51,43 @@ module.exports.getAllStudents = async (req, res) => {
 }
 
 module.exports.showAllApproveInternshipUnit = async (req, res) => {
+  var sortType = {
+    column: 'timestamp',
+    type: -1,
+    icon: 'fas fa-sort'  
+  }
+
+  if (req.query.hasOwnProperty('_sort')) {
+    Object.assign(sortType, {
+      column: req.query.column,
+      type: parseInt(req.query.type),
+    });
+
+    // sortType.icon = sortType.type == -1 ? 'fas fa-sort-down': 'fas fa-sort-up';
+  }
+
+  var lookupStudent = {
+    $lookup: {
+      from: 'students',
+      localField: 'idSv',
+      foreignField: '_id',
+      as: 'student'
+    }
+  }, lookupInternshipUnit = {
+    $lookup: {
+      from: 'internshipunits',
+      localField: 'idIntern',
+      foreignField: '_id',
+      as: 'internshipUnit'
+    }
+  }, sortOperator = {
+    $sort: { }
+  }, sort = sortType.column;
+
+  sortOperator['$sort'][sort] = sortType.type;
+
   await InternshipInfo
-    .aggregate([
-      {
-        $lookup: {
-          from: 'students',
-          localField: 'idSv',
-          foreignField: '_id',
-          as: 'student'
-        }
-      },
-      {
-        $lookup: {
-          from: 'internshipunits',
-          localField: 'idIntern',
-          foreignField: '_id',
-          as: 'internshipUnit'
-        }
-      }
-    ])
+    .aggregate([ lookupStudent, lookupInternshipUnit, sortOperator ])
     .exec(function (err, internInfos) {
       internInfos.forEach(obj => {
         obj.statusString = obj.status == 0 ? 'Chờ xét duyệt' : 'Đã xét duyệt';
@@ -80,7 +98,9 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
       return res.render('admin/internship-approve-all', {
         roleName: 'Giáo vụ khoa',
         urlInfo: 'Xét duyệt điểm thực tập',
-        internInfos
+        internInfos,
+        type: -(sortType.type),
+        icon: sortType.icon
       });
     });
 }
@@ -137,7 +157,6 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
           res.redirect('/admin/internship/approve');
         });
     } else {
-        console.log('Change status to 0');
         await InternshipInfo
           .findOne({
             shortId: idInternInfo

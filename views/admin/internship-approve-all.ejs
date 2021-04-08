@@ -15,23 +15,23 @@
             <th class="text-left align-middle" scope="col">#</th>
             <th class="text-left align-middle" scope="col">
               Mã số sinh viên
-              <a class="ml-1" href="?_sort&column=mssv&type=desc"><i class="fas fa-sort text-body"></i></a>
+              <a class="ml-1" href="?_sort&column=student.mssv&type=<%= type %>"><i class="<%= icon %> text-body"></i></a>
             </th>
             <th class="text-left align-middle" scope="col">
               Họ và tên
-              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+              <a class="ml-1" href="?_sort&column=student.name&type=<%= type %>"><i class="<%= icon %> text-body"></i></a>
             </th>
             <th class="text-left align-middle" scope="col">
               Tên công ty
-              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+              <a class="ml-1" href="?_sort&column=internshipUnit.name&type=<%= type %>"><i class="<%= icon %> text-body"></i></a>
             </th>
             <th class="text-left align-middle" scope="col">
               Tỉnh/ Thành phố
-              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+              <a class="ml-1" href="?_sort&column=internshipUnit.city&type=<%= type %>"><i class="<%= icon %> text-body"></i></a>
             </th>
             <th class="text-left align-middle" scope="col">
               Trạng thái
-              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+              <a class="ml-1" href="?_sort&column=status&type=<%= type %>"><i class="<%= icon %> text-body"></i></a>
             </th>
           </tr>
         </thead>
@@ -53,9 +53,10 @@
 
     <%- include('../layouts/script') %>
     <script type="text/javascript">
-      $('#approve-internship tr').click(function() {
+      $('#approve-internship tbody tr').click(function() {
         var id = $(this).attr('id');
-        window.location.href = window.location + `/${id}`;
+        window.location.href =  `/admin/internship/approve/${id}`;
+        // console.log(id);
       });
     </script>
   </body>
