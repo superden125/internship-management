@@ -15,7 +15,7 @@
             <th class="text-left align-middle" scope="col">#</th>
             <th class="text-left align-middle" scope="col">
               Mã số sinh viên
-              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+              <a class="ml-1" href="?_sort&column=mssv&type=desc"><i class="fas fa-sort text-body"></i></a>
             </th>
             <th class="text-left align-middle" scope="col">
               Họ và tên
@@ -36,28 +36,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="1">
-            <td class="text-left align-middle font-weight-bold">1</td>
-            <td class="text-left align-middle font-weight-bold">B1704814</td>
-            <td class="text-left align-middle font-weight-bold">Tran Thanh Huy</td>
-            <td class="text-left align-middle font-weight-bold">TechBase Viet Nam</td>
-            <td class="text-left align-middle font-weight-bold">TP HCM</td>
-            <td class="text-left align-middle font-weight-bold">Chờ xét duyệt</td>
-          </tr>
-
-          <tr id="2">
-            <td class="text-left align-middle">2</td>
-            <td class="text-left align-middle">B1704835</td>
-            <td class="text-left align-middle">Trieu Duc Minh</td>
-            <td class="text-left align-middle">TechBase Viet Nam</td>
-            <td class="text-left align-middle">TP HCM</td>
-            <td class="text-left align-middle">Đã xét duyệt</td>
-          </tr>
+          <% internInfos.forEach((item, index) => { %>
+            <tr id="<%= item.shortId %>">
+              <td class="text-left align-middle <%= item.styleClass %>"><%= index + 1 %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student[0].mssv %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student[0].name %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.internshipUnit[0].name %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.city %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.statusString %></td>
+            </tr>
+          <% }) %>
         </tbody>
       </table>
 
     </div>
 
     <%- include('../layouts/script') %>
+    <script type="text/javascript">
+      $('#approve-internship tr').click(function() {
+        var id = $(this).attr('id');
+        window.location.href = window.location + `/${id}`;
+      });
+    </script>
   </body>
 </html>

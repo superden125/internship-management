@@ -4,6 +4,7 @@ import Major from '../models/major';
 import User from '../models/user';
 import Teacher from '../models/teacher';
 import Student from '../models/student';
+import Milestone from '../models/milestone';
 import InternshipUnit from '../models/internshipUnit';
 
 // [GET] /db/major
@@ -112,6 +113,13 @@ module.exports.mockStudentDB = async (req, res) => {
       email: "minhb1704835@student.ctu.edu.vn",
     },
     {
+      mssv: "B1704814",
+      name: "Tran Thanh Huy",
+      idClass: "DI1796A2",
+      idMajor: major._id,
+      email: "huyb1704814@student.ctu.edu.vn",
+    },
+    {
       mssv: "B1234242",
       name: "Nguyen Thanh Nam",
       idClass: "DI1796A2",
@@ -167,7 +175,7 @@ module.exports.mockIntershipUnitDB = async (req, res) => {
       address:
         "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
       email: "teachbase@techbase.com",
-      city: "Hồ Chí Minh",
+      city: "79",
       phone: "039394928492",
       website: "techbase.com",
       mentor: {
@@ -189,7 +197,7 @@ module.exports.mockIntershipUnitDB = async (req, res) => {
       address:
         "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
       email: "Fujinet@Fujinet.com",
-      city: "Hồ Chí Minh",
+      city: "79",
       phone: "039394928492",
       website: "Fujinet.com",
       mentor: {
@@ -211,7 +219,7 @@ module.exports.mockIntershipUnitDB = async (req, res) => {
       address:
         "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
       email: "vnpt@vnpt.vn",
-      city: "Cần Thơ",
+      city: "65",
       phone: "039394928492",
       website: "vnpt.com",
       mentor: {
@@ -236,3 +244,16 @@ module.exports.mockIntershipUnitDB = async (req, res) => {
   });
   res.send("done");
 }
+
+module.exports.mockMilestone = async (req, res) => {
+  const data = {
+    semester: "2020-2021",
+    hk: 3,
+    startIntern: new Date(2021, 6, 1),
+    endIntern: new Date(2021, 8, 1),
+    endRegister: new Date(2021, 5, 15),
+  };
+  const milestone = new Milestone(data);
+  const result = await milestone.save();
+  res.send(result);
+};

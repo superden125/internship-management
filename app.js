@@ -35,6 +35,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Route
 route(app);
 
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 mongoose.connect(url, options, (err) => {
   if (err) return console.log(err);
   console.log("Connected to db...");
