@@ -31,7 +31,7 @@
               <span class="">Mã số sinh viên</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idSv.mssv %></span>
+              <span class="text-muted"><%= internInfo.student.mssv %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -39,7 +39,7 @@
               <span class="">Họ và tên</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idSv.name %></span>
+              <span class="text-muted"><%= internInfo.student.name %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -47,7 +47,7 @@
               <span class="">Mã lớp</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idSv.idClass %></span>
+              <span class="text-muted"><%= internInfo.student.idClass %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -55,7 +55,7 @@
               <span class="">Ngành học</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idSv.idMajor.name %></span>
+              <span class="text-muted"><%= internInfo.major[0].name %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -71,7 +71,7 @@
               <span class="">Email</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idSv.email %></span>
+              <span class="text-muted"><%= internInfo.student.email %></span>
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@
               <span class="">Tên đơn vị thực tập</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idIntern.name %></span>
+              <span class="text-muted"><%= internInfo.internshipUnit[0].name %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -96,7 +96,7 @@
               <span class="">Địa chỉ</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idIntern.address %></span>
+              <span class="text-muted"><%= internInfo.internshipUnit[0].address %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -112,7 +112,7 @@
               <span class="">Số điện thoại</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idIntern.phone %></span>
+              <span class="text-muted"><%= internInfo.internshipUnit[0].phone %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -120,7 +120,7 @@
               <span class="">Website</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idIntern.website %></span>
+              <span class="text-muted"><%= internInfo.internshipUnit[0].website %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -152,7 +152,7 @@
               <span class="">Yêu cầu của công ty thực tập</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idIntern.reqInfo %></span>
+              <span class="text-muted"><%= internInfo.internshipUnit[0].reqInfo %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -160,7 +160,7 @@
               <span class="">Hỗ trợ của đơn vị thực tập</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idIntern.benefit %></span>
+              <span class="text-muted"><%= internInfo.internshipUnit[0].benefit %></span>
             </div>
           </div>
         </div>
@@ -177,7 +177,7 @@
               <span class="">Tên người hướng dẫn</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idIntern.mentor.name %></span>
+              <span class="text-muted"><%= internInfo.internshipUnit[0].mentor.name %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -185,7 +185,7 @@
               <span class="">Số điện thoại</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idIntern.mentor.phone %></span>
+              <span class="text-muted"><%= internInfo.internshipUnit[0].mentor.phone %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -193,7 +193,7 @@
               <span class="">Email</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.idIntern.mentor.email %></span>
+              <span class="text-muted"><%= internInfo.internshipUnit[0].mentor.email %></span>
             </div>
           </div>
         </div>
@@ -222,8 +222,8 @@
       <form method="POST" action="">
         <input type="hidden" name="idInternInfo" value="<%= internInfo.shortId %>">
         <div class="m-auto" style="width: fit-content">
-          <button class="m-2 btn btn-info" name="approve" value="approve" type="submit" <%= internInfo.disabledApproveButton %>>Xét duyệt</button>
-          <button class="m-2 btn btn-secondary" name="refuse" value="refuse" type="submit" <%= internInfo.disabledCancelButton %>>Hủy bỏ</button>
+          <button class="m-2 btn btn-info <%= internInfo.disabledApproveButton %>" name="approve" value="approve" type="submit" <%= internInfo.disabledApproveButton %>>Xét duyệt</button>
+          <button class="m-2 btn btn-secondary <%= internInfo.disabledCancelButton %>" name="refuse" value="refuse" type="submit" <%= internInfo.disabledCancelButton %>>Hủy bỏ</button>
         </div>
       </form>
     </div>

@@ -8,7 +8,7 @@ const InternshipInfoSchema = mongoose.Schema({
     default: shortid.generate
   },
   idSv: {
-    type: Schema.Types.ObjectId, ref: 'Student',
+    type: Schema.Types.ObjectId,
     require: true,
   },
   idGv: {
@@ -16,7 +16,7 @@ const InternshipInfoSchema = mongoose.Schema({
     require: true,
   },
   idIntern: {
-    type: Schema.Types.ObjectId, ref: 'InternshipUnit',
+    type: Schema.Types.ObjectId,
     require: true,
   },
   idMilestone: {

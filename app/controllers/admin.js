@@ -89,6 +89,7 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
   await InternshipInfo
     .aggregate([ lookupStudent, lookupInternshipUnit, sortOperator ])
     .exec(function (err, internInfos) {
+      // return res.json(internInfos);
       internInfos.forEach(obj => {
         obj.statusString = obj.status == 0 ? 'Chờ xét duyệt' : 'Đã xét duyệt';
         obj.styleClass = obj.status == 0 ? 'font-weight-bold' : '';
@@ -107,21 +108,48 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
 
 module.exports.detailApproveInternshipUnit = async (req, res) => {
   if (req.method == 'GET') {
+    var matchField = {
+      $match: { }
+    };
+
+    matchField['$match']['shortId'] = req.params.id;
+
     await InternshipInfo
-      .findOne({
-        shortId: req.params.id
-      })
-      .populate({
-        path:'idSv',
-        populate: {
-          path: 'idMajor'
+      .aggregate([
+        matchField,
+        {
+          $lookup: {
+            from: 'students',
+            localField: 'idSv',
+            foreignField: '_id',
+            as: 'student'
+          }
+        },
+        {
+          $unwind: '$student'
+        },
+        {
+          $lookup: {
+            from: 'majors',
+            localField: 'student.idMajor',
+            foreignField: '_id',
+            as: 'major'
+          }
+        },
+        {
+          $lookup: {
+            from: 'internshipunits',
+            localField: 'idIntern',
+            foreignField: '_id',
+            as: 'internshipUnit'
+          }
         }
-      })
-      .populate('idIntern')
-      .exec(function (error, internInfo) {
+      ])
+      .exec(function (err, internInfos) {
+        var internInfo = internInfos[0];
         internInfo.haveRoomString = !internInfo.haveRoom ? 'Không' : 'Có';
         internInfo.havePCString = !internInfo.havePC ? 'Không' : 'Có';
-        internInfo.city = tinh.find((tinh) => tinh.id == internInfo.idIntern.city).name;
+        internInfo.city = tinh.find((tinh) => tinh.id == internInfo.internshipUnit[0].city).name;
 
         if (internInfo.status == 0) {
           internInfo.statusString = 'Chờ xét duyệt';
@@ -137,13 +165,11 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
           roleName: 'Giáo vụ khoa',
           urlInfo: 'Xét duyệt điểm thực tập / Chi tiết',
           internInfo
-        })
+        });
       });
   } else if (req.method == 'POST') {
     var idInternInfo = req.body.idInternInfo;
     var refuseType = req.body.refuse;
-
-    // return res.json(!approveType);
 
     if (!refuseType) {
       await InternshipInfo
