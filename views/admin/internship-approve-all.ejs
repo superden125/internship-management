@@ -39,16 +39,65 @@
           <% internInfos.forEach((item, index) => { %>
             <tr id="<%= item.shortId %>">
               <td class="text-left align-middle <%= item.styleClass %>"><%= index + 1 %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student[0].mssv %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student[0].name %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.internshipUnit[0].name %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.mssv %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.name %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.internshipUnit.name %></td>
               <td class="text-left align-middle <%= item.styleClass %>"><%= item.city %></td>
               <td class="text-left align-middle <%= item.styleClass %>"><%= item.statusString %></td>
             </tr>
           <% }) %>
         </tbody>
       </table>
+      <% if (pages > 0) { %>
+        <nav aria-label="Page navigation" class="ml-auto mt-4 mb-4">
+          <ul class="pagination justify-content-end">
+            <% if (current == 1) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">Đầu</a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="/admin/internship/approve" class="page-link">Đầu</a>
+              </li>
+            <% } %>
+            <% var i = current > 3 ? current - 2 : 1 %>
+            <% if (i !== 1) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">...</a>
+              </li>
+            <% } %>
+            <% while (i <= (current + 2) && i <= pages) { %>
+              <% if (i == current) { %>
+                <li class="page-item active">
+                  <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+                </li>
+              <% } else { %>
+                <li class="page-item">
+                  <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+                </li>
+              <% } %>
 
+              <% if ((i == (current + 2) && i < pages)) { %>
+                <li class="page-item disabled">
+                  <a href="/admin/internship/approve" class="page-link">...</a>
+                </li>
+              <% } %>
+
+              <% i++ %>
+            <% } %>
+            <% if (current == pages) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">Cuối</a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="?page=<%= pages %>" class="page-link">Cuối</a>
+              </li>
+            <% } %>
+          </ul>
+        </nav>
+      <% } %>
+      
     </div>
 
     <%- include('../layouts/script') %>
@@ -57,7 +106,7 @@
         var id = $(this).attr('id');
         window.location.href =  `/admin/internship/approve/${id}`;
         // console.log(id);
-      });
+      });      
     </script>
   </body>
 </html>

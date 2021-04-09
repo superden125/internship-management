@@ -51,11 +51,18 @@ module.exports.getAllStudents = async (req, res) => {
 }
 
 module.exports.showAllApproveInternshipUnit = async (req, res) => {
+  var page = 1;
+
   var sortType = {
     column: 'timestamp',
     type: -1,
     icon: 'fas fa-sort'  
-  }
+  };
+
+  var paginationObj = {
+    limit: 5,
+    skip: 0
+  };
 
   if (req.query.hasOwnProperty('_sort')) {
     Object.assign(sortType, {
@@ -66,34 +73,96 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
     // sortType.icon = sortType.type == -1 ? 'fas fa-sort-down': 'fas fa-sort-up';
   }
 
-  var lookupStudent = {
-    $lookup: {
-      from: 'students',
-      localField: 'idSv',
-      foreignField: '_id',
-      as: 'student'
-    }
-  }, lookupInternshipUnit = {
-    $lookup: {
-      from: 'internshipunits',
-      localField: 'idIntern',
-      foreignField: '_id',
-      as: 'internshipUnit'
-    }
-  }, sortOperator = {
-    $sort: { }
-  }, sort = sortType.column;
+  if (req.query.hasOwnProperty('page')) {
+    page = parseInt(req.query.page) || 1;
+    var reqLimit = parseInt(req.query.limit) || 5;
 
-  sortOperator['$sort'][sort] = sortType.type;
+    Object.assign(paginationObj, {
+      skip: (page - 1) * reqLimit,
+      limit: reqLimit
+    });
+  }
+
+  var limitField = {
+    $limit: paginationObj.limit
+  };
+
+  var skipField = {
+    $skip: paginationObj.skip
+  }
+
+  var sortField = {
+    $sort: { }
+  };
+
+  var sort = sortType.column;
+  sortField['$sort'][sort] = sortType.type;
+
+  const query = [
+    {
+      $lookup: {
+        from: 'students',
+        localField: 'idSv',
+        foreignField: '_id',
+        as: 'student'
+      }
+    },
+    {
+      $unwind: '$student'
+    },
+    {
+      $lookup: {
+        from: 'internshipunits',
+        localField: 'idIntern',
+        foreignField: '_id',
+        as: 'internshipUnit'
+      }
+    },
+    {
+      $unwind: '$internshipUnit'
+    }
+  ];
+
+  query.push(
+    {
+      $facet: {
+        metadata: [
+          {
+            $group: {
+              _id: null,
+              total: {
+                $sum: 1
+              }
+            }
+          }
+        ],
+        data: [
+          sortField,
+          skipField,
+          limitField,
+        ]
+      }
+    },
+    {
+      $project: {
+        data: 1,
+        total: {
+          $arrayElemAt: [ '$metadata.total', 0 ]
+        }
+      }
+    }
+  )
 
   await InternshipInfo
-    .aggregate([ lookupStudent, lookupInternshipUnit, sortOperator ])
-    .exec(function (err, internInfos) {
-      // return res.json(internInfos);
+    .aggregate(query)
+    .exec(function (err, objData) {
+      var internInfos = objData[0].data;
+      var totalDocs = objData[0].total;
+      // return res.json(internInfos[0].data);
       internInfos.forEach(obj => {
         obj.statusString = obj.status == 0 ? 'Chờ xét duyệt' : 'Đã xét duyệt';
         obj.styleClass = obj.status == 0 ? 'font-weight-bold' : '';
-        obj.city = tinh.find((tinh) => tinh.id == obj.internshipUnit[0].city).name;
+        obj.city = tinh.find((tinh) => tinh.id == obj.internshipUnit.city).name;
       });
 
       return res.render('admin/internship-approve-all', {
@@ -101,7 +170,10 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
         urlInfo: 'Xét duyệt điểm thực tập',
         internInfos,
         type: -(sortType.type),
-        icon: sortType.icon
+        icon: sortType.icon,
+        totalDocs,
+        current: page,
+        pages: Math.ceil(totalDocs / paginationObj.limit)
       });
     });
 }
