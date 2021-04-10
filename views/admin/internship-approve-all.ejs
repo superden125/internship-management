@@ -48,25 +48,39 @@
           <% }) %>
         </tbody>
       </table>
-      <% if (pages > 0) { %>
+      <% if (totalPages > 1) { %>
         <nav aria-label="Page navigation" class="ml-auto mt-4 mb-4">
-          <ul class="pagination justify-content-end">
+          <ul class="pagination pagination-static-b">
             <% if (current == 1) { %>
               <li class="page-item disabled">
-                <a href="#" class="page-link">Đầu</a>
+                <a href="#" class="page-link">&laquo;</a>
               </li>
             <% } else { %>
               <li class="page-item">
-                <a href="/admin/internship/approve" class="page-link">Đầu</a>
+                <a href="/admin/internship/approve?page=<%= current - 1 %>" class="page-link">&laquo;</a>
               </li>
             <% } %>
-            <% var i = current > 3 ? current - 2 : 1 %>
-            <% if (i !== 1) { %>
+
+            <!-- First index -->
+            <% if (current == 1) { %>
+              <li class="page-item active">
+                <a href="#" class="page-link">1</a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="?page=1" class="page-link">1</a>
+              </li>
+            <% } %>
+            <% var i = current > 3 ? current - 1 : 2 %>
+            <% if (i !== 2) { %>
               <li class="page-item disabled">
                 <a href="#" class="page-link">...</a>
               </li>
             <% } %>
-            <% while (i <= (current + 2) && i <= pages) { %>
+
+            <!-- Middle indexes loop -->
+            <% while (i <= (totalPages - 1) && (i < (current + 2)) ) { %>
+              
               <% if (i == current) { %>
                 <li class="page-item active">
                   <a href="?page=<%= i %>" class="page-link"><%= i %></a>
@@ -77,7 +91,7 @@
                 </li>
               <% } %>
 
-              <% if ((i == (current + 2) && i < pages)) { %>
+              <% if ((i == (current + 1) && i < totalPages - 1)) { %>
                 <li class="page-item disabled">
                   <a href="/admin/internship/approve" class="page-link">...</a>
                 </li>
@@ -85,13 +99,25 @@
 
               <% i++ %>
             <% } %>
-            <% if (current == pages) { %>
-              <li class="page-item disabled">
-                <a href="#" class="page-link">Cuối</a>
+
+            <!-- Last index -->
+            <% if (current == totalPages) { %>
+              <li class="page-item active">
+                <a href="#" class="page-link"><%= totalPages %></a>
               </li>
             <% } else { %>
               <li class="page-item">
-                <a href="?page=<%= pages %>" class="page-link">Cuối</a>
+                <a href="?page=<%= totalPages %>" class="page-link"><%= totalPages %></a>
+              </li>
+            <% } %>
+
+            <% if (current == totalPages) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">&raquo;</a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="?page=<%= current + 1 %>" class="page-link">&raquo;</a>
               </li>
             <% } %>
           </ul>
@@ -106,7 +132,7 @@
         var id = $(this).attr('id');
         window.location.href =  `/admin/internship/approve/${id}`;
         // console.log(id);
-      });      
+      });
     </script>
   </body>
 </html>

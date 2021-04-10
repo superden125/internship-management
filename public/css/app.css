@@ -62,6 +62,21 @@ p {
   opacity: 0.9;
 }
 
+.pagination-static-b {
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
+}
+
+.pagination-static-b .active-ims {
+  background-color: var(--sidebar-color);
+  border-color: var(--sidebar-color);
+}
+
+.pagination-static-b .page-link-ims {
+  color: var(--sidebar-color);
+}
+
 /* Navbar Style */
 
 .navbar {

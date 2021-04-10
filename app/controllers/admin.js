@@ -60,7 +60,8 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
   };
 
   var paginationObj = {
-    limit: 5,
+    page: 1,
+    limit: 6,
     skip: 0
   };
 
@@ -74,8 +75,8 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
   }
 
   if (req.query.hasOwnProperty('page')) {
-    page = parseInt(req.query.page) || 1;
-    var reqLimit = parseInt(req.query.limit) || 5;
+    page = parseInt(req.query.page) || paginationObj.page;
+    var reqLimit = parseInt(req.query.limit) || paginationObj.limit;
 
     Object.assign(paginationObj, {
       skip: (page - 1) * reqLimit,
@@ -173,7 +174,7 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
         icon: sortType.icon,
         totalDocs,
         current: page,
-        pages: Math.ceil(totalDocs / paginationObj.limit)
+        totalPages: Math.ceil(totalDocs / paginationObj.limit)
       });
     });
 }
