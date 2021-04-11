@@ -34,6 +34,12 @@ module.exports.mockTeacherDB = async (req, res) => {
   console.log(major);
   const listTeacher = [
     {
+      mscb: "007",
+      name: "Huynh Tran",
+      idMajor: major._id,
+      email: "ht@cit.ctu.edu.vn",
+    },
+    {
       mscb: "0065001",
       name: "Vo Huynh Tram",
       idMajor: major._id,
@@ -88,12 +94,16 @@ module.exports.mockTeacherDB = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashPass = await bcrypt.hash(pwd, salt);
+    
+    const result = await teacher.save();
+
     const user = new User({
       username: item.mscb,
       password: hashPass,
       role: 1,
+      ids: result._id
     });
-    await teacher.save();
+
     await user.save();
   });
   return res.send("Mocking teacher DB successfully");
@@ -147,6 +157,7 @@ module.exports.mockStudentDB = async (req, res) => {
     },
   ];
   let count = 0;
+  const pwd = "ims123"
   listStudent.forEach(async (item) => {
     const student = new Student(item);
     const result = await student.save();

@@ -1,7 +1,7 @@
 import InternshipInfo from "../models/internshipInfo";
 import InternshipUnit from "../models/internshipUnit";
 import Teacher from "../models/teacher";
-import tinh from "../lib/tinh";
+import {getNameTinh} from "../lib/tinh";
 
 export async function getInternshipInfo(req, res) {
   const idSv = req.session.user.userId;
@@ -31,7 +31,7 @@ export async function getInternshipInfo(req, res) {
         error: { err: true, msg: "Not found Intern Info" },
       })
     );
-  const city = tinh.find((city) => city.id == internUnit.city).name;
+  const city =  getNameTinh(internUnit.city)//tinh.find((city) => city.id == internUnit.city).name;
   internUnit.city = city;
   if (internInfo.status == 0) {
     internInfo.statusStr = "Chờ xét duyệt";

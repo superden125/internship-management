@@ -30,6 +30,7 @@ const InternshipInfoSchema = mongoose.Schema({
   status: {
     type: Number,
     require: true,
+    // 0: cho xet duyet, 1: da duyet, 2: da phan cong, 3: hoan thanh(da cham diem)
   },
   core: {
     type: Number,

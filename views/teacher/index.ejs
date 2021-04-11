@@ -9,7 +9,42 @@
   <div id="content">
 
     <%- include('../layouts/navbar') %>    
-    <p>index teacher</p>
+    <p>Chỗ này để thanh tìm kiếm, bộ lọc dữ liệu</p>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="text-left align-middle" scope="col">#</th>
+          <th class="text-left align-middle" scope="col">
+            Mã số sinh viên
+          </th>
+          <th class="text-left align-middle" scope="col">
+            Họ và tên
+          </th>
+          <th class="text-left align-middle" scope="col">
+            Tên công ty
+          </th>
+          <th class="text-left align-middle" scope="col">
+            Tỉnh/ Thành phố
+          </th>
+          <!-- <th class="text-left align-middle" scope="col">
+            Trạng thái              
+          </th> -->
+        </tr>
+      </thead>
+      <tbody>
+          <% internInfos.forEach((item, index)=>{%> 
+            <tr id="<%= item._id %>" onclick="return window.location.href = '/teacher/<%= item.shortId%>'">
+              <td class="text-left align-middle"><%= index + 1 %></td>
+              <td class="text-left align-middle"><%= item.student.mssv %></td>
+              <td class="text-left align-middle"><%= item.student.name %></td>
+              <td class="text-left align-middle"><%= item.internUnit.name %></td>
+              <td class="text-left align-middle"><%= item.internUnit.cityName %></td>
+              <td></td>
+            </tr>
+          <% }); %> 
+      </tbody>
+    </table>
 
   <%- include('../layouts/script') %>
 </body>
