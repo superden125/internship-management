@@ -152,7 +152,7 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
         }
       }
     }
-  )
+  );
 
   await InternshipInfo
     .aggregate(query)
@@ -271,9 +271,45 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
   }
 }
 
-module.exports.assignTeacher = (req, res) => {
-  res.render('admin/assign-teacher', {
-    roleName: 'Giáo vụ khoa',
-    urlInfo: 'Phân công giáo viên thăm sinh viên',
-  });
+module.exports.assignTeacher = async (req, res) => {
+  const query = [
+    {
+      $lookup: {
+        from: 'internshipinfos',
+        localField: '_id',
+        foreignField: 'idIntern',
+        as: 'internshipInfos'
+      }
+    },
+    {
+      $match: {
+        'internshipInfos.status': 1
+      }
+    },
+    {
+      $project: {
+        _id: null,
+        name: '$name',
+        city: '$city',
+        totalStudent: { $size: '$internshipInfos' },
+        internInfos: '$internshipInfos'
+      }
+    }
+  ];
+
+  await InternshipUnit
+    .aggregate(query)
+    .exec(function(err, internshipUnits) {
+      // return res.json(internshipUnits);
+
+      internshipUnits.forEach(obj => {
+        obj.cityName = tinh.find((tinh) => tinh.id == obj.city).name;
+      });
+
+      res.render('admin/assign-teacher', {
+        roleName: 'Giáo vụ khoa',
+        urlInfo: 'Phân công giáo viên thăm sinh viên',
+        internshipUnits,
+      });
+    });
 }

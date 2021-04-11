@@ -39,32 +39,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="1">
-            <td class="align-middle">1</td>
-            <td class="align-middle">DEK Technologies</td>
-            <td class="align-middle">2</td>
-            <td class="align-middle">TP HCM</td>
-            <td class="align-middle">
-              <select class="custom-select">
-                <option selected>-- Chọn giáo viên --</option>
-                <option value="1">Huynh Quang Nghi</option>
-                <option value="2">Nguyen Cong Danh</option>
-              </select>
-            </td>
-          </tr>
-          <tr id="2">
-            <td class="align-middle">2</td>
-            <td class="align-middle">TechCome</td>
-            <td class="align-middle">3</td>
-            <td class="align-middle">TP HCM</td>
-            <td class="align-middle">
-              <select class="custom-select">
-                <option selected>-- Chọn giáo viên --</option>
-                <option value="1">Huynh Quang Nghi</option>
-                <option value="2">Nguyen Cong Danh</option>
-              </select>
-            </td>
-          </tr>
+          <% internshipUnits.forEach(function (item, index) { %>
+            <tr id="<%= index %>">
+              <td class="align-middle"><%= index + 1 %></td>
+              <td class="align-middle"><%= item.name %></td>
+              <td class="align-middle"><%= item.totalStudent %> sinh viên</td>
+              <td class="align-middle"><%= item.cityName %></td>
+              <td class="align-middle">
+                <select class="custom-select">
+                  <option selected>-- Chọn giáo viên --</option>
+                  <option value="1">Huynh Quang Nghi</option>
+                  <option value="2">Nguyen Cong Danh</option>
+                </select>
+              </td>
+            </tr>
+          <% }) %>
         </tbody>
       </table>
     </div>
