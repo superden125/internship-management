@@ -14,7 +14,7 @@ const StudentSchema = mongoose.Schema({
     require: true,
   },
   idMajor: {
-    type: Schema.Types.ObjectId, ref: 'Major',
+    type: Schema.Types.ObjectId,
     require: true,
   },
   email: {

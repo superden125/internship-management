@@ -37,18 +37,94 @@
         </thead>
         <tbody>
           <% internInfos.forEach((item, index) => { %>
+            <% index = index + indexCount %>
             <tr id="<%= item.shortId %>">
               <td class="text-left align-middle <%= item.styleClass %>"><%= index + 1 %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student[0].mssv %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student[0].name %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.internshipUnit[0].name %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.mssv %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.name %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.internshipUnit.name %></td>
               <td class="text-left align-middle <%= item.styleClass %>"><%= item.city %></td>
               <td class="text-left align-middle <%= item.styleClass %>"><%= item.statusString %></td>
             </tr>
           <% }) %>
         </tbody>
       </table>
+      <% if (totalPages > 1) { %>
+        <nav aria-label="Page navigation" class="ml-auto mt-4 mb-4">
+          <ul class="pagination pagination-static-b">
+            <% if (current == 1) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">&laquo;</a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="/admin/internship/approve?page=<%= current - 1 %>" class="page-link">&laquo;</a>
+              </li>
+            <% } %>
 
+            <!-- First index -->
+            <% if (current == 1) { %>
+              <li class="page-item active">
+                <a href="#" class="page-link">1</a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="?page=1" class="page-link">1</a>
+              </li>
+            <% } %>
+            <% var i = current > 3 ? current - 1 : 2 %>
+            <% if (i !== 2) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">...</a>
+              </li>
+            <% } %>
+
+            <!-- Middle indexes loop -->
+            <% while (i <= (totalPages - 1) && (i < (current + 2)) ) { %>
+              
+              <% if (i == current) { %>
+                <li class="page-item active">
+                  <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+                </li>
+              <% } else { %>
+                <li class="page-item">
+                  <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+                </li>
+              <% } %>
+
+              <% if ((i == (current + 1) && i < totalPages - 1)) { %>
+                <li class="page-item disabled">
+                  <a href="/admin/internship/approve" class="page-link">...</a>
+                </li>
+              <% } %>
+
+              <% i++ %>
+            <% } %>
+
+            <!-- Last index -->
+            <% if (current == totalPages) { %>
+              <li class="page-item active">
+                <a href="#" class="page-link"><%= totalPages %></a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="?page=<%= totalPages %>" class="page-link"><%= totalPages %></a>
+              </li>
+            <% } %>
+
+            <% if (current == totalPages) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">&raquo;</a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="?page=<%= current + 1 %>" class="page-link">&raquo;</a>
+              </li>
+            <% } %>
+          </ul>
+        </nav>
+      <% } %>
+      
     </div>
 
     <%- include('../layouts/script') %>
@@ -58,6 +134,20 @@
         window.location.href =  `/admin/internship/approve/${id}`;
         // console.log(id);
       });
+
+      $('.pagination a').click(function() {
+        debugger;
+        var currentUrl = window.location.href;
+        if (currentUrl.includes('?_sort')) {
+          if (currentUrl.includes('page')) {
+            var index = currentUrl.indexOf('page');
+            currentUrl = currentUrl.slice(0, index - 1);
+          }
+
+          var url = currentUrl + '&' + $(this).attr('href').slice(1);
+          $(this).attr('href', url);
+        }
+      })
     </script>
   </body>
 </html>

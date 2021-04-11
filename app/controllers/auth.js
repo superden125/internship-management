@@ -20,7 +20,7 @@ module.exports.index =  async (req, res) => {
 }
 
 module.exports.login = async (req, res) => {
-  if (req.method === 'GET') return res.render('login'); // [GET] /login
+  if (req.method === 'GET') return res.render('login2'); // [GET] /login
 
   if (req.method === 'POST') { // [POST] /login
     const { username, password } = req.body;
