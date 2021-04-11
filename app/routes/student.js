@@ -1,10 +1,5 @@
 import express from "express";
-import tinh from "../lib/tinh";
 
-import {
-  getAllInternshipUnit,
-  getOneInternshipUnit,
-} from "../controllers/internshipUnit";
 import { isStudent } from "../middleware/auth";
 import * as studentController from "../controllers/student";
 import * as internInfoController from "../controllers/internshipInfo";

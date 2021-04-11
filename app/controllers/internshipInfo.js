@@ -4,7 +4,6 @@ import Teacher from "../models/teacher";
 import tinh from "../lib/tinh";
 
 export async function getInternshipInfo(req, res) {
-  console.log(req.session.user.userId);
   const idSv = req.session.user.userId;
   let data = {
     title: "Internship Management System",

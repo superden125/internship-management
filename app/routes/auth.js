@@ -1,8 +1,6 @@
 import { Router } from "express";
-import { login, testFn } from "../controllers/user";
+
 import * as authController from '../controllers/auth';
-import User from "../models/user";
-import bcryptjs from "bcryptjs";
 
 const router = Router();
 /* GET home page. */

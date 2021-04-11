@@ -1,3 +1,4 @@
+
 // [GET] /teacher/
 module.exports.index = (req, res) => {
   res.render('teacher/home', {
