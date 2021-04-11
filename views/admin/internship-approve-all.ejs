@@ -37,6 +37,7 @@
         </thead>
         <tbody>
           <% internInfos.forEach((item, index) => { %>
+            <% index = index + indexCount %>
             <tr id="<%= item.shortId %>">
               <td class="text-left align-middle <%= item.styleClass %>"><%= index + 1 %></td>
               <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.mssv %></td>
@@ -133,6 +134,20 @@
         window.location.href =  `/admin/internship/approve/${id}`;
         // console.log(id);
       });
+
+      $('.pagination a').click(function() {
+        debugger;
+        var currentUrl = window.location.href;
+        if (currentUrl.includes('?_sort')) {
+          if (currentUrl.includes('page')) {
+            var index = currentUrl.indexOf('page');
+            currentUrl = currentUrl.slice(0, index - 1);
+          }
+
+          var url = currentUrl + '&' + $(this).attr('href').slice(1);
+          $(this).attr('href', url);
+        }
+      })
     </script>
   </body>
 </html>

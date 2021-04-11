@@ -174,7 +174,8 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
         icon: sortType.icon,
         totalDocs,
         current: page,
-        totalPages: Math.ceil(totalDocs / paginationObj.limit)
+        totalPages: Math.ceil(totalDocs / paginationObj.limit),
+        indexCount: (page - 1) * paginationObj.limit,
       });
     });
 }
