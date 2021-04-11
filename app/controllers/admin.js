@@ -74,7 +74,7 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
     // sortType.icon = sortType.type == -1 ? 'fas fa-sort-down': 'fas fa-sort-up';
   }
 
-  if (req.query.hasOwnProperty('page')) {
+  if (req.query.hasOwnProperty('page') || req.query.hasOwnProperty('limit')) {
     page = parseInt(req.query.page) || paginationObj.page;
     var reqLimit = parseInt(req.query.limit) || paginationObj.limit;
 
@@ -175,7 +175,7 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
         totalDocs,
         current: page,
         totalPages: Math.ceil(totalDocs / paginationObj.limit),
-        indexCount: (page - 1) * paginationObj.limit,
+        indexCount: paginationObj.skip,
       });
     });
 }
