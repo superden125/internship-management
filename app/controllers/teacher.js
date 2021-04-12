@@ -25,6 +25,7 @@ export async function index (req, res) {
   const status = req.query.status ? req.body.status : 2
   const limit = req.query.limit ? req.query.limit : 10
   const skip = req.query.skip ? req.query.skip : 0
+  const search = req.query.search ? req.query.search : ""
 
   const lookupStudent ={
     $lookup:{
@@ -147,12 +148,13 @@ export async function saveManyCore(req,res){
   })
   res.json({success:true})
 }
-export async function getInternManyInfo(req,res){
-  const data = {}
+export async function getManyInternInfo(req,res){
+  const data = {students:[]}
   const idGv = req.session.user ? req.session.user.userId : "6071a6d733c2571d0778bdd5";
   const status = req.query.status ? req.body.status : 2
   const limit = req.query.limit ? req.query.limit : 10
   const skip = req.query.skip ? req.query.skip : 0
+  const s = req.query.search ? req.query.search : ""
 
   const lookupStudent ={
     $lookup:{
@@ -175,7 +177,16 @@ export async function getInternManyInfo(req,res){
   const filter = {
     $match: {
       idGv: idGv
+    },    
+  }
+
+  const search = {
+    $match: {
+      $text:{
+        $search: "Minh"
+      }
     }
+    
   }
 
   const select = {
@@ -194,7 +205,7 @@ export async function getInternManyInfo(req,res){
   InternshipInfo
     .aggregate([filter, lookupStudent, lookupInternUnit, {$unwind: "$student"}, {$unwind: "$internUnit"}, select])
     .exec((err, internInfos)=>{
-      //console.log(internInfos)
+      console.log(internInfos)
       internInfos.forEach(intern => {
         intern.internUnit.cityName = getNameTinh(intern.internUnit.city)
       })
@@ -203,4 +214,28 @@ export async function getInternManyInfo(req,res){
 
       res.json({success: true, data})
     })
+
+  // Student.aggregate([
+  //   {$match: {$text: {$search: "B1704835"}}}
+  // ]).exec((err,student)=>{
+  //   console.log(student)
+  //   res.json(student)
+  // })
+
+  // InternshipInfo.find({status: {$gte: 2}, idGv}).exec((err, internInfos)=>{
+  //   data.internInfos = internInfos
+  //   //console.log(internInfos)
+  //   internInfos.forEach((val)=>{
+  //     Student.find({_id: val.idSv}).exec((err,student)=>{
+  //       console.log(student)
+  //       data.students.push(student)
+  //     })
+      
+  //   })
+  //   console.log(data)
+  //   res.json(data);
+  // })
+  
+  
+  
 }

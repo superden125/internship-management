@@ -4,7 +4,7 @@ import Teacher from '../models/teacher';
 import Student from '../models/student';
 import Milestone from '../models/milestone';
 import InternshipInfo from '../models/internshipInfo';
-import tinh from "../lib/tinh";
+import {tinh} from "../lib/tinh";
 
 
 module.exports.index = async (req, res) => {

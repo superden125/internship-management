@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/', teacherController.index)
 router.get('/core', teacherController.index)
-router.get('/get-many-interninfo', teacherController.getInternManyInfo)
+router.get('/get-many-interninfo', teacherController.getManyInternInfo)
 router.get('/:id', teacherController.getInternshipInfo)
 
 router.post('/save-many-core', teacherController.saveManyCore)

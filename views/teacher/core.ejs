@@ -45,7 +45,7 @@
         </div>
         <div class="col-md-3 offset-md-1">
             <button class="btn btn-primary mr-2" onclick="saveManyCore()">Lưu tất cả</button>
-            <button class="btn btn-reset ml-2">Huỷ bỏ</button>
+            <button class="btn btn-reset ml-2" onclick="loadData()">Huỷ bỏ</button>
         </div>
     </div>
 
@@ -69,16 +69,7 @@
         </tr>
       </thead>
       <tbody id="table-core-body">
-          <% internInfos.forEach((item, index)=>{%> 
-            <tr id="<%= item._id %>">
-              <td class="text-left align-middle"><%= index + 1 %></td>
-              <td class="text-left align-middle"><%= item.student.mssv %></td>
-              <td class="text-left align-middle"><%= item.student.name %></td>
-              <td class="text-left align-middle"><%= item.internUnit.name %></td>
-              <td class="text-left align-middle"><%= item.internUnit.cityName %></td>
-              <td><input value="<%= item.core %>" type="number" max="10" min="0" name="core-<%= item._id %>" id="core-<%= item._id %>" class="core"/></td>
-            </tr>
-          <% }); %> 
+           
       </tbody>
     </table>
 
