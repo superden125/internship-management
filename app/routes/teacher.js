@@ -12,5 +12,6 @@ router.get('/get-many-interninfo', teacherController.getManyInternInfo)
 router.get('/:id', teacherController.getInternshipInfo)
 
 router.post('/save-many-core', teacherController.saveManyCore)
+router.post('/save-core', teacherController.saveCore)
 //router.get("/", (req,res)=>{req.})
 module.exports = router;

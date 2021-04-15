@@ -73,7 +73,7 @@ export async function index (req, res) {
     `${lasterYear-3}-${lasterYear-2}`,
     `${lasterYear-4}-${lasterYear-3}`,
   ]
-  console.log(listSemester)
+  //console.log(listSemester)
   
   data.listSemester = listSemester
 
@@ -85,7 +85,7 @@ export async function index (req, res) {
         intern.internUnit.cityName = getNameTinh(intern.internUnit.city)
       })
       data.internInfos = internInfos
-      console.log(data.internInfos)
+      //console.log(data.internInfos)
 
       isCore ? res.render('teacher/core', data) : res.render('teacher/index', data)
     })
@@ -148,22 +148,78 @@ export async function saveManyCore(req,res){
   })
   res.json({success:true})
 }
+
+export async function saveCore(req,res){
+  
+  const data = req.body  
+  if(data.core < 0 && data.core > 10) return res.json({success: false, err:"Input not valid"})
+  const result = await InternshipInfo.findById(data.id).updateOne({core:data.core})
+  if(!result) res.json({success: false, err:"Input not valid"})
+  res.json({success:true})
+}
+
 export async function getManyInternInfo(req,res){
-  const data = {students:[]}
-  const idGv = req.session.user ? req.session.user.userId : "6071a6d733c2571d0778bdd5";
-  const status = req.query.status ? req.body.status : 2
-  const limit = req.query.limit ? req.query.limit : 10
-  const skip = req.query.skip ? req.query.skip : 0
-  const s = req.query.search ? req.query.search : ""
+  const data = {}
+  const idGv = req.session.user ? req.session.user.userId : "6071a6d733c2571d0778bdd5"
+  let idMilestone = ""
+  let status = req.query.status ? req.body.status : 2
+  let limit = req.query.limit ? parseInt(req.query.limit) : 10
+  let page = req.query.page ? parseInt(req.query.page) : 1
+  let s = req.query.search ? req.query.search : ""
+  let hk = req.query.hk ? req.query.hk : ""
+  let semester = req.query.semester ? req.query.semester : ""  
+  
+  if(!hk && !semester){
+    const lasterMilestone = await Milestone.findOne().sort({endRegister: -1})  
+    hk = lasterMilestone.hk
+    semester = lasterMilestone.semester
+    idMilestone = lasterMilestone._id
+  } else{
+    const lasterMilestone = await Milestone.findOne({hk, semester})
+    if(!lasterMilestone) return res.json({success:false, msg:"Invalid params"})
+      idMilestone = lasterMilestone._id            
+  }
+
+  const countDocuments = await InternshipInfo.find({idGv, idMilestone}).countDocuments()
+
+  data.hk=hk
+  data.semester=semester
+  data.pagination = {
+    totalRow: Math.ceil(countDocuments / limit),
+    limit: limit,
+    page: page
+  }
+  let startIndex = (page - 1)*limit
+  
 
   const lookupStudent ={
     $lookup:{
       from: 'students',
       localField: "idSv",
       foreignField: "_id",
-      as: "student"
+      as: "student",      
     },
   }
+
+  const lookupStudent2 = {
+    $lookup:{
+      from: 'students',
+      //let: {idSv: "$idSv"},
+      pipeline: [
+        {
+          $match:{
+            mssv: "B1704835",
+            // $text:{
+            //   $search: "B1704835"
+            // }
+          }
+        }
+      ],
+      as: "student"
+    }
+  }
+
+  //console.log(lookupStudent2)
 
   const lookupInternUnit = {
     $lookup: {
@@ -176,8 +232,9 @@ export async function getManyInternInfo(req,res){
 
   const filter = {
     $match: {
-      idGv: idGv
-    },    
+      idGv: idGv,
+      idMilestone: idMilestone.toString()
+    }  
   }
 
   const search = {
@@ -195,6 +252,7 @@ export async function getManyInternInfo(req,res){
       idSv: 1,
       idGv: 1,
       idIntern: 1,
+      idMilestone: 1,
       shortId: 1,
       student: 1,
       internUnit: 1,
@@ -202,15 +260,29 @@ export async function getManyInternInfo(req,res){
     }
   }
 
+  const query = [
+    filter,
+   // { $group: { _id: null, count: { $sum: 1 } } },
+   //{$count: "totalCount"},
+    lookupStudent, 
+    lookupInternUnit, 
+    {$unwind: "$student"}, 
+    {$unwind: "$internUnit"},
+    {$skip: startIndex},
+    {$limit: data.pagination.limit},
+    select
+  ]
+
   InternshipInfo
-    .aggregate([filter, lookupStudent, lookupInternUnit, {$unwind: "$student"}, {$unwind: "$internUnit"}, select])
+    .aggregate(query)
     .exec((err, internInfos)=>{
-      console.log(internInfos)
+      if(err) console.log(err)
+      if(err) return res.json({success: false, msg: err})      
       internInfos.forEach(intern => {
         intern.internUnit.cityName = getNameTinh(intern.internUnit.city)
       })
       data.internInfos = internInfos
-      console.log(data.internInfos)
+      //console.log(data.internInfos)
 
       res.json({success: true, data})
     })

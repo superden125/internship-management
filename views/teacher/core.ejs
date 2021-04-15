@@ -12,16 +12,13 @@
     <div class="row mb-4">
         <div class="col-md-3">
             <input class="form-control" type="text" name="search" id="search" placeholder="Tìm kiếm theo mssv hoặc tên sinh viên">            
-        </div>
-        <!-- <div class="col-md-1">
-            <button class="btn btn-info">Tìm kiếm</button>
-        </div> -->
+        </div>        
         <div class="col-md-2">
             <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Năm học</span>
                 </div>
-                <select class="custom-select" name="year" id="year">
+                <select class="custom-select" name="semester" id="semester">
                     <% listSemester.forEach((val)=>{ %> 
                         <option value="<%= val %>"><%= val %></option>
                     <% }) %> 
@@ -41,7 +38,7 @@
               </div>
         </div>
         <div class="col-md-1">
-            <button id="filter" class="btn btn-info">Lọc</button>
+            <button id="filter" class="btn btn-info" onclick="loadData()">Lọc</button>
         </div>
         <div class="col-md-3 offset-md-1">
             <button class="btn btn-primary mr-2" onclick="saveManyCore()">Lưu tất cả</button>
@@ -66,12 +63,16 @@
             Tỉnh/ Thành phố
           </th>
           <th>Điểm</th>
+          <th></th>
         </tr>
+        
       </thead>
       <tbody id="table-core-body">
            
       </tbody>
     </table>
+
+    <div id="pagination"></div>
 
   <%- include('../layouts/script') %>
   <script src="/js/teacher/core.js"></script>
