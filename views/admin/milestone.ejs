@@ -11,7 +11,7 @@
 
       <div class="row mb-4">
           
-          <div class="col-md-2">
+          <div class="col-auto">
               <label>Năm học</label>
               <select name="" id="" class="custom-select">
                   <% milestones.forEach((val)=>{ %> 
@@ -20,7 +20,7 @@
               </select>
           </div>
 
-          <div class="col-md-1">
+          <div class="col-auto">
             <label>Học kỳ</label>
             <select name="" id="" class="custom-select">
                 <option value="1">1</option>
@@ -29,7 +29,7 @@
             </select>
           </div>
           
-          <div class="col-md-1 offset-8 mt-3"><button class="btn btn-sub" onclick="addMilestone()">Thêm</button></div>
+          <div class="col-auto ml-auto"><button class="btn btn-sub" onclick="addMilestone()">Thêm</button></div>
       </div>
 
       <table class="table table-hover" id="table-milestone">
@@ -82,7 +82,7 @@
                     <td><%= val.endRegister %></td>
                     <td><%= val.startIntern %></td>
                     <td><%= val.endIntern %></td>
-                    <td><span class="sd-icon" id="editMilestone" onclick="editMilestone('<%= val._id %>')"><i class="fas fa-edit"></i></span></td>
+                    <td class="align-middle"><span class="sd-icon" id="editMilestone" onclick="editMilestone('<%= val._id %>')"><i class="fas fa-edit"></i></span></td>
                 </tr>
             <% }); %> 
           </tbody>

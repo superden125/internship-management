@@ -1,4 +1,7 @@
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose, {
+  mongo,
+  Schema
+} from "mongoose";
 import shortid from 'shortid';
 
 const InternshipInfoSchema = mongoose.Schema({
@@ -12,7 +15,7 @@ const InternshipInfoSchema = mongoose.Schema({
     require: true,
   },
   idGv: {
-    type: String,
+    type: Schema.Types.ObjectId,
     require: true,
   },
   idIntern: {

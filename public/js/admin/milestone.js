@@ -1,8 +1,6 @@
-
-
 let current = {}
 
-function addMilestone(){
+function addMilestone() {
     const row = document.querySelector("#addMilestone")
     let year = new Date().getFullYear();
     const semester1 = `${year}-${year+1}`
@@ -11,15 +9,15 @@ function addMilestone(){
     row.innerHTML = `<td> <select name="semester" id="semester" class="custom-select"> <option value="${semester1}">${semester1}</option> <option value="${semester2}">${semester2}</option> </select> </td> <td> <select name="hk" id="hk" class="custom-select"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> </select> </td> <td> <input type="date" name="endRegister" id="endRegister"> </td> <td> <input type="date" name="startIntern" id="startIntern"> </td> <td> <input type="date" name="endIntern" id="endIntern"> </td> <td> <span class="sd-icon mr-4" onclick="saveMilestone()"> <i class="fas fa-save"></i> </span><span class="sd-icon" onclick="deleteMilestone()"> <i class="fas fa-trash-alt"></i> </span> </td>`
 }
 
-function deleteMilestone(id){
-    
-    if(!id)
+function deleteMilestone(id) {
+
+    if (!id)
         document.querySelector("#addMilestone").innerHTML = "";
-    else{
+    else {
         // console.log(current)
         const row = document.getElementById(id)
         const child = row.querySelectorAll("td")
-                
+
         child[0].innerHTML = current.semester
         child[1].innerHTML = current.hk
         child[2].innerHTML = current.endRegister
@@ -30,14 +28,14 @@ function deleteMilestone(id){
     //current = {}  
 }
 
-function saveMilestone(id){
-    if(!id){
+function saveMilestone(id) {
+    if (!id) {
         let semester = document.querySelector("#semester").value
         let hk = document.querySelector("#hk").value
         let endRegister = new Date(document.querySelector("#endRegister").value)
         let startIntern = new Date(document.querySelector("#startIntern").value)
         let endIntern = new Date(document.querySelector("#endIntern").value)
-        
+
         const data = {
             semester,
             hk,
@@ -50,25 +48,25 @@ function saveMilestone(id){
             method: "post",
             url: "/admin/manage/milestone",
             data: data
-        }).done((res)=>{
-            if(res.success){
-                
+        }).done((res) => {
+            if (res.success) {
+
                 deleteMilestone()
-                const data = `<tr id="${res.data._id}">`+
-                                `<td>${semester}</td>`+
-                                `<td>${hk}</td>`+
-                                `<td>${format0(endRegister.getDate())}-${format0(endRegister.getMonth()+1)}-${endRegister.getFullYear()}</td>`+
-                                `<td>${format0(startIntern.getDate())}-${format0(startIntern.getMonth()+1)}-${startIntern.getFullYear()}</td>`+
-                                `<td>${format0(endIntern.getDate())}-${format0(endIntern.getMonth()+1)}-${endIntern.getFullYear()}</td>`+
-                                `<td><span class="sd-icon" id="editMilestone" onclick="editMilestone('${res.data._id}')"><i class="fas fa-edit"></i></span></td>`+
-                            `</tr>`
+                const data = `<tr id="${res.data._id}">` +
+                    `<td>${semester}</td>` +
+                    `<td>${hk}</td>` +
+                    `<td>${format0(endRegister.getDate())}-${format0(endRegister.getMonth()+1)}-${endRegister.getFullYear()}</td>` +
+                    `<td>${format0(startIntern.getDate())}-${format0(startIntern.getMonth()+1)}-${startIntern.getFullYear()}</td>` +
+                    `<td>${format0(endIntern.getDate())}-${format0(endIntern.getMonth()+1)}-${endIntern.getFullYear()}</td>` +
+                    `<td><span class="sd-icon" id="editMilestone" onclick="editMilestone('${res.data._id}')"><i class="fas fa-edit"></i></span></td>` +
+                    `</tr>`
                 $('#table-milestone > tbody > tr:first').before(data)
             }
         })
-    }else{
+    } else {
         const row = document.getElementById(id)
         const child = row.querySelectorAll("td")
-        
+
         //console.log(child[0].firstChild.value)
         const data = {
             _id: id,
@@ -84,8 +82,8 @@ function saveMilestone(id){
             method: "put",
             url: "/admin/manage/milestone",
             data: data
-        }).done((res)=>{
-            if(res.success){
+        }).done((res) => {
+            if (res.success) {
                 // console.log(res.data.semester)
                 const endRegister = new Date(res.data.endRegister)
                 const startIntern = new Date(res.data.startIntern)
@@ -96,14 +94,14 @@ function saveMilestone(id){
                 current.endRegister = `${format0(endRegister.getDate())}-${format0(endRegister.getMonth()+1)}-${endRegister.getFullYear()}`
                 current.startIntern = `${format0(startIntern.getDate())}-${format0(startIntern.getMonth()+1)}-${startIntern.getFullYear()}`
                 current.endIntern = `${format0(endIntern.getDate())}-${format0(endIntern.getMonth()+1)}-${endIntern.getFullYear()}`
-                deleteMilestone(res.data._id)                
+                deleteMilestone(res.data._id)
             }
         })
     }
-    
+
 }
 
-function editMilestone(id){
+function editMilestone(id) {
     const row = document.getElementById(id)
     const child = row.getElementsByTagName("td")
 
@@ -126,18 +124,18 @@ function editMilestone(id){
     const dateStartIntern = `${startIntern[2]}-${startIntern[1]}-${startIntern[0]}`
     const dateEndIntern = `${endIntern[2]}-${endIntern[1]}-${endIntern[0]}`
 
-    
+
     child[0].innerHTML = `<select name="semester" id="semester" class="custom-select"> <option value="${semester1}">${semester1}</option> <option value="${semester2}">${semester2}</option> </select>`
     child[1].innerHTML = `<select name="hk" id="hk" class="custom-select"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> </select>`
-    child[2].innerHTML = `<input type="date" name="endRegister" id="endRegister" value="${dateEndRegister}" >`
-    child[3].innerHTML = `<input type="date" name="startIntern" id="startIntern" value="${dateStartIntern}">`
-    child[4].innerHTML = `<input type="date" name="endIntern" id="endIntern" value="${dateEndIntern}">`
+    child[2].innerHTML = `<input class="form-control" type="date" name="endRegister" id="endRegister" value="${dateEndRegister}" >`
+    child[3].innerHTML = `<input class="form-control" type="date" name="startIntern" id="startIntern" value="${dateStartIntern}">`
+    child[4].innerHTML = `<input class="form-control" type="date" name="endIntern" id="endIntern" value="${dateEndIntern}">`
     child[5].innerHTML = `<span class="sd-icon mr-4" onclick="saveMilestone('${id}')"> <i class="fas fa-save"></i> </span><span class="sd-icon" onclick="deleteMilestone('${id}')"> <i class="fas fa-backspace"></i> </span>`
 
 }
 
 
-function format0(val){
+function format0(val) {
     val = "0" + val
     return val.slice(-2)
 }

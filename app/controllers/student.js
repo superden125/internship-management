@@ -8,7 +8,9 @@ export async function registerInternshipPost(req, res) {
   try {
     let idSv = req.session.user.userId;
     let data = {
-      error: { err: false },
+      error: {
+        err: false
+      },
       title: "Internship Management System",
       roleName: "Sinh viên",
       urlInfo: "Thông tin thực tập",
@@ -41,7 +43,7 @@ export async function registerInternshipPost(req, res) {
     const idIntern = data.internshipUnit !== "0" ? data.internshipUnit : data.idUnit;
     const internshipInfo = new InternshipInfo({
       idSv: data.idSv,
-      idGv: "none",
+      idGv: null,
       idIntern: idIntern,
       idMilestone: data.milestone.trim(),
       phone: data.svPhone,
@@ -67,7 +69,10 @@ export async function registerInternshipPost(req, res) {
     }
   } catch (error) {
     return res.render("student/home", {
-      error: { err: true, msg: "Not found Intern Info" },
+      error: {
+        err: true,
+        msg: "Not found Intern Info"
+      },
       title: "Internship Management System",
       roleName: "Sinh viên",
       urlInfo: "Thông tin thực tập",
@@ -77,17 +82,23 @@ export async function registerInternshipPost(req, res) {
 
 export async function registerInternshipGet(req, res) {
   let data = {
-    error: {err : false},
+    error: {
+      err: false
+    },
     title: "Internship Management System",
     roleName: "Sinh viên",
     urlInfo: "Đăng ký thực tập",
   };
   const year = new Date().getFullYear();
   const milestone = await Milestone.find({
-    semester: { $regex: year },
-    endRegister: { $gte: Date.now() },
+    semester: {
+      $regex: year
+    },
+    endRegister: {
+      $gte: Date.now()
+    },
   });
-  if(milestone.length == 0) {
+  if (milestone.length == 0) {
     data.error = {
       err: true,
       msg: "Không tìm thấy đợt thực tập"
@@ -95,21 +106,24 @@ export async function registerInternshipGet(req, res) {
     return res.render("student/register-internship", data)
   }
   const milestone1 = [];
-  for(let i =0; i < milestone.length;i++){
+  for (let i = 0; i < milestone.length; i++) {
     const obj = {};
     obj._id = milestone[i]._id
     obj.semester = milestone[i].semester
     obj.hk = milestone[i].hk
     obj.startIntern = milestone[i].startIntern
     obj.endIntern = milestone[i].endIntern
-    obj.endRegister = moment(milestone[i].endRegister).format("DD-MM-YYYY")    
-    milestone1.push(obj)       
+    obj.endRegister = moment(milestone[i].endRegister).format("DD-MM-YYYY")
+    milestone1.push(obj)
   }
-  
+
   var i = 0;
-  while(i<milestone1.length){
-    const internInfo = await InternshipInfo.findOne({idSv: req.session.user.userId, idMilestone: milestone1[i]._id})
-    if(internInfo) {
+  while (i < milestone1.length) {
+    const internInfo = await InternshipInfo.findOne({
+      idSv: req.session.user.userId,
+      idMilestone: milestone1[i]._id
+    })
+    if (internInfo) {
       data.error = {
         err: true,
         msg: `Bạn đã đăng ký thực tập năm học ${milestone1[i].semester}, học kỳ  ${milestone1[i].hk}`
@@ -118,9 +132,11 @@ export async function registerInternshipGet(req, res) {
     }
     i++
   }
-  
 
-  const internshipUnit = await InternshipUnit.find({ introBy: "admin" });
+
+  const internshipUnit = await InternshipUnit.find({
+    introBy: "admin"
+  });
   data.internshipUnit = internshipUnit;
   data.tinh = tinh.sort((a, b) => a.name - b.name);
   data.milestone = milestone1;
@@ -133,7 +149,9 @@ export async function getListInternshipUnit(req, res) {
     roleName: "Sinh viên",
     urlInfo: "Danh sách đơn vị thực tập",
   };
-  const internUnits = await InternshipUnit.find({ introBy: "admin" });
+  const internUnits = await InternshipUnit.find({
+    introBy: "admin"
+  });
   internUnits.forEach((internUnit) => {
     internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
   });
@@ -147,7 +165,9 @@ export async function getInternshipUnitById(req, res) {
     roleName: "Sinh viên",
     urlInfo: "Danh sách đơn vị thực tập",
   };
-  const internUnit = await InternshipUnit.findOne({ _id: req.params.id });
+  const internUnit = await InternshipUnit.findOne({
+    _id: req.params.id
+  });
   internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
   data.internUnit = internUnit;
 
