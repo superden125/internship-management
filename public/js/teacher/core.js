@@ -52,6 +52,9 @@ function getInput(){
 function saveManyCore(){
     const data = getInput();
     console.log(data)
+    if(!data){
+        alterError("Dữ liệu không hợp lệ")
+    }
     if(data){
         $.ajax({
             type: "post",
@@ -62,7 +65,7 @@ function saveManyCore(){
             if(res.success){
                 const table = document.querySelector('#table-core-body')
                 loadData(table)
-                // window.location.href = "/teacher/core"
+                alterSuccess("Lưu thành công")
             }
         })
     }
@@ -249,9 +252,10 @@ function changePage(nextPage, currentPage){
 
 
 function saveCore(id){
-    const core = document.querySelector(`#core-${id}`).value    
-    
-    if(core < 0 && core > 10) {
+    const core = document.querySelector(`#core-${id}`).value
+    console.log(core)
+    if(core < 0 || core > 10 || core =='') {
+        alterError("Dữ liệu không hợp lệ")
         return console.log("err")
     }
 
@@ -268,6 +272,7 @@ function saveCore(id){
         if(res.success){
             const table = document.querySelector('#table-core-body')
             loadData(table)
+            alterSuccess("Lưu thành công")
             // window.location.href = "/teacher/core"
         }
     })

@@ -81,7 +81,20 @@ function validFormTTT(data) {
     }
   });
 
-  console.log(check);
+  if(check > 0) alterError("Thông tin không hợp lệ")
 
   return check > 0 ? false : true;
+}
+
+function resetForm(){
+  var list = document.querySelectorAll("input") 
+  list.forEach((val)=>{
+    console.log(val.id, val.type)
+    if(val.type == "text" || val.type=='number'){
+      $(`#err-${val.id}`).text("")
+    }
+  })
+  document.querySelector("#err-internshipUnit").innerHTML = ""
+  document.querySelector("#err-internAddress").innerHTML = ""
+  
 }
