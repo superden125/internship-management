@@ -1,4 +1,4 @@
-module.exports = [
+const tinh = [
   {
     id: "68",
     name: "Tỉnh Lâm Đồng",
@@ -252,3 +252,9 @@ module.exports = [
     name: "Tỉnh Lai Châu",
   },
 ];
+
+module.exports.tinh = tinh
+
+module.exports.getNameTinh = (id) =>{
+  return tinh.find((val) => val.id == id).name;
+}

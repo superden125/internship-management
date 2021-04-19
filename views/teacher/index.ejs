@@ -9,8 +9,86 @@
   <div id="content">
 
     <%- include('../layouts/navbar') %>    
-    <p>index teacher</p>
+    
+    <div class="row mb-4">
+      <div class="col-md-3">
+          <input class="form-control" type="text" name="search" id="search" placeholder="Tìm kiếm theo mssv hoặc tên sinh viên">            
+      </div>        
+      <div class="col-md-2">
+          <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Năm học</span>
+              </div>
+              <select class="custom-select" name="semester" id="semester">
+                  <% listSemester.forEach((val)=>{ %> 
+                      <option value="<%= val %>"><%= val %></option>
+                  <% }) %> 
+              </select>
+            </div>
+      </div>
+      <div class="col-md-2">
+          <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Học kỳ</span>
+              </div>
+              <select class="custom-select" name="hk" id="hk">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+              </select>
+            </div>
+      </div>
+      <div class="col-md-1">
+          <button id="filter" class="btn btn-info" onclick="loadDataIndex()">Lọc</button>
+      </div>
+    </div>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="text-left align-middle" scope="col">#</th>
+          <th class="text-left align-middle" scope="col">
+            Mã số sinh viên
+          </th>
+          <th class="text-left align-middle" scope="col">
+            Họ và tên
+          </th>
+          <th class="text-left align-middle" scope="col">
+            Tên công ty
+          </th>
+          <th class="text-left align-middle" scope="col">
+            Tỉnh/ Thành phố
+          </th>
+          <!-- <th class="text-left align-middle" scope="col">
+            Trạng thái              
+          </th> -->
+        </tr>
+      </thead>
+      <tbody id="table-index-body">
+          
+      </tbody>
+    </table>
+
+    <div id="pagination"></div>
+    <!-- <nav aria-label="Page navigation example" class="ml-auto mt-4 mb-4">
+      <ul class="pagination pagination-static-b">
+        <li class="page-item" >
+          <button class="page-link" onclick="console.log('test')" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+        </li>
+        <li class="page-item"><button class="page-link" href="#">1</button></li>
+        <li class="page-item"><button class="page-link" href="#">2</button></li>
+        <li class="page-item"><button class="page-link" href="#">3</button></li>
+        <li class="page-item">
+          <button class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </button>
+        </li>
+      </ul>
+    </nav> -->
 
   <%- include('../layouts/script') %>
+  <script src="/js/teacher/core.js"></script>
 </body>
 </html>

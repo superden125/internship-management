@@ -2,7 +2,7 @@ import moment from "moment"
 import InternshipUnit from "../models/internshipUnit";
 import InternshipInfo from "../models/internshipInfo";
 import Milestone from "../models/milestone"
-import tinh from "../lib/tinh"
+import {tinh} from "../lib/tinh"
 
 export async function registerInternshipPost(req, res) {
   try {
