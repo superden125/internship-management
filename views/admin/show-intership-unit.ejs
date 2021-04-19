@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../layouts/meta') %>
+  </head>
+  <body>
+    <%- include('../layouts/admin-sidebar') %>
+
+    <div id="content">
+      <%- include('../layouts/navbar') %>
+
+     
+      <table class="table table-hover" id="show-intership-unit">
+          <thead>
+            <tr>
+                <th>#</th>
+                <th>Tên công ty</th>
+                <th>Địa chỉ</th>
+                <th>Email</th>
+                <th>Thành phố</th>
+                <th>Số điện thoại</th>
+                <th></th>
+            </tr>              
+          </thead>
+          <tbody>
+            <% internshipunits.forEach(function(data){%>
+              <tr>
+                <th></th>
+                <td><%= data.name %></td>
+                <td><%= data.address %></td>
+                <td><%= data.email %></td>
+                <td><%= data.city %></td>
+                <td><%= data.phone %></td>
+                
+            </tr>             
+           <% }) %>
+          </tbody>
+      </table>
+    </div>
+
+    <%- include('../layouts/script') %>
+
+  </body>
+</html>

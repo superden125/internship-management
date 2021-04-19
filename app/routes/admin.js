@@ -13,10 +13,11 @@ router.get('/manage/teachers', adminController.getAllTeachers);
 router.get('/manage/students', adminController.getAllStudents);
 router.get('/manage/internship-unit', adminController.getAllInternshipUnit);
 
+
 // Manage
 router.get('/manage/teachers', adminController.getAllTeachers);
 router.get('/manage/students', adminController.getAllStudents);
-router.get('/manage/internship-unit', adminController.getAllInternshipUnit);
+//router.get('/manage/internship-unit', adminController.getAllInternshipUnit);
 router
    .get('/manage/milestone', adminController.milestoneGet)
    .post('/manage/milestone', adminController.milestonePost)

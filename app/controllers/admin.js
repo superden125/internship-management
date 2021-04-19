@@ -18,12 +18,23 @@ module.exports.index = async (req, res) => {
 }
 
 module.exports.getAllInternshipUnit = async (req, res) => {
-  // const internshipUnit = await InternshipUnit.find({});
-  // res.json(internshipUnit);
-  res.render('admin', {
-    roleName: 'Giáo vụ khoa',
-    urlInfo: 'Quản lý đơn vị thực tập',
-  });
+//  const internshipUnit = await InternshipUnit.find({});
+//  res.json(internshipUnit);
+    InternshipUnit.find(function (err, data) {
+      if(!err){
+        res.render('admin/show-intership-unit', {
+          roleName: 'Giáo vụ khoa',
+          urlInfo: 'Quản lý đơn vị thực tập',
+          internshipunits: data
+      
+        });
+        console.log(data);
+      }
+      else{
+        res.send("loi")
+      }
+    })
+    
 }
 
 module.exports.getAllTeachers = async (req, res) => {
