@@ -1,4 +1,5 @@
-import moment from "moment"
+import moment from "moment";
+import mongoose from 'mongoose';
 import InternshipUnit from "../models/internshipUnit";
 import InternshipInfo from "../models/internshipInfo";
 import Milestone from "../models/milestone"
@@ -135,7 +136,7 @@ export async function registerInternshipGet(req, res) {
 
 
   const internshipUnit = await InternshipUnit.find({
-    introBy: "admin"
+    introBy: null,
   });
   data.internshipUnit = internshipUnit;
   data.tinh = tinh.sort((a, b) => a.name - b.name);
@@ -150,7 +151,7 @@ export async function getListInternshipUnit(req, res) {
     urlInfo: "Danh sách đơn vị thực tập",
   };
   const internUnits = await InternshipUnit.find({
-    introBy: "admin"
+    introBy: null,
   });
   internUnits.forEach((internUnit) => {
     internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;

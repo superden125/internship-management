@@ -23,7 +23,7 @@ const InternshipInfoSchema = mongoose.Schema({
     require: true,
   },
   idMilestone: {
-    type: String,
+    type: Schema.Types.ObjectId,
     require: true,
   },
   phone: {

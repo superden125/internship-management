@@ -2,7 +2,7 @@ function editTeacher(id) {
   const row = document.getElementById(id);
   const child = row.getElementsByTagName('td');
 
-  var selectElement = `<select name="teacher" id="teacher" class="custom-select teacher-select"><option value="null">-- Chọn giảng viên --</option>`;
+  var selectElement = `<select name="teacher" id="teacher" class="custom-select teacher-select"><option value="null">-- Hủy phân công --</option>`;
 
   var saveButton = `<a class="d-block" href="#" data-toggle="tooltip" data-placement="left" title="Phân công" onclick="assignTeacher('${id}');"><i class="fas fa-share-square text-body"></i></a>`;
 

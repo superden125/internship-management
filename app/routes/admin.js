@@ -26,7 +26,8 @@ router
 
 
 // Internship
-router.get('/internship/approve', adminController.showAllApproveInternshipUnit)
+router.get('/internship/approve', adminController.loadAproveInternshipUnitPage);
+router.get('/internship/approve-getMethod', adminController.showAllApproveInternshipUnit);
 router.get('/internship/approve/:id', adminController.detailApproveInternshipUnit)
   .post('/internship/approve/:id', adminController.detailApproveInternshipUnit);
 

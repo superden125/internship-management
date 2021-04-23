@@ -55,13 +55,19 @@ module.exports.getAllStudents = async (req, res) => {
   });
 }
 
+module.exports.loadAproveInternshipUnitPage = (req, res) => {
+  res.render('admin/internship-approve-all', {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Xét duyệt điểm thực tập',
+  });
+}
+
 module.exports.showAllApproveInternshipUnit = async (req, res) => {
   var page = 1;
 
   var sortType = {
     column: 'timestamp',
     type: -1,
-    icon: 'fas fa-sort'
   };
 
   var paginationObj = {
@@ -165,16 +171,16 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
         obj.city = tinh.find((tinh) => tinh.id == obj.internshipUnit.city).name;
       });
 
-      return res.render('admin/internship-approve-all', {
-        roleName: 'Giáo vụ khoa',
-        urlInfo: 'Xét duyệt điểm thực tập',
-        internInfos,
-        type: -(sortType.type),
-        icon: sortType.icon,
-        totalDocs,
-        current: page,
-        totalPages: Math.ceil(totalDocs / paginationObj.limit),
-        indexCount: paginationObj.skip,
+      return res.json({
+        status: 'success',
+        data: {
+          internInfos,
+          type: -(sortType.type),
+          totalDocs,
+          current: page,
+          totalPages: Math.ceil(totalDocs / paginationObj.limit),
+          indexCount: paginationObj.skip,
+        }
       });
     });
 }
@@ -318,12 +324,6 @@ module.exports.assignTeacher = async (req, res) => {
           as: 'internInfo'
         }
       },
-      // {
-      //   $unwind: {
-      //     path: '$internInfo',
-      //     preserveNullAndEmptyArrays: true
-      //   }
-      // },
       {
         $lookup: {
           from: 'teachers',
