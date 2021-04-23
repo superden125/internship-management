@@ -375,6 +375,10 @@ ul ul a {
   cursor: pointer;
 }
 
+.display-none{
+  display: none;
+}
+
 /* Content Style */
 #content {
   width: calc(100% - 250px);
