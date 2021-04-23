@@ -6,7 +6,7 @@ import * as adminController from '../controllers/admin';
 
 const router = express.Router();
 
-router.use(isAdmin);
+//router.use(isAdmin);
 
 // Manage
 router.get('/manage/teachers', adminController.getAllTeachers);
@@ -15,8 +15,8 @@ router.get('/manage/internship-unit', adminController.getAllInternshipUnit);
 
 
 // Manage
-router.get('/manage/teachers', adminController.getAllTeachers);
-router.get('/manage/students', adminController.getAllStudents);
+//router.get('/manage/teachers', adminController.getAllTeachers);
+//router.get('/manage/students', adminController.getAllStudents);
 //router.get('/manage/internship-unit', adminController.getAllInternshipUnit);
 router
    .get('/manage/milestone', adminController.milestoneGet)
@@ -33,4 +33,12 @@ router.get('/internship/assign', adminController.assignTeacher);
 
 router.get('/', adminController.index);
 
+//Internship-unit
+router.post('/manage/internship-unit/:id',adminController.updateInternshipUnit);
+router.get('/manage/internship-unit/add_internship-unit', adminController.addInternshipUnit);
+router.post('/manage/internship-unit', adminController.createInternshipUnit);
+router.get('/manage/internship-unit/update_internship-unit', adminController.getUpdateInternshipUnit);
+
+router.delete('/manage/internship-unit/:id', adminController.deleteInternshipUnit);
 module.exports = router;
+

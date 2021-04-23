@@ -1,0 +1,60 @@
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <%- include('../layouts/meta') %>
+      </head>
+      <body>
+        <%- include('../layouts/admin-sidebar') %>
+
+        <div id="content">
+          <%- include('../layouts/navbar') %>
+
+          <div>
+            <a href="/admin/manage/internship-unit/add_internship-unit" class="border-shadow">
+                <span class="text-gradient">Thêm <i class="fas fa-user"></i></span>
+            </a>
+          </div>
+          <table class="table">
+              <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên công ty</th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
+                    <th>Thành phố</th>
+                    <th>Số điện thoại</th>
+                    <th></th>
+                </tr>              
+              </thead>
+              <tbody>
+                <% for(var i = 0; i < internshipunits.length; i++) { %>
+                  <tr>
+                    <td><%= i + 1 %></td>
+                    <td><%= internshipunits[i].name %></td>
+                    <td><%= internshipunits[i].email %></td>
+                    <td><%= internshipunits[i].address %></td>
+                    <td><%= internshipunits[i].city %></td>
+                    <td><%= internshipunits[i].phone %></td>
+                    <td>
+                      <a href="/admin/manage/internship-unit/update_internship-unit?id=<%= internshipunits[i]._id%>" class="btn boder-shadow update">
+                        <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                      </a>
+
+                      <a class="btn border-shadow delete" data-id=<%= internshipunits[i]._id%> >
+                        <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
+                    </a>
+                    </td>
+                  </tr>
+                  </a>
+                  
+                
+                <% } %>
+              
+              </tbody>
+          </table>
+        </div>
+
+        <%- include('../layouts/script') %>
+        <script src="/js/admin/show-internship-unit.js"></script>
+      </body>
+    </html>

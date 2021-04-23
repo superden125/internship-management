@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../layouts/meta') %>
+</head>
+
+<body>
+    <%- include('../layouts/admin-sidebar') %>
+
+        <div id="content">
+            <%- include('../layouts/navbar') %>
+
+                <div class="container">
+                    <div class="box-nav d-flex justify-between">
+                        <div class="filter">
+                            <a href="/admin/manage/internship-unit"><i class="fas fa-angle-double-left"></i>Tất cả đơn
+                                vị thực tập</a>
+                        </div>
+                    </div>
+                    <div class="form-title text-center">
+                        <h2 class="text-dark">Cập nhật đơn vị thực tập</h2>
+                        <span class="text-dark">Sử dụng biểu mẫu dưới đây để cập nhật đơn vị Thực tập</span>
+                    </div>
+
+                    <!-- add internship-unit form -->
+                    <form action="/admin/manage/internship-unit/<%= internshipunits._id %>" method="POST" id="update_internship-unit">
+                        <div class="update-internship-unit">
+                            <div class="form-group">
+                                <label for="name">Tên công ty</label>
+                                <input type="hidden" name="id" value="<%= internshipunits._id %>">
+                                <input type="text" name="name" value="<%= internshipunits.name %>">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="text" name="email" value="<%= internshipunits.email%>">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Dia chi</label>
+                                <input type="text" name="address" value="<%= internshipunits.address%>">
+                            </div>
+                            <div class="form-group">
+                                <label for="city" >Thành phố</label>
+                                <input type="text" name="city" value="<%= internshipunits.city%>" >
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" >Số điện thoại</label>
+                                <input type="text" name="phone" value="<%= internshipunits.phone%>" >
+                            </div>
+                            <div class="form-group">
+                                <label for="website" >Website</label>
+                                <input type="text" name="website" value="<%= internshipunits.website%>" >
+                            </div>
+                            <div class="form-group">
+                                <label for="mentorName" >Tên người hướng dẫn</label>
+                                <input type="text" name="mentorName" value="<%= internshipunits.mentor.name%>" >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mentorPhone" >Số điện thoại người hướng dẫn</label>
+                                <input type="text" name="mentorPhone" value="<%= internshipunits.mentor.phone%>" >
+                            </div>
+                            <div class="form-group">
+                                <label for="mentorEmail" >Email người hướng dẫn</label>
+                                <input type="text" name="mentorEmail" value="<%= internshipunits.mentor.email%>" >
+                            </div>
+            
+                            <div class="form-group">
+                                <label for="workEnv" >Môi trường làm việc</label>
+                                <input type="text" name="workEnv" value="<%= internshipunits.workEnv%>" >
+                            </div>
+                            <div class="form-group">
+                                <label for="workContent" >Nội dung thực tập</label>
+                                <input type="text" name="workContent" value="<%= internshipunits.workContent%>" >
+                            </div>
+                            <div class="form-group">
+                                <label for="reqTime" >Giờ thực tập tối thiểu trên tuần</label>
+                                <input type="number" name="reqTime" value="<%= internshipunits.reqTime%>" >
+                            </div>
+                            <div class="form-group">
+                                <label for="reqInfo" >Yêu cầu của đơn vị thực tập</label>
+                                <input type="text" name="reqInfo" value="<%= internshipunits.reqInfo%>" >
+                            </div>
+                            <div class="form-group">
+                                <label for="maxSv" >Số lượng tối đa</label>
+                                <input type="number" name="maxSv" value="<%= internshipunits.maxSv%>" >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="benefit" >Quyền lợi</label>
+                                <input type="text" name="benefit" value="<%= internshipunits.benefit%>" >
+                            </div>
+                            <div class="form-group">
+                                <label for="note" >Ghi chú</label>
+                                <input type="text" name="note" value="<%= internshipunits.note%>" >
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn text-dark update">Save</button>
+                            </div>
+
+                        </div>
+                    </form>
+
+
+                </div>
+        </div>
+
+        <%- include('../layouts/script') %>
+</body>
+
+</html>

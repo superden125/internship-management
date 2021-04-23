@@ -18,23 +18,21 @@ module.exports.index = async (req, res) => {
 }
 
 module.exports.getAllInternshipUnit = async (req, res) => {
-//  const internshipUnit = await InternshipUnit.find({});
-//  res.json(internshipUnit);
-    InternshipUnit.find(function (err, data) {
-      if(!err){
-        res.render('admin/show-intership-unit', {
-          roleName: 'Giáo vụ khoa',
-          urlInfo: 'Quản lý đơn vị thực tập',
-          internshipunits: data
-      
-        });
-        console.log(data);
-      }
-      else{
-        res.send("loi")
-      }
-    })
+  // const internshipUnit = await InternshipUnit.find({});
+  //  res.json(internshipUnit);
     
+  //   res.render('admin/internship-unit', {
+  //   roleName: 'Giáo vụ khoa',
+  //   urlInfo: 'Quản lý đơn vị thực tập',
+  // });
+  
+  let data = {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Thời gian thực tập',
+  }
+  const internshipunits = await InternshipUnit.find({})
+  data.internshipunits = internshipunits
+  res.render("admin/show-internship-unit",data)
 }
 
 module.exports.getAllTeachers = async (req, res) => {
@@ -376,3 +374,144 @@ module.exports.milestonePut = async (req,res)=>{
   return res.json({success: true, data: result})
   
 }
+
+//Internship Unit
+module.exports.addInternshipUnit = async (req, res) => {
+
+  let data = {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Thời gian thực tập',
+  }
+  const internshipunits = await InternshipUnit.find({})
+  data.internshipunits = internshipunits
+  res.render("admin/add_internship-unit",data)
+}
+
+//create and save new internship-unit
+exports.createInternshipUnit = (req, res) => {
+  if(!req.body){
+    res.status(400).send({message: "Content can not be emtpy!"});
+    return;
+  }
+  
+  //new internship-unit
+  const internshipunit = new InternshipUnit({
+    name: req.body.name,
+    address:  req.body.address,
+    email: req.body.email,
+    city: req.body.city,
+    phone: req.body.phone,
+    website: req.body.website,
+    mentor: {name: req.body.mentorName,
+     phone: req.body.mentorPhone,
+     email: req.body.mentorEmail},
+    workEnv: req.body.workEnv,
+    workContent: req.body.workContent,
+    reqTime: req.body.reqTime,
+    reqInfo: req.body.reqInfo,
+    maxSv: req.body.maxSv,
+    currentSv: req.body.currentSv,
+    benefit: req.body.benefit,
+    note: req.body.note,
+    introBy: req.body.introBy
+  }) 
+
+  // save intership-unit in the database
+  internshipunit
+    .save(internshipunit)
+    .then(data => {
+      res.redirect('/admin/manage/internship-unit');
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "some error occurred while creating a create operation"
+      });
+    });
+}
+
+module.exports.getUpdateInternshipUnit = async (req, res) => {
+  // const internshipUnit = await InternshipUnit.find({});
+  //  res.json(internshipUnit);
+    
+  let data = {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Thời gian thực tập',  
+  }
+  const internshipunits = await InternshipUnit.findOne({_id:req.query.id})
+  data.internshipunits = internshipunits
+  res.render("admin/update_internship-unit",data)
+}
+
+//Update a new idetified internship-unit by internship-unit id
+exports.updateInternshipUnit = (req, res) =>{
+  if(!req.body){
+    return res
+      .status(400)
+      .send({message: "Data to update cannot be empty"})
+  }
+
+  const id = req.params.id;
+  InternshipUnit.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
+    .then(data => {
+      if(!data){
+        res.status(404).send({message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`})
+      }else{
+        res.redirect('/admin/manage/internship-unit')
+      }
+    })
+    .catch(err => {
+        res.status(500).send({ message: "Error Update internship-unit information"})
+    })
+}
+
+// Delete a user with specified user id in the request
+exports.deleteInternshipUnit = (req, res)=>{
+  const id = req.params.id;
+
+  InternshipUnit.findByIdAndDelete(id)
+      .then(data => {
+          if(!data){
+              res.status(404).send({ message : `Cannot Delete with id ${id}. Maybe id is wrong`})
+          }else{
+              res.send({
+                  message : "User was deleted successfully!"
+              })
+          }
+      })
+      .catch(err =>{
+          res.status(500).send({
+              message: "Could not delete User with id=" + id
+          });
+      });
+}
+
+module.exports.internshipUnitPut = async (req,res)=>{
+  const data = req.body;
+  const internship = await InternshipUnit.findById(data._id);
+  
+  if(!internship) return res.json({success: false})
+
+  internship.name = data.name
+  internship.email = data.email
+  internship.address = data.address
+  internship.city = data.city
+  internship.phone = data.phone
+  internship.website = data.website
+  internship.mentor.name = data.mentorName
+  internship.mentor.phone = data.mentorPhone
+  internship.mentor.email = data.mentorEmail
+  internship.workEnv = data.workEnv
+  internship.workContent = data.workContent
+  internship.reqTime = data.reqTime
+  internship.reqInfo = data.reqinfo
+  internship.maxSv = data.maxSv
+  internship.benefit = data.benefit
+  internship.note = data.note
+  
+
+  const result = await internship.save();
+  if(!result) return res.json({success: false})
+  return res.json({success: true, data: result})
+  
+}
+
