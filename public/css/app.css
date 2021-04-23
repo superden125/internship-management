@@ -93,15 +93,24 @@ p {
 }
 
 .login-card .form-control::-webkit-input-placeholder {
-  color: #919aa3; }
+  color: #919aa3;
+}
+
 .login-card .form-control::-moz-placeholder {
-  color: #919aa3; }
+  color: #919aa3;
+}
+
 .login-card .form-control:-ms-input-placeholder {
-  color: #919aa3; }
+  color: #919aa3;
+}
+
 .login-card .form-control::-ms-input-placeholder {
-  color: #919aa3; }
+  color: #919aa3;
+}
+
 .login-card .form-control::placeholder {
-  color: #919aa3; }
+  color: #919aa3;
+}
 
 .login-card .login-btn {
   padding: 13px 20px 12px;
@@ -132,6 +141,7 @@ p {
   color: #0d2366;
   margin-bottom: 60px;
 }
+
 @media (max-width: 767px) {
   .login-card-footer-text {
     margin-bottom: 24px;
@@ -305,7 +315,7 @@ p {
   background: var(--sidebar-color-hover);
 }
 
-#sidebar ul li.active > a,
+#sidebar ul li.active>a,
 a[aria-expanded="true"] {
   color: var(--white);
   opacity: 1;
@@ -371,7 +381,7 @@ ul ul a {
   display: none;
 }
 
-.sd-icon:hover{
+.sd-icon:hover {
   cursor: pointer;
 }
 
@@ -413,15 +423,19 @@ ul ul a {
   #sidebar {
     margin-left: -250px;
   }
+
   #sidebar.active {
     margin-left: 0;
   }
+
   #content {
     width: 100%;
   }
+
   #content.active {
     width: calc(100% - 250px);
   }
+
   #sidebarCollapse span {
     display: none;
   }
