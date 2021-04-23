@@ -112,7 +112,7 @@ module.exports.mockTeacherDB = async (req, res) => {
 
 module.exports.mockStudentDB = async (req, res) => {
   const major = await Major.findOne({ name: "KTPM" });
-  const pwd = "ims123";
+  
   console.log(major);
   const listStudent = [
     {
