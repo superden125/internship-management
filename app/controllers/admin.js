@@ -112,7 +112,7 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
 
   const query = [{
       $lookup: {
-        from: 'students',
+        from: 'users',
         localField: 'idSv',
         foreignField: '_id',
         as: 'student'
@@ -198,7 +198,7 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
         matchField,
         {
           $lookup: {
-            from: 'students',
+            from: 'users',
             localField: 'idSv',
             foreignField: '_id',
             as: 'student'
@@ -326,7 +326,7 @@ module.exports.assignTeacher = async (req, res) => {
       },
       {
         $lookup: {
-          from: 'teachers',
+          from: 'users',
           localField: 'internInfo.idGv',
           foreignField: '_id',
           as: 'teacher'
@@ -349,10 +349,11 @@ module.exports.assignTeacher = async (req, res) => {
       }
     ];
 
-    InternshipUnit
+    await InternshipUnit
       .aggregate(query)
       .exec(function (err, internshipUnits) {
         internshipUnits.forEach(internUnit => {
+          // console.log(internUnit);
           internUnit.cityName = tinh.find((tinh) => tinh.id == internUnit.city).name;
         });
 

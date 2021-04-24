@@ -16,7 +16,7 @@ function getAllInternInfos() {
 
           res.data.internInfos.forEach((obj, index) => {
             index += res.data.indexCount;
-            trTbody += `<tr id="${ obj.shortId }" onclick="redirectDetailApprove(this.id)"><td class="text-left align-middle ${ obj.styleClass }">${ index + 1 }</td><td class="text-left align-middle ${ obj.styleClass }">${obj.student.mssv}</td><td class="text-left align-middle ${ obj.styleClass }">${obj.student.name}</td><td class="text-left align-middle ${ obj.styleClass }">${obj.internshipUnit.name}</td><td class="text-left align-middle ${ obj.styleClass }">${obj.city}</td><td class="text-left align-middle ${ obj.styleClass }">${obj.statusString}</td></tr>`;
+            trTbody += `<tr id="${ obj.shortId }" onclick="redirectDetailApprove(this.id)"><td class="text-left align-middle ${ obj.styleClass }">${ index + 1 }</td><td class="text-left align-middle ${ obj.styleClass }">${obj.student.ms}</td><td class="text-left align-middle ${ obj.styleClass }">${obj.student.name}</td><td class="text-left align-middle ${ obj.styleClass }">${obj.internshipUnit.name}</td><td class="text-left align-middle ${ obj.styleClass }">${obj.city}</td><td class="text-left align-middle ${ obj.styleClass }">${obj.statusString}</td></tr>`;
           });
 
           table.innerHTML += trTbody;

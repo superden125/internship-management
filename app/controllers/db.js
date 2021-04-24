@@ -10,14 +10,27 @@ import InternshipUnit from '../models/internshipUnit';
 
 // [GET] /db/major
 module.exports.mockMajorDB = (req, res) => {
-  const listMajor = [
-    { name: "CNTT" },
-    { name: "CNTT-CLC" },
-    { name: "HTTT" },
-    { name: "KHMT" },
-    { name: "KTPM" },
-    { name: "THUD" },
-    { name: "MMT&TTDL" },
+  const listMajor = [{
+      name: "CNTT"
+    },
+    {
+      name: "CNTT-CLC"
+    },
+    {
+      name: "HTTT"
+    },
+    {
+      name: "KHMT"
+    },
+    {
+      name: "KTPM"
+    },
+    {
+      name: "THUD"
+    },
+    {
+      name: "MMT&TTDL"
+    },
   ];
 
   listMajor.forEach(async (item) => {
@@ -28,151 +41,136 @@ module.exports.mockMajorDB = (req, res) => {
   res.send("Mocking Major DB successfully !!!");
 };
 
-// [GET] /db/teacher
-module.exports.mockTeacherDB = async (req, res) => {
-  const major = await Major.findOne({ name: "KTPM" });
-  const pwd = "ims123";
-  console.log(major);
-  const listTeacher = [
-    {
-      mscb: "0065001",
-      name: "Vo Huynh Tram",
-      idMajor: major._id,
-      email: "vhtram@cit.ctu.edu.vn",
-    },
-    {
-      mscb: "0065002",
-      name: "Truong Minh Thai",
-      idMajor: major._id,
-      email: "tmthai@cit.ctu.edu.vn",
-    },
-    {
-      mscb: "0065003",
-      name: "Huynh Xuan Hiep",
-      idMajor: major._id,
-      email: "hxhiep@cit.ctu.edu.vn",
-    },
-    {
-      mscb: "0065004",
-      name: "Truong Thi Thanh Tuyen",
-      idMajor: major._id,
-      email: "ttttuyen@cit.ctu.edu.vn",
-    },
-    {
-      mscb: "0065005",
-      name: "Lam Hoai Bao",
-      idMajor: major._id,
-      email: "lhbao@cit.ctu.edu.vn",
-    },
-    {
-      mscb: "0065006",
-      name: "Phan Huy Cuong",
-      idMajor: major._id,
-      email: "phcuong@cit.ctu.edu.vn",
-    },
-    {
-      mscb: "0065007",
-      name: "Huynh Quang Nghi",
-      idMajor: major._id,
-      email: "hqnghi@cit.ctu.edu.vn",
-    },
-    {
-      mscb: "0065008",
-      name: "Nguyen Cong Danh",
-      idMajor: major._id,
-      email: "ncdanh@cit.ctu.edu.vn",
-    },
-  ];
-  let count = 0;
-  listTeacher.forEach(async (item) => {
-    const teacher = new Teacher(item);
+module.exports.mockUserDB = async (req, res) => {
+  const pwd = 'ims123';
 
-    const salt = await bcrypt.genSalt(10);
-    const hashPass = await bcrypt.hash(pwd, salt);
-    const user = new User({
-      username: item.mscb,
-      password: hashPass,
-      role: 1,
-    });
-    await teacher.save();
-    await user.save();
+  const major = await Major.findOne({
+    name: 'KTPM'
   });
-  return res.send("Mocking teacher DB successfully");
-};
 
-module.exports.mockStudentDB = async (req, res) => {
-  const major = await Major.findOne({ name: "KTPM" });
-  const pwd = "ims123";
-  console.log(major);
-  const listStudent = [
-    {
-      mssv: "B1704835",
-      name: "Trieu Duc Minh",
-      idClass: "DI1796A2",
+  const listUser = [{
+      ms: '0065001',
+      name: 'Vo Huynh Tram',
       idMajor: major._id,
-      email: "minhb1704835@student.ctu.edu.vn",
+      email: 'vhtram@cit.ctu.edu.vn',
+      role: 'teacher'
     },
     {
-      mssv: "B1704814",
-      name: "Tran Thanh Huy",
-      idClass: "DI1796A2",
+      ms: '0065002',
+      name: 'Truong Minh Thai',
       idMajor: major._id,
-      email: "huyb1704814@student.ctu.edu.vn",
+      email: 'tmthai@cit.ctu.edu.vn',
+      role: 'teacher'
     },
     {
-      mssv: "B1234242",
-      name: "Nguyen Thanh Nam",
-      idClass: "DI1796A2",
+      ms: '0065003',
+      name: 'Huynh Xuan Hiep',
       idMajor: major._id,
-      email: "namb123454@student.ctu.edu.vn",
+      email: 'hxhiep@cit.ctu.edu.vn',
+      role: 'teacher'
     },
     {
-      mssv: "B1794932",
-      name: "Le Van Lay",
-      idClass: "DI1796A2",
+      ms: '0065004',
+      name: 'Truong Thi Thanh Tuyen',
       idMajor: major._id,
-      email: "dayb1794932@student.ctu.edu.vn",
+      email: 'ttttuyen@cit.ctu.edu.vn',
+      role: 'teacher'
     },
     {
-      mssv: "B1703947",
-      name: "Nguyen Thi Dien",
-      idClass: "DI1796A1",
+      ms: '0065005',
+      name: 'Lam Hoai Bao',
       idMajor: major._id,
-      email: "dienb1703947@student.ctu.edu.vn",
+      email: 'lhbao@cit.ctu.edu.vn',
+      role: 'teacher'
     },
     {
-      mssv: "B1709485",
-      name: "Do Cong Hua",
-      idClass: "DI1796A1",
+      ms: '0065006',
+      name: 'Phan Huy Cuong',
       idMajor: major._id,
-      email: "huab1709485@student.ctu.edu.vn",
+      email: 'phcuong@cit.ctu.edu.vn',
+      role: 'teacher'
+    },
+    {
+      ms: '0065007',
+      name: 'Huynh Quang Nghi',
+      idMajor: major._id,
+      email: 'hqnghi@cit.ctu.edu.vn',
+      role: 'teacher'
+    },
+    {
+      ms: '0065008',
+      name: 'Nguyen Cong Danh',
+      idMajor: major._id,
+      email: 'ncdanh@cit.ctu.edu.vn',
+      role: 'teacher'
+    },
+    {
+      ms: 'B1704835',
+      name: 'Trieu Duc Minh',
+      idClass: 'DI1796A2',
+      idMajor: major._id,
+      email: 'minhb1704835@student.ctu.edu.vn',
+      role: 'student'
+    },
+    {
+      ms: 'B1704814',
+      name: 'Tran Thanh Huy',
+      idClass: 'DI1796A2',
+      idMajor: major._id,
+      email: 'huyb1704814@student.ctu.edu.vn',
+      role: 'student'
+    },
+    {
+      ms: 'B1234242',
+      name: 'Nguyen Thanh Nam',
+      idClass: 'DI1796A2',
+      idMajor: major._id,
+      email: 'namb123454@student.ctu.edu.vn',
+      role: 'student'
+    },
+    {
+      ms: 'B1794932',
+      name: 'Le Van Lay',
+      idClass: 'DI1796A2',
+      idMajor: major._id,
+      email: 'dayb1794932@student.ctu.edu.vn',
+      role: 'student'
+    },
+    {
+      ms: 'B1703947',
+      name: 'Nguyen Thi Dien',
+      idClass: 'DI1796A1',
+      idMajor: major._id,
+      email: 'dienb1703947@student.ctu.edu.vn',
+      role: 'student'
+    },
+    {
+      ms: 'B1709485',
+      name: 'Do Cong Hua',
+      idClass: 'DI1796A1',
+      idMajor: major._id,
+      email: 'huab1709485@student.ctu.edu.vn',
+      role: 'student'
     },
   ];
-  let count = 0;
-  listStudent.forEach(async (item) => {
-    const student = new Student(item);
-    const result = await student.save();
+
+  listUser.forEach(async (item) => {
     const salt = await bcrypt.genSalt(10);
     const hashPass = await bcrypt.hash(pwd, salt);
 
-    const user = new User({
-      username: item.mssv,
-      password: hashPass,
-      ids: result._id,
-      role: 0,
-    });
+    item.password = hashPass;
 
+    const user = new User(item);
     await user.save();
   });
-  res.send("done");
+
+  res.send('Mocking user database successfully!!!');
 };
 
 module.exports.mockInternshipUnitDB = async (req, res) => {
-  const data = [
-    {
+  const data = [{
       name: "TechBase",
-      address:
-        "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
+      address: "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
       email: "teachbase@techbase.com",
       city: "79",
       phone: "039394928492",
@@ -193,8 +191,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
     },
     {
       name: "Fujinet",
-      address:
-        "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
+      address: "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
       email: "Fujinet@Fujinet.com",
       city: "79",
       phone: "039394928492",
@@ -215,10 +212,9 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
     },
     {
       name: "VPNT",
-      address:
-        "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
+      address: "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
       email: "vnpt@vnpt.vn",
-      city: "65",
+      city: "79",
       phone: "039394928492",
       website: "vnpt.com",
       mentor: {
