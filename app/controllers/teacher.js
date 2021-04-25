@@ -65,6 +65,14 @@ export async function index (req, res) {
   }
 
   const lasterMilestone = await Milestone.findOne().sort({endRegister:-1})
+  if(!lasterMilestone) return res.render(
+    "teacher/index",
+    Object.assign(data, {
+      error: { err: true, msg: "Not found semester" },
+      listSemester: []
+    })
+  );
+
   const lasterYear = parseInt(lasterMilestone.semester.split('-')[0])
   const listSemester = [
     lasterMilestone.semester,

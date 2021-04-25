@@ -1,20 +1,38 @@
-import mongoose from "mongoose";
+import mongoose, {
+  Schema
+} from "mongoose";
 
 const UserSchema = mongoose.Schema({
-  username: {
+  ms: {
     type: String,
     require: true,
+  },
+  name: {
+    type: String,
+    require: true,
+  },
+  idClass: {
+    type: String,
+    require: true
+  },
+  idMajor: {
+    type: Schema.Types.ObjectId,
+    require: true
+  },
+  email: {
+    type: String,
+    require: true
   },
   password: {
     type: String,
     require: true,
   },
-  ids: {
+  phone: {
     type: String,
-    require: true,
+    require: true
   },
   role: {
-    type: Number, // 0 - student, 1 - teacher
+    type: String, // 0 - student, 1 - teacher
     require: true,
   },
 });

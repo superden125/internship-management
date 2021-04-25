@@ -17,14 +17,15 @@ export async function getInternshipInfo(req, res) {
   };
 
   const milestones = await Milestone.find({}).limit(12).sort({endRegister: -1})
-  if(!milestones) return res.render(
+  data.milestones = milestones
+  console.log(milestones)
+  if(milestones.length === 0) return res.render(
       "student/home",
       Object.assign(data, {
-        error: { err: true, msg: "Not found Intern Info" },
+        error: { err: true, msg: "Not found semester" },
       })
     );
-  
-  data.milestones = milestones
+   
 
   const internInfo = await InternshipInfo.findOne({ idSv, idMilestone: milestones[0]._id })
   console.log(internInfo, milestones)
