@@ -412,6 +412,7 @@ module.exports.milestoneGet = async (req, res) => {
 
 module.exports.milestonePost = async (req, res) => {
   try {
+    console.log(req.body)
     const milestone = new Milestone(req.body)
     const result = await milestone.save()
     if (!result) return res.json({
@@ -426,7 +427,6 @@ module.exports.milestonePost = async (req, res) => {
       success: false
     })
   }
-
 }
 module.exports.milestonePut = async (req, res) => {
   const data = req.body;

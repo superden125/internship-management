@@ -29,6 +29,14 @@ function deleteMilestone(id) {
 }
 
 function saveMilestone(id){
+
+    let semester = document.querySelector("#semester").value    
+    let hk = document.querySelector("#hk").value
+    let endRegister = new Date(document.querySelector("#endRegister").value)
+    let startIntern = new Date(document.querySelector("#startIntern").value)
+    let endIntern = new Date(document.querySelector("#endIntern").value)
+
+    console.log(semester)
     if(endRegister == "Invalid Date" || startIntern == "Invalid Date" || endIntern == "Invalid Date"){
         const alter = document.querySelector('#alter')
         alterError("Thời gian trống hoặc sai định dạng")            
@@ -45,12 +53,12 @@ function saveMilestone(id){
         return false
     }
     if(!id){
-        let semester = document.querySelector("#semester").value
-        let hk = document.querySelector("#hk").value
-        let endRegister = new Date(document.querySelector("#endRegister").value)
-        let startIntern = new Date(document.querySelector("#startIntern").value)
-        let endIntern = new Date(document.querySelector("#endIntern").value)
-        console.log(endRegister)        
+        // let semester = document.querySelector("#semester").value
+        // let hk = document.querySelector("#hk").value
+        // let endRegister = new Date(document.querySelector("#endRegister").value)
+        // let startIntern = new Date(document.querySelector("#startIntern").value)
+        // let endIntern = new Date(document.querySelector("#endIntern").value)
+        
         
         const data = {
             semester,
