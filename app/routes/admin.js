@@ -8,7 +8,7 @@ import * as adminController from '../controllers/admin';
 
 const router = express.Router();
 
- //router.use(isAdmin);
+router.use(isAdmin);
 
 // Manage
 router.get('/manage/teachers', adminController.getAllTeachers);
