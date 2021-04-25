@@ -7,4 +7,5 @@ module.exports = {
   getOneInternshipUnit: async (query) => {
     return await InternshipUnit.findOne(query);
   },
+  
 };

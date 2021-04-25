@@ -102,16 +102,22 @@ function resetForm(){
 function loadData(){
   const semester = document.querySelector("#semester").value
   const hk = document.querySelector("#hk").value
-  const params = {semester, hk}
-  console.log(params)
+  const params = {semester, hk}  
   $.ajax({
     type: "get",
     url: "/student/get-interninfo",
     data: params
   }).done((res)=>{
     console.log(res)
-    if(res.success){
+    if(!res.success){
+      // document.querySelector("#err").classList.remove("display-none")
+      // document.querySelector("#err").innerHTML = res.msg
+      alterError("Không tìm thấy thông tin thực tập")
+      document.querySelector("#card-intern-info").classList.add("display-none")
+    }else
+    {
       const data = res.data
+      document.querySelector("#alter").innerHTML = ""
       document.querySelector("#err").classList.add("display-none")
       document.querySelector("#card-intern-info").classList.remove("display-none")
       document.querySelector("#internUnit-name").innerHTML=data.internUnit.name
@@ -126,15 +132,50 @@ function loadData(){
       document.querySelector("#mentor-phone").innerHTML=data.internUnit.mentor.phone
       document.querySelector("#mentor-email").innerHTML=data.internUnit.mentor.email 
 
-      document.querySelector("#teacher-name").innerHTML=data.teacher.name 
-      document.querySelector("#teacher-phone").innerHTML=data.teacher.phone
-      document.querySelector("#teacher-email").innerHTML=data.teacher.email 
+      if(data.teacher){
+        document.querySelector("#teacher-name").innerHTML=data.teacher.name 
+        document.querySelector("#teacher-phone").innerHTML=data.teacher.phone
+        document.querySelector("#teacher-email").innerHTML=data.teacher.email 
+      }
+      
 
       document.querySelector("#internInfo-status").innerHTML=data.statusStr
       document.querySelector("#internInfo-core").innerHTML= data.internInfo.core >= 0 ? data.internInfo.core : "Chưa có"
       
     }
   })
-
   
+}
+
+function loadDataInternUnit(){
+  const params = {
+    semester: document.getElementById('semester').value,
+    hk: document.getElementById('hk').value
+  }
+
+  $.ajax({
+    type: "get",
+    url: "/student/intern-unit",
+    data: params    
+  }).done((res)=>{
+    const table = document.getElementById('table-intern-unit')
+    if(!res.success){
+      table.innerHTML = ""
+
+    }else {
+      const data = res.data.internUnits      
+      
+      let row = ""
+      data.forEach((val, index)=>{
+        row += `<tr onclick="window.location.href='/student/internship-unit/${val._id}">
+                  <td>${val.name}</td>
+                  <td>${val.city}</td>
+                  <td>${val.maxSv}</td>
+                  <td>${val.currentSv}</td>
+                  <td>${val.reqTime}</td>
+                </tr>`
+      })
+      table.innerHTML = row
+    }
+  })
 }

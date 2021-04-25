@@ -21,6 +21,7 @@ router.get('/manage/students', adminController.getAllStudents);
 router.get('/manage/internship-unit', adminController.getAllInternshipUnit);
 router
   .get('/manage/milestone', adminController.milestoneGet)
+  .get('/manage/milestones', adminController.milestoneGets)  
   .post('/manage/milestone', adminController.milestonePost)
   .put('/manage/milestone', adminController.milestonePut)
 

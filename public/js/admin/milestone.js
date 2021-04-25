@@ -165,6 +165,42 @@ function format0(val) {
     val = "0" + val
     return val.slice(-2)
 }
+
+function loadData(){
+    const params = {
+        semester: document.getElementById('semester-filter').value,
+        hk: document.getElementById('hk-filter').value
+      }
+    
+    $.ajax({
+    type: "get",
+    url: "/admin/manage/milestones",
+    data: params    
+    }).done((res)=>{
+        console.log(res)
+    const table = document.getElementById('table-body-milestone')
+    if(!res.success){
+        table.innerHTML = ""
+        alterError("Không tìm thấy đợt thực tập") 
+    }else {
+        document.getElementById("alter").innerHTML = ""
+        const data = res.data.milestones        
+        let row = ""
+        data.forEach((val, index)=>{
+        row += `<tr id="addMilestone"><tr>
+                <tr id="${val._id}">
+                    <td>${val.semester}</td>
+                    <td>${val.hk}</td>
+                    <td>${val.endRegister}</td>
+                    <td>${val.startIntern}</td>
+                    <td>${val.endIntern}</td>
+                    <td class="align-middle"><span class="sd-icon" id="editMilestone" onclick="editMilestone('${val._id}')"><i class="fas fa-edit"></i></span></td>
+                </tr>`
+        })
+        table.innerHTML = row
+    }
+    })
+}
 // function alterSuccess(str){
 //     const alter = document.querySelector('#alter')
 //     alter.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">

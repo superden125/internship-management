@@ -31,15 +31,15 @@
                       <span class="input-group-text">Học kỳ</span>
                     </div>
                     <select class="custom-select" name="hk" id="hk-filter">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
+                        <option value="1" <%= milestones[0].hk == 1 ? "selected" : "" %>>1</option>
+                        <option value="2" <%= milestones[0].hk == 2 ? "selected" : "" %>>2</option>
+                        <option value="3" <%= milestones[0].hk == 3 ? "selected" : "" %>>3</option>
                     </select>
                   </div>
             </div>
 
             <div class="col-md-1">
-                <button id="filter" class="btn btn-info" onclick="loadData()">Lọc</button>
+                <button id="filter" class="btn btn-info" onclick="loadData()">Tìm kiếm</button>
             </div>
           
             <div class="col-md-1 ml-auto"><button class="btn btn-sub" onclick="addMilestone()">Thêm</button></div>
@@ -58,7 +58,7 @@
                 <th></th>
             </tr>              
           </thead>
-          <tbody>
+          <tbody id="table-body-milestone">
               <tr id="addMilestone">
                 <!-- <td class="edit"> 
                     <select name="semester" id="semester" class="custom-select"> 

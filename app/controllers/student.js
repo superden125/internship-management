@@ -150,14 +150,43 @@ export async function getListInternshipUnit(req, res) {
     roleName: "Sinh viên",
     urlInfo: "Danh sách đơn vị thực tập",
   };
+
+  const milestones = await Milestone.find({}).limit(12).sort({endRegister: -1})
+  data.milestones = milestones  
+  if(milestones.length === 0) return res.render(
+      "student/internship-unit",
+      Object.assign(data, {
+        error: { err: true, msg: "Not found internship unit is this semester" },
+      })
+  );
+
   const internUnits = await InternshipUnit.find({
     introBy: null,
+    idMilestone: milestones[0]._id
   });
   internUnits.forEach((internUnit) => {
     internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
   });
   data.internUnits = internUnits;
   res.render("student/internship-unit", data);
+}
+
+export async function getListInternUnit(req, res){
+  let data = {};
+  const {semester, hk} = req.query  
+  const milestone = await Milestone.findOne({semester ,hk: parseInt(hk)})  
+  data.milestone = milestone 
+  if(!milestone) return res.json({success: false, msg:"Milestone not found"})  
+  
+  const internUnits = await InternshipUnit.find({
+    introBy: null,
+    idMilestone: milestone._id
+  });
+  internUnits.forEach((internUnit) => {
+    internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
+  });
+  data.internUnits = internUnits;
+  res.json({success: true, data})
 }
 
 export async function getInternshipUnitById(req, res) {

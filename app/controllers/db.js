@@ -165,6 +165,16 @@ module.exports.mockUserDB = async (req, res) => {
 };
 
 module.exports.mockInternshipUnitDB = async (req, res) => {
+  const dataMilestone = {
+    semester: "2020-2021",
+    hk: 3,
+    startIntern: new Date(2021, 6, 1),
+    endIntern: new Date(2021, 8, 1),
+    endRegister: new Date(2021, 5, 15),
+  };
+  const milestone = new Milestone(dataMilestone);
+  const result = await milestone.save();
+
   const data = [{
       name: "TechBase",
       address: "10th level Saigon Centre Tower 2, 67 Đ. Lê Lợi, Bến Nghé, Quận 1",
@@ -185,6 +195,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
       currentSv: 0,
       benefit: "Hỗ trợ 5 triệu/tháng",
       introBy: null,
+      idMilestone: result._id
     },
     {
       name: "Fujinet",
@@ -206,6 +217,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
       currentSv: 0,
       benefit: "Hỗ trợ 3 triệu/tháng",
       introBy: null,
+      idMilestone: result._id
     },
     {
       name: "VPNT",
@@ -227,6 +239,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
       currentSv: 0,
       benefit: "Hỗ trợ 1triệu/day",
       introBy: null,
+      idMilestone: result._id
     },
   ];
 

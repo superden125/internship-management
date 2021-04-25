@@ -68,6 +68,9 @@ const InternshipUnitSchema = mongoose.Schema({
     type: Schema.Types.ObjectId,
     require: true,
   },
+  idMilestone: {
+    type: Schema.Types.ObjectId,    
+  },
 });
 
 module.exports = mongoose.model("InternshipUnit", InternshipUnitSchema);
