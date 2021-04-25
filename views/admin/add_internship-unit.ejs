@@ -1,109 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <%- include('../layouts/meta') %>
-  </head>
-  <body>
+</head>
+
+<body>
     <%- include('../layouts/admin-sidebar') %>
 
-    <div id="content">
-      <%- include('../layouts/navbar') %>
-      
-      <div class="container">
-        <div class="box-nav d-flex justify-between">
-           <div class="filter">
-               <a href="/admin/manage/internship-unit"><i class="fas fa-angle-double-left"></i> Tất cả các đơn vị thực tập</a>
-           </div>
+        <div id="content">
+            <%- include('../layouts/navbar') %>
+
+                <div class="container">
+                    <div class="box-nav d-flex justify-between">
+                        <div class="filter">
+                            <a href="/admin/manage/internship-unit"><i class="fas fa-angle-double-left"></i> Tất cả các
+                                đơn vị thực tập</a>
+                        </div>
+                    </div>
+                    <div class="form-title text-center">
+                        <h2 class="text-dark">Đơn vị thực tập mới</h2>
+                        <span class="text-dark">Sử dụng biểu mẫu dưới đây để tạo một đơn vị thực tập mới</span>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div>
+
+
+                            <!-- add internship-unit form -->
+                            <form action="/admin/manage/internship-unit" method="POST" id="add_internship-unit">
+                                <div>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Tên công ty</label>
+                                        <input type="hidden" name="id" value="">
+                                        <input type="text" class="form-control" name="name" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Địa chỉ</label>
+                                        <input type="text" class="form-control" name="address" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" name="email" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="city" class="form-label">Thành phố</label>
+                                        <input type="text" class="form-control" name="city" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Số điện thoại</label>
+                                        <input type="text" class="form-control" name="phone" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="website" class="form-label">Website</label>
+                                        <input type="text" class="form-control"name="website" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="mentorName" class="form-label">Tên người hướng dẫn</label>
+                                        <input type="text" class="form-control" name="mentorName" value="">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="mentorPhone" class="form-label">Số điện thoại người hướng dẫn</label>
+                                        <input type="text"  class="form-control" name="mentorPhone" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="mentorEmail" class="form-label">Email người hướng dẫn</label>
+                                        <input type="text" class="form-control" name="mentorEmail" value="">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="workEnv" class="form-label">Môi trường làm việc</label>
+                                        <input type="text" class="form-control" name="workEnv" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="workContent" class="form-label">Nội dung thực tập</label>
+                                        <input type="text" class="form-control" name="workContent" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="reqTime" class="form-label">Giờ thực tập tối thiểu trên tuần</label>
+                                        <input type="number" class="form-control" name="reqTime" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="reqInfo" class="form-label">Yêu cầu của đơn vị thực tập</label>
+                                        <input type="text" class="form-control" name="reqInfo" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="maxSv" class="form-label">Số lượng tối đa</label>
+                                        <input type="number" class="form-control" name="maxSv" value="">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="benefit" class="form-label">Quyền lợi</label>
+                                        <input type="text" class="form-control" name="benefit" value="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="note" class="form-label">Ghi chú</label>
+                                        <input type="text" class="form-control" name="note" value="">
+                                    </div>
+
+
+
+                                    <div class="group-btn">
+                                        <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
+                                    </div>
+
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
         </div>
-        <div class="form-title text-center">
-            <h2 class="text-dark">Đơn vị thực tập mới</h2>
-            <span class="text-dark">Sử dụng biểu mẫu dưới đây để tạo một đơn vị thực tập mới</span>
-        </div>
 
-        <!-- add internship-unit form -->
-        <form action="/admin/manage/internship-unit" method="POST" id="add_internship-unit">
-            <div>
-                <div class="form-group">
-                    <label for="name" >Tên công ty</label>
-                    <input type="text" name="name" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="address" >Địa chỉ</label>
-                    <input type="text" name="address" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="email" >Email</label>
-                    <input type="text" name="email" value="">
-                </div>
-                <div class="form-group">
-                    <label for="city" >Thành phố</label>
-                    <input type="text" name="city" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="phone" >Số điện thoại</label>
-                    <input type="text" name="phone" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="website" >Website</label>
-                    <input type="text" name="website" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="mentorName" >Tên người hướng dẫn</label>
-                    <input type="text" name="mentorName" value="" >
-                </div>
-                
-                <div class="form-group">
-                    <label for="mentorPhone" >Số điện thoại người hướng dẫn</label>
-                    <input type="text" name="mentorPhone" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="mentorEmail" >Email người hướng dẫn</label>
-                    <input type="text" name="mentorEmail" value="" >
-                </div>
+        <%- include('../layouts/script') %>
+</body>
 
-                <div class="form-group">
-                    <label for="workEnv" >Môi trường làm việc</label>
-                    <input type="text" name="workEnv" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="workContent" >Nội dung thực tập</label>
-                    <input type="text" name="workContent" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="reqTime" >Giờ thực tập tối thiểu trên tuần</label>
-                    <input type="number" name="reqTime" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="reqInfo" >Yêu cầu của đơn vị thực tập</label>
-                    <input type="text" name="reqInfo" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="maxSv" >Số lượng tối đa</label>
-                    <input type="number" name="maxSv" value="" >
-                </div>
-                
-                <div class="form-group">
-                    <label for="benefit" >Quyền lợi</label>
-                    <input type="text" name="benefit" value="" >
-                </div>
-                <div class="form-group">
-                    <label for="note" >Ghi chú</label>
-                    <input type="text" name="note" value="" >
-                </div>
-                
-
-
-                <div class="form-group">
-                    <button type="submit">Lưu lại</button>
-                </div>
-        
-            </div>
-        </form>
-        
-       
-    </div>
-    </div>
-
-    <%- include('../layouts/script') %>
-  </body>
 </html>

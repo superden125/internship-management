@@ -44,8 +44,9 @@ router.post('/manage/internship-unit/:id',adminController.updateInternshipUnit);
 router.get('/manage/internship-unit/add_internship-unit', adminController.addInternshipUnit);
 router.post('/manage/internship-unit', adminController.createInternshipUnit);
 router.get('/manage/internship-unit/update_internship-unit', adminController.getUpdateInternshipUnit);
-
 router.delete('/manage/internship-unit/:id', adminController.deleteInternshipUnit);
-module.exports = router;
 
+//Teachers
+router.get('/manage/teachers/add_teacher', adminController.addTeacher);
+router.post('/manage/teachers',adminController.createTeacher);
 module.exports = router;

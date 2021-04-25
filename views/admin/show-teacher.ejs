@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../layouts/meta') %>
+  </head>
+  <body>
+    <%- include('../layouts/admin-sidebar') %>
+
+    <div id="content">
+      <%- include('../layouts/navbar') %>
+
+      <div>
+        <a href="/admin/manage/teachers/add_teacher" class="border-shadow">
+            <span class="text-gradient">Thêm <i class="fas fa-user"></i></span>
+        </a>
+      </div>
+      <table class="table">
+          <thead>
+            <tr>
+                <th>#</th>
+                <th>Mã số</th>
+                <th>Họ tên</th>
+                <th>Mã Ngành</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th></th>
+            </tr>              
+          </thead>
+          <tbody>
+           
+                <td>
+                  <a href="/admin/manage/teachers/update_teacher" class="btn boder-shadow update">
+                    <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                  </a>
+
+                  <a class="btn border-shadow delete"  >
+                    <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
+                </a>
+                </td>
+              </tr>
+              </a>
+              
+            
+            
+          
+          </tbody>
+      </table>
+    </div>
+
+    <%- include('../layouts/script') %>
+  </body>
+</html>

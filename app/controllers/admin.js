@@ -1,6 +1,6 @@
 import moment from "moment"
 import InternshipUnit from '../models/internshipUnit';
-import mongoose from 'mongoose';
+import mongoose, { model } from 'mongoose';
 import Teacher from '../models/teacher';
 import Student from '../models/student';
 import Milestone from '../models/milestone';
@@ -43,12 +43,19 @@ module.exports.getAllTeachers = async (req, res) => {
   // });
   // const teachers = await Teacher.find();
   // res.json(teachers);
-  await Teacher.find({})
-    .exec(function (err, teachers) {
-      return res.json({
-        data: teachers
-      });
-    });
+  //await Teacher.find({})
+    //.exec(function (err, teachers) {
+      //return res.json({
+       //data: teachers
+     // });
+   // });
+   let data = {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Thời gian thực tập',
+  }
+  const teachers = await Teacher.find({})
+  data.teachers = teachers
+  res.render("admin/show-teacher",data)
 }
 
 module.exports.getAllStudents = async (req, res) => {
@@ -566,6 +573,56 @@ exports.deleteInternshipUnit = (req, res)=>{
       });
 }
 
+exports.addTeacher = async (req, res) => {
+  let data = {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Thời gian thực tập',
+  }
+  const internshipunits = await Teacher.find({})
+  data.internshipunits = internshipunits
+  res.render("admin/add_teacher",data)
+}
+
+exports.createTeacher = (req, res) => {
+  if(!req.body){
+    res.status(400).send({message: "Content can not be emtpy!"});
+    return;
+  }
+  
+  //new teacher
+  const user = new ({
+    name: req.body.name,
+    address:  req.body.address,
+    email: req.body.email,
+    city: req.body.city,
+    phone: req.body.phone,
+    website: req.body.website,
+    mentor: {name: req.body.mentorName,
+     phone: req.body.mentorPhone,
+     email: req.body.mentorEmail},
+    workEnv: req.body.workEnv,
+    workContent: req.body.workContent,
+    reqTime: req.body.reqTime,
+    reqInfo: req.body.reqInfo,
+    maxSv: req.body.maxSv,
+    currentSv: req.body.currentSv,
+    benefit: req.body.benefit,
+    note: req.body.note,
+    introBy: req.body.introBy
+  }) 
+
+  // save intership-unit in the database
+  internshipunit
+    .save(internshipunit)
+    .then(data => {
+      res.redirect('/admin/manage/internship-unit');
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "some error occurred while creating a create operation"
+      });
+    });
+}
 
 
 
