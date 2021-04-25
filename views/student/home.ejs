@@ -7,123 +7,192 @@
     <%- include('../layouts/student-sidebar') %>
 
     <div id="content">
-      <%- include('../layouts/navbar') %> <%if(error.err){%> <%-
-      include("../error.ejs") %> <%}else{%>
-      <div class="card border-light card-content">
-        <div class="card-body">
-          <h5 class="card-title mb-4">Thông tin công ty</h5>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Tên công ty</p>
+
+      <%- include('../layouts/navbar') %>
+
+      <div class="row mb-4">
+        <div class="col-md-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Năm học</span>
             </div>
-            <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.name %></p>
-            </div>
+            <select class="custom-select" name="semester" id="semester">                   
+                  <% milestones.forEach((val)=>{%> 
+                    <option value="<%= val.semester %>"><%= val.semester %></option>
+                  <% }) %> 
+            </select>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Địa chỉ</p>
+        </div>
+        
+
+        <div class="col-md-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Học kỳ</span>
             </div>
-            <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.address %></p>
-            </div>
+            <select class="custom-select" name="hk" id="hk">
+              <option value="1" <%= milestones[0].hk == 1 ? "selected" : "" %>>1</option>
+              <option value="2" <%= milestones[0].hk == 2 ? "selected" : "" %>>2</option>
+              <option value="3" <%= milestones[0].hk == 3 ? "selected" : "" %>>3</option>
+            </select>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Tỉnh/ Thành phố</p>
-            </div>
-            <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.city%></p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Số điện thoại</p>
-            </div>
-            <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.phone %></p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Website</p>
-            </div>
-            <div class="col-md-8">
-              <a
-                href="https://www.techbase.com"
-                class="grey-text"
-                target="_blank"
-                ><%= internUnit.website %>
-              </a>
-            </div>
-          </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Email</p>
-            </div>
-            <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.email %></p>
-            </div>
-          </div>
+        </div>
+
+        <div class="col-md-1">
+          <button id="filter" class="btn btn-info" onclick="loadData()">Tìm kiếm</button>
         </div>
       </div>
 
-      <div class="card border-light card-content">
-        <div class="card-body">
-          <h5 class="card-title mb-4">Thông tin người hướng dẫn</h5>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Họ và tên</p>
+      <div id="err"><%= error.err ? error.msg : "" %> </div>
+      <div class="<%= error.err ? "display-none" : "" %>" id="card-intern-info">
+        <div class="card border-light card-content">
+          <div class="card-body">
+            <h5 class="card-title mb-4">Thông tin công ty</h5>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Tên công ty</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="internUnit-name"><%= internUnit.name  %></p>
+              </div>
             </div>
-            <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.mentor.name %></p>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Địa chỉ</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="internUnit-address"><%= internUnit.address %></p>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Email</p>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Tỉnh/ Thành phố</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="internUnit-city"><%= internUnit.city%></p>
+              </div>
             </div>
-            <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.mentor.email%></p>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Số điện thoại</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="internUnit-phone"><%= internUnit.phone %></p>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Số điện thoại</p>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Website</p>
+              </div>
+              <div class="col-md-8">
+                <a
+                  href="https://<%= internUnit.website %> "
+                  class="grey-text"
+                  target="_blank"
+                  id="internUnit-website"
+                  ><%= internUnit.website %>
+                </a>
+              </div>
             </div>
-            <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.mentor.phone%></p>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Email</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="internUnit-email"><%= internUnit.email %></p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="card border-light card-content">
-        <div class="card-body">
-          <h5 class="card-title mb-4">Thông tin thực tập</h5>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Trạng thái</p>
+  
+        <div class="card border-light card-content">
+          <div class="card-body">
+            <h5 class="card-title mb-4">Thông tin người hướng dẫn</h5>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Họ và tên</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="mentor-name"><%= internUnit.mentor ? internUnit.mentor.name : "" %></p>
+              </div>
             </div>
-            <div class="col-md-8">
-              <p class="grey-text"><%= internInfo.statusStr%></p>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Email</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="mentor-email"><%= internUnit.mentor ? internUnit.mentor.email : ""%></p>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Kết quả</p>
-            </div>
-            <div class="col-md-8">
-              <p class="grey-text">
-                <%= internInfo.core === -1 ? "Chưa có" : internInfo.core;%>
-              </p>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Số điện thoại</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="mentor-phone"><%= internUnit.mentor ? internUnit.mentor.phone : "" %></p>
+              </div>
             </div>
           </div>
         </div>
+  
+        <div class="card border-light card-content display-none">
+          <div class="card-body">
+            <h5 class="card-title mb-4">Thông tin giáo viên</h5>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Họ và tên</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="teacher-name"><%= teacher.name %></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Email</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="teacher-email"><%= teacher.email%></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Số điện thoại</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="teacher-phone"><%= teacher.phone %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="card border-light card-content">
+          <div class="card-body">
+            <h5 class="card-title mb-4">Thông tin thực tập</h5>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Trạng thái</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="internInfo-status"><%= internInfo.statusStr%></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="offset-1 col-md-2">
+                <p class="black-text">Kết quả</p>
+              </div>
+              <div class="col-md-8">
+                <p class="grey-text" id="internInfo-core">
+                  <%= internInfo.core === -1 ? "Chưa có" : internInfo.core;%>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>      
+       </div>
       </div>
-      <% } %>
-    </div>
+      
 
     <%- include('../layouts/script') %>
+    <script src="/js/student/student.js"></script>
   </body>
 </html>

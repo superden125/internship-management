@@ -1,63 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('../layouts/meta') %>
-  </head>
-  <body>
-    <%- include('../layouts/admin-sidebar') %>
 
-    <div id="content">
-      <%- include('../layouts/navbar') %>
-      
-      <div class="row mb-4">
-        <div class="col-auto ml-auto">
-          <button class="btn btn-primary">Lưu tất cả</button>
-          <button class="btn btn-secondary ml-3">Hủy bỏ</button>
-        </div>
+<head>
+  <%- include('../layouts/meta') %>
+</head>
+
+<body>
+  <%- include('../layouts/admin-sidebar') %>
+
+  <div id="content">
+    <%- include('../layouts/navbar') %>
+
+    <div class="row mb-4">
+      <div class="col-auto ml-auto">
+        <button class="btn btn-primary" id="assign-all-button" onclick="assignMultipleTeacher()">Phân công</button>
+        <button class="btn btn-secondary ml-3" onclick="loadAssignTeacher()">Hủy bỏ</button>
       </div>
-
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th class="align-middle" scope="col">#</th>
-            <th class="align-middle" scope="col">
-              Đơn vị thực tập
-              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
-            </th>
-            <th class="align-middle" scope="col">
-              Số lượng sinh viên
-              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
-            </th>
-            <th class="align-middle" scope="col">
-              Tỉnh/ Thành phố
-              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
-            </th>
-            <th class="align-middle" scope="col">
-              Họ và tên giáo viên
-              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <% internshipUnits.forEach(function (item, index) { %>
-            <tr id="<%= index %>">
-              <td class="align-middle"><%= index + 1 %></td>
-              <td class="align-middle"><%= item.name %></td>
-              <td class="align-middle"><%= item.totalStudent %> sinh viên</td>
-              <td class="align-middle"><%= item.cityName %></td>
-              <td class="align-middle">
-                <select class="custom-select">
-                  <option selected>-- Chọn giáo viên --</option>
-                  <option value="1">Huynh Quang Nghi</option>
-                  <option value="2">Nguyen Cong Danh</option>
-                </select>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
     </div>
 
-    <%- include('../layouts/script') %>
-  </body>
+    <div class="alert alert-success d-none" id="success-alert" role="alert">
+      Phân công giảng viên thành công
+    </div>
+
+    <table class="table table-hover" id="assign-info">
+      <thead>
+        <tr>
+          <th class="align-middle" scope="col">#</th>
+          <th class="align-middle" scope="col">
+            Đơn vị thực tập
+            <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+          </th>
+          <th class="align-middle" scope="col">
+            Số lượng sinh viên
+            <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+          </th>
+          <th class="align-middle" scope="col">
+            Tỉnh/ Thành phố
+            <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+          </th>
+          <th class="align-middle" scope="col">
+            Họ và tên giáo viên
+            <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+          </th>
+          <th class="align-middle" scope="col"></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="d-flex justify-content-center" id="loading">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+  </div>
+
+  <%- include('../layouts/script') %>
+  <script src="/js/admin/assign.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.onload = function () {
+        loadAssignTeacher();
+        // $('#success-alert').hide();
+      }
+    });
+  </script>
+</body>
+
 </html>

@@ -1,0 +1,369 @@
+[33mcommit dab41ba72af07f31b6ec1e381c764e565d8891d0[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mmain[m[33m)[m
+Author: sd <superden125@gmail.com>
+Date:   Thu Apr 15 23:38:54 2021 +0700
+
+    add alter
+
+[33mcommit bf6c71c19ac09bdfcc36458c243adffcdd95015a[m[33m ([m[1;31morigin/main[m[33m)[m
+Merge: 066ae02 91ec218
+Author: sd <superden125@gmail.com>
+Date:   Thu Apr 15 22:12:50 2021 +0700
+
+    Merge branch 'main' of https://github.com/superden125/internship-management into main
+
+[33mcommit 066ae02eb8aae010a652519b397bbc5f46a4848c[m
+Author: sd <superden125@gmail.com>
+Date:   Thu Apr 15 22:12:02 2021 +0700
+
+    add pagination teacher
+
+[33mcommit 5dc8d5d50ceaa6b72bc39a3e144bc9318a6ebf61[m
+Author: sd <superden125@gmail.com>
+Date:   Mon Apr 12 07:14:40 2021 +0700
+
+    fix core teccher
+
+[33mcommit 91ec218ed4490d300db446638736ed0261aa75d9[m
+Merge: 38028e3 80014b7
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Mon Apr 12 01:01:55 2021 +0700
+
+    Merge pull request #7 from superden125/huytran-dev
+    
+    Huytran dev
+
+[33mcommit 80014b756b9c245bbdd1cd47e14d3ce245daaab5[m
+Merge: a228790 38028e3
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Mon Apr 12 00:59:00 2021 +0700
+
+    Merge branch 'main' into huytran-dev
+
+[33mcommit a22879068eb33d259726559ea740392674d0c8c2[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Mon Apr 12 00:54:25 2021 +0700
+
+    Phan cong giao vien
+
+[33mcommit 0b1051d2c190ea32b7c7316e5396fded9786bd8e[m
+Merge: de3ca05 38028e3
+Author: sd <superden125@gmail.com>
+Date:   Sun Apr 11 14:20:28 2021 +0700
+
+    Merge branch 'main'
+
+[33mcommit 38028e3ef186407d6c137c33380a6e238d15bbfa[m
+Merge: 941df2b a024df4
+Author: sd <superden125@gmail.com>
+Date:   Sun Apr 11 14:19:08 2021 +0700
+
+    Merge branch 'huytran-dev' into main
+
+[33mcommit de3ca057b11a415811fbaf8685e2ca1fdd1b634e[m
+Author: sd <superden125@gmail.com>
+Date:   Sun Apr 11 14:16:19 2021 +0700
+
+    add teacher
+
+[33mcommit a024df4987616f0698c991e45e02d85811280146[m[33m ([m[1;32mhuytran-dev[m[33m)[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Sun Apr 11 14:08:22 2021 +0700
+
+    Login Form, Add logo
+
+[33mcommit 01a63df9d77b77f681ad26f673ed33279bfec7d3[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Sun Apr 11 11:34:47 2021 +0700
+
+    Fix pagination
+
+[33mcommit 8304bebc747ad1200c9a5f9d18a85384475a5f21[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Sun Apr 11 10:08:41 2021 +0700
+
+    Fix pagination
+
+[33mcommit 11421db1a09a62bc27a5ca44a718c051349d3ec0[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Sat Apr 10 15:06:41 2021 +0700
+
+    Pagination views
+
+[33mcommit 39facec3727c8da6bd6766e487ae4a80abc95acf[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Fri Apr 9 15:55:17 2021 +0700
+
+    Pagination
+
+[33mcommit ea16b36618772d7d1520a58868c6f81000c447a8[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Thu Apr 8 23:34:59 2021 +0700
+
+    Remove 'ref' model mongodb
+
+[33mcommit 941df2b0438e9648ceac347b104785be1ea337da[m[33m ([m[1;31morigin/Dinh[m[33m)[m
+Merge: fd4566e 2846a0b
+Author: sd <superden125@gmail.com>
+Date:   Thu Apr 8 20:41:00 2021 +0700
+
+    merge huy 2
+
+[33mcommit 2846a0b83f6168966e18932a1c2d0305e0c6af1b[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Thu Apr 8 16:09:11 2021 +0700
+
+    Sort admin/internship/approve
+
+[33mcommit 3ccc62af2fb0665151144e3435499a197cd7f217[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Thu Apr 8 09:46:07 2021 +0700
+
+    Fix change status
+
+[33mcommit 89123c46ba172195c473090ddb1338429f899ca5[m
+Merge: 2c8b3e7 caf652f
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Thu Apr 8 09:26:26 2021 +0700
+
+    Xet duyet diem thuc tap, Update models.js
+
+[33mcommit fd4566e64d4e6f9071b6b9d388166a9c820110bd[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Wed Apr 7 23:40:57 2021 +0700
+
+    add milestone no valid
+
+[33mcommit 7937eacb4f6448d99dc21e83622142eeedb6b4dc[m
+Merge: 7afe412 2c8b3e7
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Tue Apr 6 20:30:06 2021 +0700
+
+    merge huy 1
+
+[33mcommit 7afe41283536d24d52d5593b987fcb26fd9a833e[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Tue Apr 6 20:15:30 2021 +0700
+
+    change dir
+
+[33mcommit 2c8b3e7db9d105ab69218f0df8bf705930aa1a9c[m
+Merge: 48daaed a060c51
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Tue Apr 6 08:30:49 2021 +0700
+
+    Xet duyet thuc tap (Layout)
+
+[33mcommit caf652f6ad525888acfb9335ecf0f2a0828215bb[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Mon Apr 5 23:50:43 2021 +0700
+
+    fix controller, add milestone
+
+[33mcommit 48daaed0824edf2f5f3a8fa96a543ef3391a032a[m
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Fri Apr 2 11:06:51 2021 +0700
+
+    Admin Route, jQuery
+
+[33mcommit a060c514ee7a9f5b08673ce1c672061b6dfddb83[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Fri Apr 2 10:24:15 2021 +0700
+
+    add logout
+
+[33mcommit a806c09c2f64d39839632eb8696cf94946a76dd4[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Fri Apr 2 10:13:14 2021 +0700
+
+    fix merge
+
+[33mcommit e13c85005bcb8300ffb92dea01f1473034121dc1[m
+Merge: e1aecd3 a74d65e
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Fri Apr 2 10:07:07 2021 +0700
+
+    merge branch huy-dev
+
+[33mcommit e1aecd33bd618318e6679b2f0b4de49046450655[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Fri Apr 2 09:44:49 2021 +0700
+
+    config folder
+
+[33mcommit a3c28762a5df0cdfc82181d3b6c6abf63a00a54e[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Thu Apr 1 23:13:34 2021 +0700
+
+    update student
+
+[33mcommit a74d65ee7e55f4d57414a3c3e73c22e8bd7dbd42[m
+Merge: 6e4b7e6 d8e8b0f
+Author: Huy Tran <tranthanhhuy2207@gmail.com>
+Date:   Thu Apr 1 10:15:43 2021 +0700
+
+    Teacher DB, Project Structure
+
+[33mcommit 934608a3e4b5ecb6d22c287e015d740e73fcd091[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Wed Mar 31 23:53:12 2021 +0700
+
+    add post register-intern
+
+[33mcommit 9be112174e239e9ed3d5e49acbb509d65dc72cf9[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Tue Mar 30 23:41:20 2021 +0700
+
+    add register form
+
+[33mcommit 38ad7c0ded68ad0f84f6636609a69cd9ba6b761f[m
+Merge: c8ce56a d3a448d
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Tue Mar 30 20:05:27 2021 +0700
+
+    Merge branch 'main'
+
+[33mcommit c8ce56a9d2e7f9e1384e8afba9907fffc6120134[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Tue Mar 30 19:51:01 2021 +0700
+
+    add1
+
+[33mcommit 6e4b7e6de2a411245ca978613a44bca5fb6e7cab[m
+Author: Huy <tranthanhhuy2207@gmail.com>
+Date:   Mon Mar 29 09:06:14 2021 +0700
+
+    Layouts
+
+[33mcommit d3a448d9ee267b505603cce763993f3aea173abf[m
+Merge: 6197b22 d8e8b0f
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Sun Mar 28 23:31:55 2021 +0700
+
+    Merge branch 'main' of https://github.com/superden125/internship-management into main
+
+[33mcommit 6197b22e13021c3fb948df3362fb82f1275a9d8e[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Sun Mar 28 23:31:28 2021 +0700
+
+    add form TTTT
+
+[33mcommit d8e8b0f2e532008a1b2b6f7bfc6f582343536047[m
+Merge: 9c33f48 8447cab
+Author: superden125 <53079029+superden125@users.noreply.github.com>
+Date:   Sun Mar 28 22:48:16 2021 +0700
+
+    Merge pull request #5 from superden125/master
+    
+    fix middleware
+
+[33mcommit 7d0bbbff37b2e8758257a1833d696e8b0f52beb9[m
+Merge: b243f0d 8447cab
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Sun Mar 28 22:46:37 2021 +0700
+
+    Merge branch 'master' into main
+
+[33mcommit b243f0d11c3c4cb76147a4df5e9efbb9929a1347[m
+Merge: 6e9d5f8 9c33f48
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Sun Mar 28 22:46:13 2021 +0700
+
+    Merge branch 'main' of https://github.com/superden125/internship-management into main
+
+[33mcommit 8447cabfffb8ec603ec197f448a8655182e9bc3c[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Sun Mar 28 22:45:42 2021 +0700
+
+    fix middleware
+
+[33mcommit 9c33f48dc5673f7594fb593320e0029abe42ef84[m
+Merge: 6cb210f c6d56db
+Author: superden125 <53079029+superden125@users.noreply.github.com>
+Date:   Sun Mar 28 21:11:27 2021 +0700
+
+    Merge pull request #4 from superden125/master
+    
+    authenticaton authorrization
+
+[33mcommit 6e9d5f835638e55ea3b4ec2d095018ecf24fb726[m
+Merge: 6cb210f c6d56db
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Sun Mar 28 21:10:10 2021 +0700
+
+    Merge branch 'master' into main
+
+[33mcommit c6d56db73fd5e64f836573d6c2055c5a643e06d0[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Sun Mar 28 21:09:20 2021 +0700
+
+    authenticaton authorrization
+
+[33mcommit 6cb210f3f1f3804c47aa1a5e1942a6a8d1adc378[m
+Merge: cbe0d72 1bbfb13
+Author: superden125 <53079029+superden125@users.noreply.github.com>
+Date:   Fri Mar 26 23:28:23 2021 +0700
+
+    Merge pull request #3 from superden125/master
+    
+    master - add db
+
+[33mcommit 1bbfb1373a952573ec9eae4f89ea8b7b1c399d6e[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Fri Mar 26 23:26:39 2021 +0700
+
+    add db
+
+[33mcommit 5ecfc77f75c312e2702cbb41ced46b0a505c911b[m
+Merge: cbe0d72 669103d
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Fri Mar 26 21:49:35 2021 +0700
+
+    Merge branch 'huytran-dev'
+
+[33mcommit 669103dbfb9031139d082801b16f9120257c8b9f[m
+Author: Huy <tranthanhhuy2207@gmail.com>
+Date:   Fri Mar 26 10:48:00 2021 +0700
+
+    Custom layouts student/home
+
+[33mcommit cbe0d7282fd4586269c06942350b5b6c9fb11e28[m
+Merge: de2df6d e6ba520
+Author: superden125 <53079029+superden125@users.noreply.github.com>
+Date:   Thu Mar 25 15:26:33 2021 +0700
+
+    Merge pull request #2 from superden125/huytran-dev
+    
+    Add layout
+
+[33mcommit e6ba5207398cc4a1a3062916578cc7f6cf62dc9f[m
+Author: Huy <tranthanhhuy2207@gmail.com>
+Date:   Thu Mar 25 15:25:28 2021 +0700
+
+    Fix Layouts
+
+[33mcommit 417510bf2572367ac50d7aa9604f2ad3a0c292b4[m
+Author: Huy <tranthanhhuy2207@gmail.com>
+Date:   Thu Mar 25 13:40:47 2021 +0700
+
+    Add views/layouts and vendor file
+
+[33mcommit de2df6da7bdc66186fc3bc5637c9a548b1ad165c[m
+Merge: 7ba8c40 08c5c0d
+Author: superden125 <53079029+superden125@users.noreply.github.com>
+Date:   Tue Mar 23 23:35:45 2021 +0700
+
+    Merge pull request #1 from superden125/master
+    
+    first commit
+
+[33mcommit 08c5c0d7ae7981a43c26b2812574a126c9111c03[m
+Author: sd <superden125@gmail.comgit config --global user.name superden125>
+Date:   Tue Mar 23 23:31:26 2021 +0700
+
+    first commit
+
+[33mcommit 7ba8c40289cb3548a9abef22be3f3db7378bb63a[m
+Author: superden125 <53079029+superden125@users.noreply.github.com>
+Date:   Tue Mar 23 22:34:32 2021 +0700
+
+    Initial commit

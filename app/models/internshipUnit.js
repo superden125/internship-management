@@ -1,4 +1,7 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose, {
+  mongo,
+  Schema
+} from "mongoose";
 
 const InternshipUnitSchema = mongoose.Schema({
   name: {
@@ -26,9 +29,15 @@ const InternshipUnitSchema = mongoose.Schema({
     require: true,
   },
   mentor: {
-    name: { type: String },
-    phone: { type: String },
-    email: { type: String },
+    name: {
+      type: String
+    },
+    phone: {
+      type: String
+    },
+    email: {
+      type: String
+    },
   },
   workEnv: {
     type: String,
@@ -56,7 +65,7 @@ const InternshipUnitSchema = mongoose.Schema({
     type: String,
   },
   introBy: {
-    type: String,
+    type: Schema.Types.ObjectId,
     require: true,
   },
 });

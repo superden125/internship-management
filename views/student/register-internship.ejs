@@ -9,12 +9,15 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
       <div class="row">
+        
         <% if(error.err) {%>
           <div class="col-md-5">
             <%- include("../error.ejs") %> 
           </div> 
         <% }else{ %> 
+          
           <div class="col-md-5">
+            <div id="alter"></div>
             <form
               action="/student/register-internship"
               method="post"
@@ -308,7 +311,7 @@
               </div>
               <div class="group-btn">
                 <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
-                <input type="reset" class="btn btn-reset ml-4" value="Huỷ bỏ" />
+                <input type="reset" class="btn btn-reset ml-4" value="Huỷ bỏ" onclick="resetForm()"/>
               </div>
             </form>
           </div>

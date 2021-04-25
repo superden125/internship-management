@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import mongoose from 'mongoose';
 
 import Major from '../models/major';
 import User from '../models/user';
@@ -111,6 +112,7 @@ module.exports.mockTeacherDB = async (req, res) => {
 
 module.exports.mockStudentDB = async (req, res) => {
   const major = await Major.findOne({ name: "KTPM" });
+  
   console.log(major);
   const listStudent = [
     {
@@ -198,7 +200,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
       maxSv: 10,
       currentSv: 0,
       benefit: "Hỗ trợ 5 triệu/tháng",
-      introBy: "admin",
+      introBy: null,
     },
     {
       name: "Fujinet",
@@ -220,7 +222,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
       maxSv: 10,
       currentSv: 0,
       benefit: "Hỗ trợ 3 triệu/tháng",
-      introBy: "admin",
+      introBy: null,
     },
     {
       name: "VPNT",
@@ -242,7 +244,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
       maxSv: 10,
       currentSv: 0,
       benefit: "Hỗ trợ 1triệu/day",
-      introBy: "admin",
+      introBy: null,
     },
   ];
 

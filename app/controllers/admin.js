@@ -1,5 +1,6 @@
 import moment from "moment"
 import InternshipUnit from '../models/internshipUnit';
+import mongoose from 'mongoose';
 import Teacher from '../models/teacher';
 import Student from '../models/student';
 import Milestone from '../models/milestone';
@@ -42,10 +43,12 @@ module.exports.getAllTeachers = async (req, res) => {
   // });
   // const teachers = await Teacher.find();
   // res.json(teachers);
-  res.render('admin', {
-    roleName: 'Giáo vụ khoa',
-    urlInfo: 'Quản lý giáo viên',
-  });
+  await Teacher.find({})
+    .exec(function (err, teachers) {
+      return res.json({
+        data: teachers
+      });
+    });
 }
 
 module.exports.getAllStudents = async (req, res) => {
@@ -61,13 +64,19 @@ module.exports.getAllStudents = async (req, res) => {
   });
 }
 
+module.exports.loadAproveInternshipUnitPage = (req, res) => {
+  res.render('admin/internship-approve-all', {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Xét duyệt điểm thực tập',
+  });
+}
+
 module.exports.showAllApproveInternshipUnit = async (req, res) => {
   var page = 1;
 
   var sortType = {
     column: 'timestamp',
     type: -1,
-    icon: 'fas fa-sort'  
   };
 
   var paginationObj = {
@@ -104,14 +113,13 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
   }
 
   var sortField = {
-    $sort: { }
+    $sort: {}
   };
 
   var sort = sortType.column;
   sortField['$sort'][sort] = sortType.type;
 
-  const query = [
-    {
+  const query = [{
       $lookup: {
         from: 'students',
         localField: 'idSv',
@@ -135,35 +143,30 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
     }
   ];
 
-  query.push(
-    {
-      $facet: {
-        metadata: [
-          {
-            $group: {
-              _id: null,
-              total: {
-                $sum: 1
-              }
-            }
+  query.push({
+    $facet: {
+      metadata: [{
+        $group: {
+          _id: null,
+          total: {
+            $sum: 1
           }
-        ],
-        data: [
-          sortField,
-          skipField,
-          limitField,
-        ]
-      }
-    },
-    {
-      $project: {
-        data: 1,
-        total: {
-          $arrayElemAt: [ '$metadata.total', 0 ]
         }
+      }],
+      data: [
+        sortField,
+        skipField,
+        limitField,
+      ]
+    }
+  }, {
+    $project: {
+      data: 1,
+      total: {
+        $arrayElemAt: ['$metadata.total', 0]
       }
     }
-  );
+  });
 
   await InternshipInfo
     .aggregate(query)
@@ -177,16 +180,16 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
         obj.city = tinh.find((tinh) => tinh.id == obj.internshipUnit.city).name;
       });
 
-      return res.render('admin/internship-approve-all', {
-        roleName: 'Giáo vụ khoa',
-        urlInfo: 'Xét duyệt điểm thực tập',
-        internInfos,
-        type: -(sortType.type),
-        icon: sortType.icon,
-        totalDocs,
-        current: page,
-        totalPages: Math.ceil(totalDocs / paginationObj.limit),
-        indexCount: paginationObj.skip,
+      return res.json({
+        status: 'success',
+        data: {
+          internInfos,
+          type: -(sortType.type),
+          totalDocs,
+          current: page,
+          totalPages: Math.ceil(totalDocs / paginationObj.limit),
+          indexCount: paginationObj.skip,
+        }
       });
     });
 }
@@ -194,7 +197,7 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
 module.exports.detailApproveInternshipUnit = async (req, res) => {
   if (req.method == 'GET') {
     var matchField = {
-      $match: { }
+      $match: {}
     };
 
     matchField['$match']['shortId'] = req.params.id;
@@ -257,83 +260,151 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
     var refuseType = req.body.refuse;
 
     if (!refuseType) {
-      await InternshipInfo
-        .findOne({
+      InternshipInfo
+        .findOneAndUpdate({
           shortId: idInternInfo
+        }, {
+          $set: {
+            status: 1
+          }
+        }, {
+          new: true
         })
-        .updateOne({
-          status: 1
-        })
-        .then(() => {
-          res.redirect('/admin/internship/approve');
+        .exec(function (err, item) {
+          InternshipUnit
+            .findOneAndUpdate({
+              _id: item.idIntern
+            }, {
+              $inc: {
+                currentSv: 1
+              }
+            }, {
+              new: true
+            })
+            .exec(function (err, item1) {
+              res.redirect('/admin/internship/approve');
+            })
         });
     } else {
-        await InternshipInfo
-          .findOne({
-            shortId: idInternInfo
-          })
-          .updateOne({
+      InternshipInfo
+        .findOneAndUpdate({
+          shortId: idInternInfo
+        }, {
+          $set: {
             status: 0
-          })
-          .then(() => {
-            res.redirect('/admin/internship/approve');
-          });
+          }
+        }, {
+          new: true
+        })
+        .exec(function (err, item) {
+          InternshipUnit
+            .findOneAndUpdate({
+              _id: item.idIntern
+            }, {
+              $inc: {
+                currentSv: -1
+              }
+            }, {
+              new: true
+            })
+            .exec(function (err, item1) {
+              console.log(item1);
+              res.redirect('/admin/internship/approve');
+            })
+        });
     }
   }
 }
 
+module.exports.loadAssignTeacherPage = (req, res) => {
+  res.render('admin/assign-teacher', {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Phân công giáo viên thăm sinh viên',
+  });
+}
+
 module.exports.assignTeacher = async (req, res) => {
-  const query = [
-    {
-      $lookup: {
-        from: 'internshipinfos',
-        localField: '_id',
-        foreignField: 'idIntern',
-        as: 'internshipInfos'
+  if (req.method == 'GET') {
+    const query = [{
+        $lookup: {
+          from: 'internshipinfos',
+          localField: '_id',
+          foreignField: 'idIntern',
+          as: 'internInfo'
+        }
+      },
+      {
+        $lookup: {
+          from: 'teachers',
+          localField: 'internInfo.idGv',
+          foreignField: '_id',
+          as: 'teacher'
+        }
+      },
+      {
+        $unwind: {
+          path: '$teacher',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          city: 1,
+          currentSv: 1,
+          teacherName: '$teacher.name'
+        }
       }
-    },
-    {
-      $match: {
-        'internshipInfos.status': 1
-      }
-    },
-    {
-      $project: {
-        _id: null,
-        name: '$name',
-        city: '$city',
-        totalStudent: { $size: '$internshipInfos' },
-        internInfos: '$internshipInfos'
-      }
+    ];
+
+    InternshipUnit
+      .aggregate(query)
+      .exec(function (err, internshipUnits) {
+        internshipUnits.forEach(internUnit => {
+          internUnit.cityName = tinh.find((tinh) => tinh.id == internUnit.city).name;
+        });
+
+        return res.json({
+          data: internshipUnits
+        });
+      });
+  } else if (req.method == 'PUT') {
+    if (req.body.type == 'each') {
+      var teacherId = (req.body.teacherId != 'null') ? req.body.teacherId : null;
+
+      InternshipInfo
+        .findOneAndUpdate({
+          idIntern: req.body.internUnitId
+        }, {
+          $set: {
+            idGv: teacherId
+          }
+        }, {
+          new: true
+        })
+        .exec(function (err, internInfo) {
+          res.json({
+            success: true,
+            data: internInfo
+          });
+        });
     }
-  ];
 
-  await InternshipUnit
-    .aggregate(query)
-    .exec(function(err, internshipUnits) {
-      // return res.json(internshipUnits);
-
-      internshipUnits.forEach(obj => {
-        obj.cityName = tinh.find((tinh) => tinh.id == obj.city).name;
-      });
-
-      res.render('admin/assign-teacher', {
-        roleName: 'Giáo vụ khoa',
-        urlInfo: 'Phân công giáo viên thăm sinh viên',
-        internshipUnits,
-      });
-    });
+  }
 }
 
 //Milestone
-module.exports.milestoneGet = async (req,res)=>{
+module.exports.milestoneGet = async (req, res) => {
   let data = {
     roleName: 'Giáo vụ khoa',
     urlInfo: 'Thời gian thực tập',
   }
-  const milestones = await Milestone.find().sort({endRegister: -1})
+  const milestones = await Milestone.find().sort({
+    endRegister: -1
+  })
   let milestones1 = [];
-  milestones.forEach((val)=>{
+  milestones.forEach((val) => {
     const obj = {}
     obj._id = val._id
     obj.semester = val.semester
@@ -346,22 +417,32 @@ module.exports.milestoneGet = async (req,res)=>{
   data.milestones = milestones1
   res.render("admin/milestone", data)
 }
-module.exports.milestonePost = async (req,res)=>{
+
+module.exports.milestonePost = async (req, res) => {
   try {
     const milestone = new Milestone(req.body)
     const result = await milestone.save()
-    if(!result) return res.json({success: false})
-    res.json({success: true, data: result})  
+    if (!result) return res.json({
+      success: false
+    })
+    res.json({
+      success: true,
+      data: result
+    })
   } catch (error) {
-    res.json({success: false})  
+    res.json({
+      success: false
+    })
   }
-  
+
 }
-module.exports.milestonePut = async (req,res)=>{
+module.exports.milestonePut = async (req, res) => {
   const data = req.body;
   const milestone = await Milestone.findById(data._id);
-  
-  if(!milestone) return res.json({success: false})
+
+  if (!milestone) return res.json({
+    success: false
+  })
 
   milestone.semester = data.semester
   milestone.hk = data.hk
@@ -369,7 +450,7 @@ module.exports.milestonePut = async (req,res)=>{
   milestone.startIntern = data.startIntern
   milestone.endIntern = data.endIntern
 
-  const result = await milestone.save();
+  const result = await milestone.save()
   if(!result) return res.json({success: false})
   return res.json({success: true, data: result})
   
@@ -485,33 +566,6 @@ exports.deleteInternshipUnit = (req, res)=>{
       });
 }
 
-module.exports.internshipUnitPut = async (req,res)=>{
-  const data = req.body;
-  const internship = await InternshipUnit.findById(data._id);
-  
-  if(!internship) return res.json({success: false})
 
-  internship.name = data.name
-  internship.email = data.email
-  internship.address = data.address
-  internship.city = data.city
-  internship.phone = data.phone
-  internship.website = data.website
-  internship.mentor.name = data.mentorName
-  internship.mentor.phone = data.mentorPhone
-  internship.mentor.email = data.mentorEmail
-  internship.workEnv = data.workEnv
-  internship.workContent = data.workContent
-  internship.reqTime = data.reqTime
-  internship.reqInfo = data.reqinfo
-  internship.maxSv = data.maxSv
-  internship.benefit = data.benefit
-  internship.note = data.note
-  
 
-  const result = await internship.save();
-  if(!result) return res.json({success: false})
-  return res.json({success: true, data: result})
-  
-}
 
