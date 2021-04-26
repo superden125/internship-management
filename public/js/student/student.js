@@ -179,3 +179,22 @@ function loadDataInternUnit(){
     }
   })
 }
+
+function getInternUnit(){
+  const params = {
+    introBy: "null",
+    idMilestone: document.getElementById("milestone").value
+  }
+  
+
+  $.ajax({
+    type: "get",
+    url: "/intern-unit",
+    data: params    
+  }).done((res)=>{
+    const internUnitDom = document.getElementById("internshipUnit")
+    console.log(res)
+  })
+  
+
+}

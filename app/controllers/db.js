@@ -171,6 +171,7 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
     startIntern: new Date(2021, 6, 1),
     endIntern: new Date(2021, 8, 1),
     endRegister: new Date(2021, 5, 15),
+    endCore: new Date(2021, 5, 30),
   };
   const milestone = new Milestone(dataMilestone);
   const result = await milestone.save();

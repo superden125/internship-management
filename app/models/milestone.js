@@ -21,6 +21,10 @@ const MilestoneSchema = mongoose.Schema({
     type: Date,
     require: true,
   },
+  endCore: {
+    type: Date,
+    require: true,
+  },
 });
 
 module.exports = mongoose.model("Milestone", MilestoneSchema);

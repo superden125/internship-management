@@ -18,7 +18,7 @@ export async function getInternshipInfo(req, res) {
 
   const milestones = await Milestone.find({}).limit(12).sort({endRegister: -1})
   data.milestones = milestones
-  console.log(milestones)
+  
   if(milestones.length === 0) return res.render(
       "student/home",
       Object.assign(data, {
@@ -28,7 +28,7 @@ export async function getInternshipInfo(req, res) {
    
 
   const internInfo = await InternshipInfo.findOne({ idSv, idMilestone: milestones[0]._id })
-  console.log(internInfo, milestones)
+  
   if (!internInfo)
     return res.render(
       "student/home",
@@ -57,7 +57,7 @@ export async function getInternshipInfo(req, res) {
     const teacher = await User.findById(internInfo.idGv);
     data.teacher = teacher;
   }
-  console.log(data)
+  
   data.error = { err: false };
   res.render("student/home", data);
 }

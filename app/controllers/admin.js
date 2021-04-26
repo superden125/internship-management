@@ -404,6 +404,7 @@ module.exports.milestoneGet = async (req, res) => {
     obj.startIntern = moment(val.startIntern).format("DD-MM-YYYY")
     obj.endIntern = moment(val.endIntern).format("DD-MM-YYYY")
     obj.endRegister = moment(val.endRegister).format("DD-MM-YYYY")
+    obj.endCore = moment(val.endCore).format("DD-MM-YYYY")
     milestones1.push(obj)
   })
   data.milestones = milestones1
@@ -426,6 +427,7 @@ module.exports.milestoneGets = async (req,res)=>{
     obj.startIntern = moment(val.startIntern).format("DD-MM-YYYY")
     obj.endIntern = moment(val.endIntern).format("DD-MM-YYYY")
     obj.endRegister = moment(val.endRegister).format("DD-MM-YYYY")
+    obj.endCore = moment(val.endCore).format("DD-MM-YYYY")
     milestones1.push(obj)
   })
   
@@ -463,6 +465,7 @@ module.exports.milestonePut = async (req, res) => {
   milestone.endRegister = data.endRegister
   milestone.startIntern = data.startIntern
   milestone.endIntern = data.endIntern
+  milestone.endCore = data.endCore
 
   const result = await milestone.save();
   if (!result) return res.json({

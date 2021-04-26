@@ -26,9 +26,9 @@
             >
               <div class="mb-3">
                 <label for="milestone" class="form-label">Học kỳ thực tập</label>
-                <select class="form-control" id="milestone" name="milestone">
+                <select class="form-control" id="milestone" name="milestone" onchange="getInternUnit()">
                   <% milestone.forEach((val)=>{%>
-                  <option value="<%= val._id %> ">
+                  <option value="<%= val._id %>">
                     <%= "Năm học "+val.semester+", HK "+val.hk+", Hạn đăng ký "+val.endRegister %>
                   </option>
                   <%});%>

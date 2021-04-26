@@ -19,7 +19,7 @@ export async function registerInternshipPost(req, res) {
     };
     data = Object.assign(data, req.body);
     if (data.internshipUnit == "0") {
-      console.log("tst", data);
+      
       const internshipUnit = new InternshipUnit({
         name: data.internName,
         address: data.internAddress,
@@ -137,6 +137,7 @@ export async function registerInternshipGet(req, res) {
 
   const internshipUnit = await InternshipUnit.find({
     introBy: null,
+    idMilestone: milestone1[0]._id
   });
   data.internshipUnit = internshipUnit;
   data.tinh = tinh.sort((a, b) => a.name - b.name);
