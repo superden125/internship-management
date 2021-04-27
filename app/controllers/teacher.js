@@ -1,7 +1,5 @@
 import InternshipInfo from "../models/internshipInfo"
 import InternshipUnit from "../models/internshipUnit"
-import Teacher from "../models/teacher"
-import Student from "../models/student"
 import Milestone from '../models/milestone'
 
 import {getNameTinh} from "../lib/tinh"
@@ -21,7 +19,7 @@ export async function index (req, res) {
 
   
 
-  const idGv = req.session.user ? req.session.user.userId : "6071a6d733c2571d0778bdd5";
+  const idGv = req.session.user.userId 
   const status = req.query.status ? req.body.status : 2
   const limit = req.query.limit ? req.query.limit : 10
   const skip = req.query.skip ? req.query.skip : 0
@@ -64,26 +62,20 @@ export async function index (req, res) {
     }
   }
 
-  const lasterMilestone = await Milestone.findOne().sort({endRegister:-1})
-  if(!lasterMilestone) return res.render(
+  const milestone = await Milestone.find().limit(12).sort({endRegister:-1})
+  if(!milestone) return res.render(
     "teacher/index",
     Object.assign(data, {
       error: { err: true, msg: "Not found semester" },
       listSemester: []
     })
   );
-
-  const lasterYear = parseInt(lasterMilestone.semester.split('-')[0])
-  const listSemester = [
-    lasterMilestone.semester,
-    `${lasterYear-1}-${lasterYear}`,
-    `${lasterYear-2}-${lasterYear-1}`,
-    `${lasterYear-3}-${lasterYear-2}`,
-    `${lasterYear-4}-${lasterYear-3}`,
-  ]
-  //console.log(listSemester)
-  
-  data.listSemester = listSemester
+  let semesters = []
+  milestone.forEach((val)=>{
+    semesters.push(val.semester)
+  })
+   
+  data.listSemester = semesters.filter((val,i,a)=> a.indexOf(val)===i)
 
   InternshipInfo
     .aggregate([filter, lookupStudent, lookupInternUnit, {$unwind: "$student"}, {$unwind: "$internUnit"}, select])
@@ -107,7 +99,7 @@ export async function getInternshipInfo(req,res){
     
   }
 
-  const idGv = req.session.user ? req.session.user.userId : "6071a6d733c2571d0778bdd5";
+  const idGv = req.session.user.userId
 
   const lookupStudent ={
     $lookup:{
@@ -168,7 +160,7 @@ export async function saveCore(req,res){
 
 export async function getManyInternInfo(req,res){
   const data = {}
-  const idGv = req.session.user ? req.session.user.userId : "6071a6d733c2571d0778bdd5"
+  const idGv = req.session.user.userId 
   let idMilestone = ""
   let status = req.query.status ? req.body.status : 2
   let limit = req.query.limit ? parseInt(req.query.limit) : 10

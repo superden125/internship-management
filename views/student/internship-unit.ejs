@@ -9,7 +9,7 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
 
-      <% if(milestones.length > 0){%> 
+      <% if(semesters && semesters.length > 0){%> 
         <div class="row mb-4">
           <div class="col-md-2">
             <div class="input-group">
@@ -17,8 +17,8 @@
                 <span class="input-group-text">Năm học</span>
               </div>
               <select class="custom-select" name="semester" id="semester">
-                <% milestones.forEach((val)=>{%> 
-                  <option value="<%= val.semester %>"><%= val.semester %> </option>
+                <% semesters.forEach((val)=>{%> 
+                  <option value="<%= val %>"><%= val %> </option>
                 <% }) %> 
               </select>
             </div>
@@ -31,9 +31,9 @@
                 <span class="input-group-text">Học kỳ</span>
               </div>
               <select class="custom-select" name="hk" id="hk">
-                <option value="1" <%= milestones[0].hk == 1 ? "selected" : "" %>>1</option>
-                <option value="2" <%= milestones[0].hk == 2 ? "selected" : "" %>>2</option>
-                <option value="3" <%= milestones[0].hk == 3 ? "selected" : "" %>>3</option>
+                <option value="1" <%= currentHk.hk == 1 ? "selected" : "" %>>1</option>
+                <option value="2" <%= currentHk.hk == 2 ? "selected" : "" %>>2</option>
+                <option value="3" <%= currentHk.hk == 3 ? "selected" : "" %>>3</option>
               </select>
             </div>
           </div>

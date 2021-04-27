@@ -11,12 +11,9 @@ module.exports = {
   },
   getManyInternUnit: async (req,res)=>{
     let query = req.query
-    console.log(query)    
-    if(query.idMilestone){
-       console.log(ObjectId(query.idMilestone))
-    }
-    
+    if(!query.introBy) query.introBy = null
     const result = await InternshipUnit.find(query);
+    
     res.json(result)
   }
   

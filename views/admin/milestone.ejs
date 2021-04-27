@@ -17,8 +17,8 @@
                     <span class="input-group-text">Năm học</span>
                     </div>
                     <select class="custom-select" name="semester" id="semester-filter">
-                        <% milestones.forEach((val, index)=>{ %> 
-                            <option value="<%= val.semester %>"><%= val.semester %></option>
+                        <% semesters.forEach((val, index)=>{ %> 
+                            <option value="<%= val %>"><%= val %></option>
                         <% }); %>
                     </select>
                 </div>

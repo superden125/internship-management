@@ -395,7 +395,8 @@ module.exports.milestoneGet = async (req, res) => {
   const milestones = await Milestone.find().sort({
     endRegister: -1
   })
-  let milestones1 = [];
+  let milestones1 = []
+  let semesters = []
   milestones.forEach((val) => {
     const obj = {}
     obj._id = val._id
@@ -406,8 +407,10 @@ module.exports.milestoneGet = async (req, res) => {
     obj.endRegister = moment(val.endRegister).format("DD-MM-YYYY")
     obj.endCore = moment(val.endCore).format("DD-MM-YYYY")
     milestones1.push(obj)
+    semesters.push(val.semester)
   })
   data.milestones = milestones1
+  data.semesters = semesters.filter((val,i,a)=>a.indexOf(val)===i)
   res.render("admin/milestone", data)
 }
 

@@ -167,7 +167,7 @@ function loadDataInternUnit(){
       
       let row = ""
       data.forEach((val, index)=>{
-        row += `<tr onclick="window.location.href='/student/internship-unit/${val._id}">
+        row += `<tr onclick="location.href='/student/internship-unit/${val._id}'">
                   <td>${val.name}</td>
                   <td>${val.city}</td>
                   <td>${val.maxSv}</td>
@@ -182,7 +182,7 @@ function loadDataInternUnit(){
 
 function getInternUnit(){
   const params = {
-    introBy: "null",
+    introBy: null,
     idMilestone: document.getElementById("milestone").value
   }
   
@@ -193,7 +193,14 @@ function getInternUnit(){
     data: params    
   }).done((res)=>{
     const internUnitDom = document.getElementById("internshipUnit")
-    console.log(res)
+
+    let options = `<option value="0">Chọn đơn vị thực tập từ khoa ...</option>`
+    if(res.length > 0){
+      res.forEach((val)=>{
+        options += `<option value="${val._id}">${val.name}</option>`
+      })
+    }
+    internUnitDom.innerHTML = options    
   })
   
 

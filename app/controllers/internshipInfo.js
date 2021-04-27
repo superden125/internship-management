@@ -25,7 +25,12 @@ export async function getInternshipInfo(req, res) {
         error: { err: true, msg: "Not found semester" },
       })
   );
-   
+  let semesters = []
+  milestones.forEach((val)=>{
+    semesters.push(val.semester)
+  })
+  data.semesters = semesters.filter((val,i,a)=>a.indexOf(val)===i)
+  data.currentHk = milestones[0].hk 
 
   const internInfo = await InternshipInfo.findOne({ idSv, idMilestone: milestones[0]._id })
   

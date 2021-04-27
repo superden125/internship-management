@@ -36,6 +36,7 @@ export async function registerInternshipPost(req, res) {
         reqInfo: data.internRequire,
         benefit: data.internBenefit,
         introBy: data.idSv,
+        idMilestone: data.milestone.trim()
       });
       const result = await internshipUnit.save();
       data.idUnit = result._id;
@@ -149,18 +150,25 @@ export async function getListInternshipUnit(req, res) {
   let data = {
     title: "Internship Management System",
     roleName: "Sinh viên",
-    urlInfo: "Danh sách đơn vị thực tập",
+    urlInfo: "Danh sách đơn vị thực tập",    
   };
 
   const milestones = await Milestone.find({}).limit(12).sort({endRegister: -1})
-  data.milestones = milestones  
+  
   if(milestones.length === 0) return res.render(
       "student/internship-unit",
       Object.assign(data, {
         error: { err: true, msg: "Not found internship unit is this semester" },
       })
   );
-
+  let semesters = []
+  milestones.forEach((val)=>{
+    semesters.push(val.semester)
+  })
+  semesters = semesters.filter((val,i,a)=>a.indexOf(val)===i)
+  console.log(semesters)
+  data.semesters = semesters
+  data.currentHk = milestones[0].hk
   const internUnits = await InternshipUnit.find({
     introBy: null,
     idMilestone: milestones[0]._id
