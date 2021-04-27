@@ -36,6 +36,8 @@ router.get('/internship/assign', adminController.loadAssignTeacherPage);
 router.get('/internship/assign-method', adminController.assignTeacher)
   .put('/internship/assign-method', adminController.assignTeacher);
 
+router.get('/internship/assign/student-list/:id', adminController.getStudentsOfInternUnit);
+
 router.get('/', adminController.index);
 
 module.exports = router;

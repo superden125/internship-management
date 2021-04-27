@@ -64,26 +64,49 @@ function loadAssignTeacher() {
     .done(res => {
       if (res.data) {
         res.data.forEach((item, index) => {
-          tr += '<tr id="' + item._id + '">';
-          tr += '<td class="align-middle">' + (index + 1) + '</td>';
-          tr += '<td class="align-middle">' + item.name + '</td>';
-          tr += '<td class="align-middle">' + item.currentSv + '</td>';
-          tr += '<td class="align-middle">' + item.cityName + '</td>';
+          tr += `<tr id="${item._id}">`;
+          tr += `<td class="align-middle">${index + 1}</td>`;
+          tr += `<td class="align-middle">${item.name}</td>`;
+          tr += `<td class="align-middle" data-toggle="tooltip" data-placement="left" title="Xem danh sách" style="cursor:pointer" onclick="getStudentList('${item._id}')">${item.currentSv}</td>`;
+          tr += `<td class="align-middle">${item.cityName}</td>`;
 
           if (!item.teacherName) {
             tr += '<td class="align-middle font-italic">(Chưa được phân công)</td>';
           } else {
-            tr += '<td class="align-middle">' + item.teacherName + '</td>';
+            tr += `<td class="align-middle">${item.teacherName}</td>`;
           }
 
-          tr += '<td class="align-middle">';
-          tr += `<a class="d-block" href="#" data-toggle="tooltip" data-placement="left" title="Chỉnh sửa" onclick="editTeacher('${item._id}')"><i class="fas fa-edit text-body"></i></a>`;
+          tr += `<td class="align-middle"><a class="d-block" href="#" data-toggle="tooltip" data-placement="left" title="Chỉnh sửa" onclick="editTeacher('${item._id}')"><i class="fas fa-edit text-body"></i></a></td>`;
         });
 
         tbody.innerHTML = tr;
 
         $('#loading').remove();
-
       }
     })
+}
+
+function getStudentList(id) {
+  var string = '';
+  $.ajax({
+    method: 'GET',
+    url: `/admin/internship/assign/student-list/${id}`
+  })
+  .done(res => {
+    if (!res.err) {
+      if (res.data[0].studentList.length > 0) {
+        res.data[0].studentList.forEach((student, index) => {
+          string += `<tr><th>${index + 1}</th><td>${student.ms}</td><td>${student.name}</td><td>${student.email}</td></tr>`;
+        });
+
+        string = `<table class="table"><thead><tr><th>#</th><th>MSSV</th><th>Họ và tên</th><th>@email</th></tr></thead><tbody>${string}</tbody></table>`;
+      } else {
+        string = 'Chưa có sinh viên nào';
+      }
+      
+    }
+
+    $('.modal-body').html(string);
+    $('#myModal').modal();
+  });
 }

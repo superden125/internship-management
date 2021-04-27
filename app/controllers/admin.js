@@ -3,6 +3,7 @@ import InternshipUnit from '../models/internshipUnit';
 import mongoose from 'mongoose';
 import Teacher from '../models/teacher';
 import Student from '../models/student';
+import User from '../models/user';
 import Milestone from '../models/milestone';
 import InternshipInfo from '../models/internshipInfo';
 import tinh from "../lib/tinh";
@@ -34,7 +35,9 @@ module.exports.getAllTeachers = async (req, res) => {
   // });
   // const teachers = await Teacher.find();
   // res.json(teachers);
-  await Teacher.find({})
+  await User.find({
+      role: 'teacher'
+    })
     .exec(function (err, teachers) {
       return res.json({
         data: teachers
@@ -49,10 +52,14 @@ module.exports.getAllStudents = async (req, res) => {
   // });
   // const students = await Student.find();
   // res.json(students);
-  res.render('admin', {
-    roleName: 'Giáo vụ khoa',
-    urlInfo: 'Quản lý sinh viên',
-  });
+  await User.find({
+      role: 'student'
+    })
+    .exec((err, students) => {
+      return res.json({
+        data: students
+      });
+    });
 }
 
 module.exports.loadAproveInternshipUnitPage = (req, res) => {
@@ -299,7 +306,6 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
               new: true
             })
             .exec(function (err, item1) {
-              console.log(item1);
               res.redirect('/admin/internship/approve');
             })
         });
@@ -353,7 +359,6 @@ module.exports.assignTeacher = async (req, res) => {
       .aggregate(query)
       .exec(function (err, internshipUnits) {
         internshipUnits.forEach(internUnit => {
-          // console.log(internUnit);
           internUnit.cityName = tinh.find((tinh) => tinh.id == internUnit.city).name;
         });
 
@@ -384,6 +389,64 @@ module.exports.assignTeacher = async (req, res) => {
     }
 
   }
+}
+
+module.exports.getStudentsOfInternUnit = async (req, res) => {
+  var query = [
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(req.params.id)
+      }
+    },
+    {
+      $lookup: {                              
+        from: 'internshipinfos',
+        localField: '_id',
+        foreignField: 'idIntern',
+        as: 'internInfos'
+      }
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'internInfos.idSv',
+        foreignField: '_id',
+        as: 'student'
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        city: 1,
+        studentList: {
+          $map: {
+            input: '$student',
+            as: 'student',
+            in: {
+              _id: '$$student._id',
+              ms: '$$student.ms',
+              name: '$$student.name',
+              email: '$$student.email',
+            }
+          }
+        }
+      }
+    }
+  ]
+
+  await InternshipUnit
+    .aggregate(query)
+    .exec((err, students) => {    
+      if (err) {
+        res.json({ err: true });
+      } else { 
+        res.json({
+          err: false,
+          data: students
+        });
+      }
+    });
 }
 
 //Milestone
@@ -428,6 +491,7 @@ module.exports.milestonePost = async (req, res) => {
   }
 
 }
+
 module.exports.milestonePut = async (req, res) => {
   const data = req.body;
   const milestone = await Milestone.findById(data._id);
