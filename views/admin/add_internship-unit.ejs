@@ -11,6 +11,8 @@
         <div id="content">
             <%- include('../layouts/navbar') %>
 
+
+
                 <div class="container">
                     <div class="box-nav d-flex justify-between">
                         <div class="filter">
@@ -23,97 +25,140 @@
                         <span class="text-dark">Sử dụng biểu mẫu dưới đây để tạo một đơn vị thực tập mới</span>
                     </div>
 
-                    <div class="col-md-5">
-                        <div>
-
-
-                            <!-- add internship-unit form -->
-                            <form action="/admin/manage/internship-unit" method="POST" id="add_internship-unit">
-                                <div>
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Tên công ty</label>
-                                        <input type="hidden" name="id" value="">
-                                        <input type="text" class="form-control" name="name" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="address" class="form-label">Địa chỉ</label>
-                                        <input type="text" class="form-control" name="address" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" name="email" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="city" class="form-label">Thành phố</label>
-                                        <input type="text" class="form-control" name="city" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="phone" class="form-label">Số điện thoại</label>
-                                        <input type="text" class="form-control" name="phone" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="website" class="form-label">Website</label>
-                                        <input type="text" class="form-control"name="website" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="mentorName" class="form-label">Tên người hướng dẫn</label>
-                                        <input type="text" class="form-control" name="mentorName" value="">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="mentorPhone" class="form-label">Số điện thoại người hướng dẫn</label>
-                                        <input type="text"  class="form-control" name="mentorPhone" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="mentorEmail" class="form-label">Email người hướng dẫn</label>
-                                        <input type="text" class="form-control" name="mentorEmail" value="">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="workEnv" class="form-label">Môi trường làm việc</label>
-                                        <input type="text" class="form-control" name="workEnv" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="workContent" class="form-label">Nội dung thực tập</label>
-                                        <input type="text" class="form-control" name="workContent" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="reqTime" class="form-label">Giờ thực tập tối thiểu trên tuần</label>
-                                        <input type="number" class="form-control" name="reqTime" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="reqInfo" class="form-label">Yêu cầu của đơn vị thực tập</label>
-                                        <input type="text" class="form-control" name="reqInfo" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="maxSv" class="form-label">Số lượng tối đa</label>
-                                        <input type="number" class="form-control" name="maxSv" value="">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="benefit" class="form-label">Quyền lợi</label>
-                                        <input type="text" class="form-control" name="benefit" value="">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="note" class="form-label">Ghi chú</label>
-                                        <input type="text" class="form-control" name="note" value="">
-                                    </div>
-
-
-
-                                    <div class="group-btn">
-                                        <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
-                                    </div>
-
-                                </div>
-                            </form>
-
+                    <% if(error.err) {%>
+                        <div class="col-md-5">
+                            <%- include("../error.ejs") %>
                         </div>
-                    </div>
+                        <% }else{ %>
+
+                            <div class="col-md-5">
+                                <div id="alter"></div>
+
+                                <!-- add internship-unit form -->
+                                <form action="/admin/manage/internship-unit" method="POST" id="add_internship-unit"
+                                    class="IU-form">
+                                    <div>
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Tên công ty</label>
+                                            <input type="text" class="form-control" id="name" name="name" value="">
+                                            <span class="text-danger" id="err-name"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="text" class="form-control" id="email" name="email" value="">
+                                            <span class="text-danger" id="err-email"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">Địa chỉ</label>
+                                            <textarea class="form-control" id="address" name="address"
+                                                style="height: 100px"></textarea>
+                                            <span class="text-danger" id="err-address"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="city" class="form-label">Thành phố</label>
+                                            <select class="form-control" id="city" name="city">
+                                                <option value="0">Chọn Tỉnh/ Thành phố ...</option>
+
+                                                <% tinh.forEach((val)=>{ %>
+                                                    <option value="<%= val.id%>">
+                                                        <%= val.name%>
+                                                    </option>
+                                                    <% })%>
+                                            </select>
+                                            <span class="text-danger" id="err-city"></span>
+
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="phone" class="form-label">Số điện thoại</label>
+                                            <input type="text" class="form-control" id="phone" name="phone" value="">
+                                            <span class="text-danger" id="err-phone"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="website" class="form-label">Website</label>
+                                            <input type="text" class="form-control" id="website" name="website"
+                                                value="">
+                                            <span class="text-danger" id="err-website"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="mentorName" class="form-label">Tên người hướng dẫn</label>
+                                            <input type="text" class="form-control" id="mentorName" name="mentorName"
+                                                value="">
+                                            <span class="text-danger" id="err-mentorName"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="mentorPhone" class="form-label">Số điện thoại người hướng
+                                                dẫn</label>
+                                            <input type="text" class="form-control" id="mentorPhone" name="mentorPhone"
+                                                value="">
+                                            <span class="text-danger" id="err-mentorPhone"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="mentorEmail" class="form-label">Email người hướng dẫn</label>
+                                            <input type="text" class="form-control" id="mentorEmail" name="mentorEmail"
+                                                value="">
+                                            <span class="text-danger" id="err-mentorEmail"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="workEnv" class="form-label">Môi trường làm việc</label>
+                                            <input type="text" class="form-control" id="workEnv" name="workEnv"
+                                                value="">
+                                            <span class="text-danger" id="err-workEnv"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="workContent" class="form-label">Nội dung thực tập</label>
+                                            <input type="text" class="form-control" id="workContent" name="workContent"
+                                                value="">
+                                            <span class="text-danger" id="err-workContent"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="reqTime" class="form-label">Giờ thực tập tối thiểu trên
+                                                tuần</label>
+                                            <input type="number" class="form-control" id="reqTime" name="reqTime"
+                                                value="">
+                                            <span class="text-danger" id="err-reqTime"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="reqInfo" class="form-label">Yêu cầu của đơn vị thực tập</label>
+                                            <input type="text" class="form-control" id="reqInfo" name="reqInfo"
+                                                value="">
+                                            <span class="text-danger" id="err-reqInfo"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="maxSv" class="form-label">Số lượng tối đa</label>
+                                            <input type="number" class="form-control" id="maxSv" name="maxSv" value="">
+                                            <span class="text-danger" id="err-maxSv"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="benefit" class="form-label">Hỗ trợ của đơn vị thực tập</label>
+                                            <input type="text" class="form-control" id="benefit" name="benefit"
+                                                value="">
+                                            <span class="text-danger" id="err-benefit"></span>
+                                        </div>
+
+
+
+                                        <div class="group-btn">
+                                            <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
+                                            <input type="reset" class="btn btn-reset ml-4" value="Huỷ bỏ"
+                                                onclick="resetFormIU()" />
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <%}%>
                 </div>
+
         </div>
 
         <%- include('../layouts/script') %>
+            <script src="/js/admin/show-internship-unit.js"></script>
 </body>
 
 </html>

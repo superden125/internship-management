@@ -9,9 +9,9 @@ const password = {
     }
     return password.length >= 8 && password.length <= 32;
   },
-  hashPassword: (password)=>{
+  hashPassword: async (password)=>{
     const salt = await bcrypt.genSalt(10);
-    const hashPass = await bcrypt.hash(pwd, salt);
+    const hashPass = await bcrypt.hash(password, salt);
     return hashPass;
   },
   genRandomString: (length)=>{

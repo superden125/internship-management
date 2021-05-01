@@ -14,9 +14,9 @@
                 <span class="text-gradient">Thêm <i class="fas fa-user"></i></span>
             </a>
           </div>
-          <table class="table">
+          <table class="table table-hover">
               <thead>
-                <tr>
+                <tr >
                     <th>#</th>
                     <th>Tên công ty</th>
                     <th>Email</th>
@@ -28,24 +28,22 @@
               </thead>
               <tbody>
                 <% for(var i = 0; i < internshipunits.length; i++) { %>
-                  <tr>
+                  <tr onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';">
                     <td><%= i + 1 %></td>
                     <td><%= internshipunits[i].name %></td>
                     <td><%= internshipunits[i].email %></td>
                     <td><%= internshipunits[i].address %></td>
-                    <td><%= internshipunits[i].city %></td>
+                    <td><%= internshipunits[i].cityName1 %></td>
                     <td><%= internshipunits[i].phone %></td>
-                    <td>
-                      <a href="/admin/manage/internship-unit/update_internship-unit?id=<%= internshipunits[i]._id%>" class="btn boder-shadow update">
-                        <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
-                      </a>
+                    <td class="delete-intern-unit">
+                      
 
                       <a class="btn border-shadow delete" data-id=<%= internshipunits[i]._id%> >
                         <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
                     </a>
                     </td>
                   </tr>
-                  </a>
+                  
                   
                 
                 <% } %>
@@ -53,7 +51,7 @@
               </tbody>
           </table>
         </div>
-
+        
         <%- include('../layouts/script') %>
         <script src="/js/admin/show-internship-unit.js"></script>
       </body>

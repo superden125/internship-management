@@ -5,6 +5,7 @@ import User from '../models/user';
 import Milestone from '../models/milestone';
 import InternshipUnit from '../models/internshipUnit';
 
+
 // [GET] /db/major
 module.exports.mockMajorDB = (req, res) => {
   const listMajor = [{

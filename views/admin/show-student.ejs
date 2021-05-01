@@ -12,7 +12,7 @@
       <%- include('../layouts/navbar') %>
 
         <div>
-          <a href="/admin/manage/teachers/add_teacher" class="border-shadow">
+          <a href="/admin/manage/students/add_student" class="border-shadow">
             <span class="text-gradient">Thêm <i class="fas fa-user"></i></span>
           </a>
         </div>
@@ -20,35 +20,38 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Mã số</th>
+              <th>Mã số sinh viên</th>
               <th>Họ tên</th>
+              <th>Mã Lớp</th>
               <th>Mã Ngành</th>
               <th>Email</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <% for(var i=0; i < teachers.length; i++) { %>
-              <tr onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
+            <% for(var i=0; i < students.length; i++) { %>
+              <tr onclick="window.location.href='/admin/manage/students/<%= students[i]._id%>';">
                 <td>
                   <%= i + 1 %>
                 </td>
                 <td>
-                  <%= teachers[i].ms %>
+                  <%= students[i].ms %>
                 </td>
                 <td>
-                  <%= teachers[i].name %>
+                  <%= students[i].name %>
                 </td>
                 <td>
-                  <%= teachers[i].major.name %>
+                  <%= students[i].idClass %>
                 </td>
                 <td>
-                  <%= teachers[i].email %>
+                  <%= students[i].major.name %>
+                </td>
+                <td>
+                  <%= students[i].email %>
                 </td>
 
-
                 <td>
-                  <a class="btn border-shadow delete" data-id=<%=teachers[i]._id%> >
+                  <a class="btn border-shadow delete" data-id=<%=students[i]._id%> >
                     <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
                   </a>
                 </td>
@@ -62,7 +65,7 @@
     </div>
 
     <%- include('../layouts/script') %>
-      <script src="/js/admin/show-teacher.js"></script>
+      <script src="/js/admin/show-student.js"></script>
 </body>
 
 </html>

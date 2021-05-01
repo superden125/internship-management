@@ -1,3 +1,4 @@
+import bcrypt, { hashSync } from "bcryptjs";
 import moment from "moment"
 import InternshipUnit from '../models/internshipUnit';
 import mongoose, { model } from 'mongoose';
@@ -6,6 +7,9 @@ import Student from '../models/student';
 import Milestone from '../models/milestone';
 import InternshipInfo from '../models/internshipInfo';
 import {tinh} from "../lib/tinh";
+import * as password from "../lib/password";
+import User from '../models/user';
+import Major from '../models/major';
 
 
 module.exports.index = async (req, res) => {
@@ -19,55 +23,79 @@ module.exports.index = async (req, res) => {
 }
 
 module.exports.getAllInternshipUnit = async (req, res) => {
-  // const internshipUnit = await InternshipUnit.find({});
-  //  res.json(internshipUnit);
-    
-  //   res.render('admin/internship-unit', {
-  //   roleName: 'Giáo vụ khoa',
-  //   urlInfo: 'Quản lý đơn vị thực tập',
-  // });
-  
+
   let data = {
     roleName: 'Giáo vụ khoa',
-    urlInfo: 'Thời gian thực tập',
+    urlInfo: 'Đơn vị thực tập',
+    error: {
+      err: false
+    },
   }
-  const internshipunits = await InternshipUnit.find({})
-  data.internshipunits = internshipunits
-  res.render("admin/show-internship-unit",data)
+  const internshipunits = await InternshipUnit.find({});
+  // internshipunits.cityName = tinh.find((tinh) => tinh.id == internshipunits.city).name;
+    internshipunits.forEach(internshipunit => {
+    internshipunit.cityName1 = tinh.find((tinh) => tinh.id == internshipunit.city).name;
+  });
+  //data.tinh = tinh.sort((a, b) => a.name - b.name);
+  data.internshipunits = internshipunits;
+  res.render("admin/show-internship-unit",data);
 }
 
 module.exports.getAllTeachers = async (req, res) => {
-  // res.render('admin', {
-  //   roleName: 'Giáo vụ khoa',
-  //   urlInfo: 'Quản lý giáo viên'
-  // });
-  // const teachers = await Teacher.find();
-  // res.json(teachers);
-  //await Teacher.find({})
-    //.exec(function (err, teachers) {
-      //return res.json({
-       //data: teachers
-     // });
-   // });
-   let data = {
-    roleName: 'Giáo vụ khoa',
-    urlInfo: 'Thời gian thực tập',
-  }
-  const teachers = await Teacher.find({})
-  data.teachers = teachers
-  res.render("admin/show-teacher",data)
+
+   const teachers = await User.aggregate([
+     {
+        $match:{
+          role:'teacher'
+        },
+     },
+     {
+      $lookup: {
+        from: 'majors',
+        localField: 'idMajor',
+        foreignField: '_id',
+        as: 'major'
+      }
+     },
+     {
+        $unwind: '$major'
+      },
+    ])
+    .exec(function (err, teachers) {
+      return res.render("admin/show-teacher", {
+       teachers: teachers,
+       roleName: 'Giáo vụ khoa',
+      urlInfo: 'Giáo viên',
+      });
+   });
 }
 
 module.exports.getAllStudents = async (req, res) => {
-  // res.render('admin', {
-  //   roleName: 'Giáo vụ khoa',
-  //   urlInfo: 'Quản lý sinh viên',
-  // });
-  // const students = await Student.find();
-  // res.json(students);
-  res.render('admin', {
-    roleName: 'Giáo vụ khoa',
-    urlInfo: 'Quản lý sinh viên',
+  
+  const students = await User.aggregate([
+    {
+       $match:{
+         role:'student'
+       },
+    },
+    {
+     $lookup: {
+       from: 'majors',
+       localField: 'idMajor',
+       foreignField: '_id',
+       as: 'major'
+     }
+    },
+    {
+       $unwind: '$major'
+     },
+   ])
+   .exec(function (err, students) {
+     return res.render("admin/show-student", {
+      students: students,
+      roleName: 'Giáo vụ khoa',
+     urlInfo: 'Sinh viên',
+     });
   });
 }
 
@@ -469,10 +497,14 @@ module.exports.addInternshipUnit = async (req, res) => {
 
   let data = {
     roleName: 'Giáo vụ khoa',
-    urlInfo: 'Thời gian thực tập',
+    urlInfo: 'Đơn vị thực tập / Thêm mới',
+    error: {
+      err: false
+    },
   }
   const internshipunits = await InternshipUnit.find({})
   data.internshipunits = internshipunits
+  data.tinh = tinh.sort((a, b) => a.name - b.name);
   res.render("admin/add_internship-unit",data)
 }
 
@@ -518,16 +550,23 @@ exports.createInternshipUnit = (req, res) => {
     });
 }
 
-module.exports.getUpdateInternshipUnit = async (req, res) => {
+export async function getUpdateInternshipUnit(req, res){
   // const internshipUnit = await InternshipUnit.find({});
   //  res.json(internshipUnit);
+
+  // return res.json(req.body);
     
   let data = {
     roleName: 'Giáo vụ khoa',
-    urlInfo: 'Thời gian thực tập',  
+    urlInfo: 'Đơn vị thực tập / Thêm mới',  
+    error: {
+      err: false
+    },
   }
-  const internshipunits = await InternshipUnit.findOne({_id:req.query.id})
-  data.internshipunits = internshipunits
+  const internshipunits = await InternshipUnit.findOne({_id:req.params.id});
+  internshipunits.cityName = tinh.find((tinh) => tinh.id == internshipunits.city).name;
+  data.tinh = tinh.sort((a, b) => a.name - b.name);
+  data.internshipunits = internshipunits;
   res.render("admin/update_internship-unit",data)
 }
 
@@ -540,6 +579,8 @@ exports.updateInternshipUnit = (req, res) =>{
   }
 
   const id = req.params.id;
+
+  // return res.json(req.body)
   InternshipUnit.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
     .then(data => {
       if(!data){
@@ -577,46 +618,47 @@ exports.deleteInternshipUnit = (req, res)=>{
 exports.addTeacher = async (req, res) => {
   let data = {
     roleName: 'Giáo vụ khoa',
-    urlInfo: 'Thời gian thực tập',
+    urlInfo: 'Giáo viên / Thêm mới',
+    error: {
+      err: false
+    },
   }
-  const internshipunits = await Teacher.find({})
-  data.internshipunits = internshipunits
+  const teachers = await User.find({})
+  const majors = await Major.find({})
+  data.majors = majors
+  data.teachers = teachers
+ 
   res.render("admin/add_teacher",data)
+  
 }
 
-exports.createTeacher = (req, res) => {
+exports.createTeacher = async (req, res) => {
   if(!req.body){
     res.status(400).send({message: "Content can not be emtpy!"});
     return;
   }
   
+  var pwd = password.genRandomString(9);
+  
+  const salt = await bcrypt.genSalt(10);
+  const hashPass = await bcrypt.hash(pwd, salt);
+
   //new teacher
-  const user = new ({
+  const teacher = new User({
+    ms: req.body.ms,
     name: req.body.name,
-    address:  req.body.address,
+    idMajor: mongoose.Types.ObjectId(req.body.major),
     email: req.body.email,
-    city: req.body.city,
+    password: hashPass,
     phone: req.body.phone,
-    website: req.body.website,
-    mentor: {name: req.body.mentorName,
-     phone: req.body.mentorPhone,
-     email: req.body.mentorEmail},
-    workEnv: req.body.workEnv,
-    workContent: req.body.workContent,
-    reqTime: req.body.reqTime,
-    reqInfo: req.body.reqInfo,
-    maxSv: req.body.maxSv,
-    currentSv: req.body.currentSv,
-    benefit: req.body.benefit,
-    note: req.body.note,
-    introBy: req.body.introBy
+    role: "teacher"
   }) 
 
   // save intership-unit in the database
-  internshipunit
-    .save(internshipunit)
+  teacher
+    .save(teacher)
     .then(data => {
-      res.redirect('/admin/manage/internship-unit');
+      res.redirect('/admin/manage/teachers');
     })
     .catch(err => {
       res.status(500).send({
@@ -625,5 +667,180 @@ exports.createTeacher = (req, res) => {
     });
 }
 
+export async function getUpdateTeacher(req, res){
+  // const internshipUnit = await InternshipUnit.find({});
+  //  res.json(internshipUnit);
+
+  // return res.json(req.body);
+    
+  let data = {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Giáo viên / Cập nhật',  
+    error: {
+      err: false
+    },
+  }
+  const teacher = await User.findOne({_id:req.params.id});
+  const majors = await Major.find({})
+  data.majors = majors
+  data.teacher = teacher;
+  res.render("admin/update_teacher",data)
+}
+
+exports.updateTeacher = (req, res) =>{
+  if(!req.body){
+    return res
+      .status(400)
+      .send({message: "Data to update cannot be empty"})
+  }
+
+  const id = req.params.id;
+
+  // return res.json(req.body)
+  User.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
+    .then(data => {
+      if(!data){
+        res.status(404).send({message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`})
+      }else{
+        res.redirect('/admin/manage/teachers')
+      }
+    })
+    .catch(err => {
+        res.status(500).send({ message: "Error Update internship-unit information"})
+    })
+}
+
+exports.deleteTeacher = (req, res)=>{
+  const id = req.params.id;
+
+  User.findByIdAndDelete(id)
+      .then(data => {
+          if(!data){
+              res.status(404).send({ message : `Cannot Delete with id ${id}. Maybe id is wrong`})
+          }else{
+              res.send({
+                  message : "User was deleted successfully!"
+              })
+          }
+      })
+      .catch(err =>{
+          res.status(500).send({
+              message: "Could not delete User with id=" + id
+          });
+      });
+}
+
+//manage students
+exports.addStudent = async (req, res) => {
+  let data = {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Sinh viên / Thêm mới',
+    error: {
+      err: false
+    },
+  }
+  const students = await User.find({})
+  const majors = await Major.find({})
+  data.majors = majors
+  data.students = students
+ 
+  res.render("admin/add_student",data)
+  
+}
+
+exports.createStudent = async (req, res) => {
+  if(!req.body){
+    res.status(400).send({message: "Content can not be emtpy!"});
+    return;
+  }
+  
+  var pwd = password.genRandomString(9);
+  
+  const salt = await bcrypt.genSalt(10);
+  const hashPass = await bcrypt.hash(pwd, salt);
+
+  //new student
+  const student = new User({
+    ms: req.body.ms,
+    name: req.body.name,
+    idClass: req.body.idClass,
+    idMajor: mongoose.Types.ObjectId(req.body.major),
+    email: req.body.email,
+    password: hashPass,
+    phone: req.body.phone,
+    role: "student"
+  }) 
+
+  // save user in the database
+  student
+    .save(student)
+    .then(data => {
+      res.redirect('/admin/manage/students');
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "some error occurred while creating a create operation"
+      });
+    });
+}
+
+export async function getUpdateStudent(req, res){
+  
+  let data = {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Sinh viên / Cập nhật',  
+    error: {
+      err: false
+    },
+  }
+  const student = await User.findOne({_id:req.params.id});
+  const majors = await Major.find({})
+  data.majors = majors
+  data.student = student;
+  res.render("admin/update_student",data)
+}
+
+exports.updateStudent = (req, res) =>{
+  if(!req.body){
+    return res
+      .status(400)
+      .send({message: "Data to update cannot be empty"})
+  }
+
+  const id = req.params.id;
+
+  // return res.json(req.body)
+  User.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
+    .then(data => {
+      if(!data){
+        res.status(404).send({message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`})
+      }else{
+        res.redirect('/admin/manage/students')
+      }
+    })
+    .catch(err => {
+        res.status(500).send({ message: "Error Update internship-unit information"})
+    })
+}
+
+exports.deleteStudent = (req, res)=>{
+  const id = req.params.id;
+
+  User.findByIdAndDelete(id)
+      .then(data => {
+          if(!data){
+              res.status(404).send({ message : `Cannot Delete with id ${id}. Maybe id is wrong`})
+          }else{
+              res.send({
+                  message : "User was deleted successfully!"
+              })
+          }
+      })
+      .catch(err =>{
+          res.status(500).send({
+              message: "Could not delete User with id=" + id
+          });
+      });
+}
 
 

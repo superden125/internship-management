@@ -14,13 +14,13 @@
                 <div class="container">
                     <div class="box-nav d-flex justify-between">
                         <div class="filter">
-                            <a href="/admin/manage/teachers"><i class="fas fa-angle-double-left"></i> Tất cả giáo
+                            <a href="/admin/manage/students"><i class="fas fa-angle-double-left"></i> Tất cả sinh
                                 viên</a>
                         </div>
                     </div>
                     <div class="form-title text-center">
-                        <h2 class="text-dark">Giao viên mới</h2>
-                        <span class="text-dark">Sử dụng biểu mẫu dưới đây để tạo giáo viên mới</span>
+                        <h2 class="text-dark">Sinh viên mới</h2>
+                        <span class="text-dark">Sử dụng biểu mẫu dưới đây để tạo sinh viên mới</span>
                     </div>
 
                     <% if(error.err) {%>
@@ -31,11 +31,11 @@
                             <div class="col-md-5">
                                 <div id="alter"></div>
 
-                                <!-- add teacher form -->
-                                <form action="/admin/manage/teachers" method="POST" id="add_teacher" class="Teacher-form">
+                                <!-- add student form -->
+                                <form action="/admin/manage/students" method="POST" id="add_student" class="student-form">
                                     <div>
                                         <div class="mb-3">
-                                            <label for="ms" class="form-label">Mã số cán bộ</label>
+                                            <label for="ms" class="form-label">Mã số sinh viên</label>
                                             <input type="text" class="form-control" id="ms" name="ms" value="">
                                             <span class="text-danger" id="err-ms"></span>
                                         </div>
@@ -43,6 +43,11 @@
                                             <label for="name" class="form-label">Họ tên</label>
                                             <input type="text" class="form-control" id="name" name="name" value="">
                                             <span class="text-danger" id="err-name"></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="idClass" class="form-label">Mã lớp</label>
+                                            <input type="text" class="form-control" id="idClass" name="idClass" value="">
+                                            <span class="text-danger" id="err-idClass"></span>
                                         </div>
                                         <div class="mb-3">
                                             <label for="idMajor" class="form-label">Mã ngành</label>
@@ -71,7 +76,7 @@
                                         <div class="group-btn">
                                             <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
                                             <input type="reset" class="btn btn-reset ml-4" value="Huỷ bỏ"
-                                                onclick="resetFormTeacher()" />
+                                                onclick="resetFormStudent()" />
                                         </div>
 
                                     </div>
@@ -82,7 +87,7 @@
         </div>
 
         <%- include('../layouts/script') %>
-        <script src="/js/admin/show-teacher.js"></script>
+        <script src="/js/admin/show-student.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../layouts/meta') %>
+</head>
+
+<body>
+    <%- include('../layouts/admin-sidebar') %>
+
+        <div id="content">
+            <%- include('../layouts/navbar') %>
+
+                <div class="container">
+                    <div class="box-nav d-flex justify-between">
+                        <div class="filter">
+                            <a href="/admin/manage/teachers"><i class="fas fa-angle-double-left"></i>Tất cả giáo
+                                viên</a>
+                        </div>
+                    </div>
+                    <div class="form-title text-center">
+                        <h2 class="text-dark">Cập nhật giáo viên</h2>
+                        <span class="text-dark">Sử dụng biểu mẫu dưới đây để cập nhật giáo viên</span>
+                    </div>
+                    <% if(error.err) {%>
+                        <div class="col-md-5">
+                            <%- include("../error.ejs") %>
+                        </div>
+                        <% }else{ %>
+
+                            <!-- update teacher form -->
+                            <div class="col-md-5">
+                                <div id="alter"></div>
+                                <form action="/admin/manage/teachers/<%= teacher._id %>" method="POST"
+                                    id="update_teacher">
+
+                                    <div class="mb-3">
+                                        <label for="ms" class="form-label">Mã số cán bộ</label>
+                                        <input type="hidden" name="id" value="<%= teacher._id %>">
+                                        <input type="text" class="form-control" name="ms" value="<%= teacher.ms %>">
+                                        <span class="text-danger" id="err-ms"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Tên giáo viên</label>
+                                        <input type="text" class="form-control" name="name" value="<%= teacher.name%>">
+                                        <span class="text-danger" id="err-name"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="idMajor" class="form-label">Mã ngành</label>
+
+                                        <select name="major" id="major" class="custom-select">
+                                            <% majors.forEach((val)=>{ %>
+                                                <% if (val.id==teacher.idMajor) { %>
+                                                    <option value="<%= val.id %>" selected>
+                                                        <%= val.name %>
+                                                    </option>
+                                                    <% } else { %>
+                                                        <option value="<%= val.id%>">
+                                                            <%= val.name%>
+                                                        </option>
+                                                        <% } %>
+                                                            <% })%>
+                                        </select>
+
+
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="text" class="form-control" name="email"
+                                            value="<%= teacher.email%>">
+                                        <span class="text-danger" id="err-email"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Số điện thoại</label>
+                                        <input type="text" class="form-control" name="phone"
+                                            value="<%= teacher.phone%>">
+                                        <span class="text-danger" id="err-phone"></span>
+                                    </div>
+
+                                    <div class="group-btn">
+                                        <input type="submit" class="btn btn-sub mr-4" value="Lưu" />
+                                    </div>
+
+
+                                </form>
+                            </div>
+                            <%}%>
+
+
+
+                </div>
+        </div>
+
+        <%- include('../layouts/script') %>
+            <script src="/js/admin/show-teacher.js"></script>
+</body>
+
+</html>
