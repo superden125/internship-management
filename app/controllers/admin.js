@@ -440,6 +440,8 @@ module.exports.milestoneGets = async (req,res)=>{
 module.exports.milestonePost = async (req, res) => {
   try {
     console.log(req.body)
+    const existMilestone = await Milestone.findOne({semester: req.body.semester, hk: req.body.hk})
+    if(existMilestone) return res.json({success: false, msg: "Thời gian thực tập đã tồn tại"})
     const milestone = new Milestone(req.body)
     const result = await milestone.save()
     if (!result) return res.json({
@@ -457,6 +459,11 @@ module.exports.milestonePost = async (req, res) => {
 }
 module.exports.milestonePut = async (req, res) => {
   const data = req.body;
+
+  const existMilestone = await Milestone.findOne({semester: data.semester, hk: data.hk})
+  
+  if(existMilestone && data._id != existMilestone._id) return res.json({success: false, msg: "Thời gian thực tập đã tồn tại"})
+  
   const milestone = await Milestone.findById(data._id);
 
   if (!milestone) return res.json({

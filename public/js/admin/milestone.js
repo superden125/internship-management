@@ -82,7 +82,6 @@ function saveMilestone(id){
             data: data
         }).done((res) => {
             if (res.success) {
-
                 deleteMilestone()
                 const data = `<tr id="${res.data._id}">` +
                     `<td>${semester}</td>` +
@@ -96,6 +95,7 @@ function saveMilestone(id){
                 $('#table-milestone > tbody > tr:first').before(data)
                 alterSuccess("Lưu thành công")
             }
+            else alterError(res.msg)
         })
     } else {
         const row = document.getElementById(id)
@@ -134,6 +134,7 @@ function saveMilestone(id){
                 deleteMilestone(res.data._id)                
                 alterSuccess("Lưu thành công")
             }
+            else alterError(res.msg)
         })
     }
 
@@ -165,9 +166,9 @@ function editMilestone(id) {
     const dateEndIntern = `${endIntern[2]}-${endIntern[1]}-${endIntern[0]}`
     const dateEndCore = `${endCore[2]}-${endCore[1]}-${endCore[0]}`
 
-
+    
     child[0].innerHTML = `<select name="semester" id="semester" class="custom-select"> <option value="${semester1}">${semester1}</option> <option value="${semester2}">${semester2}</option> </select>`
-    child[1].innerHTML = `<select name="hk" id="hk" class="custom-select"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> </select>`
+    child[1].innerHTML = `<select name="hk" id="hk" class="custom-select"> <option value="1" ${current.hk === "1" ? "selected":""}>1</option> <option value="2" ${current.hk === "2" ? "selected":""}>2</option> <option value="3" ${current.hk === "3" ? "selected":""}>3</option> </select>`
     child[2].innerHTML = `<input class="form-control" type="date" name="endRegister" id="endRegister" value="${dateEndRegister}" >`
     child[3].innerHTML = `<input class="form-control" type="date" name="startIntern" id="startIntern" value="${dateStartIntern}">`
     child[4].innerHTML = `<input class="form-control" type="date" name="endIntern" id="endIntern" value="${dateEndIntern}">`
@@ -211,7 +212,7 @@ function loadData(){
                     <td>${val.startIntern}</td>
                     <td>${val.endIntern}</td>
                     <td>${val.endCore}</td>
-                    <td class="align-middle"><span class="sd-icon" id="editMilestone" onclick="editMilestone('${val._id}')"><i class="fas fa-edit"></i></span></td>
+                    ${val.endRegister < Date.now() ? `<td class="align-middle"><span class="sd-icon" id="editMilestone" onclick="editMilestone('${val._id}')"><i class="fas fa-edit"></i></span></td>`: ""}
                 </tr>`
         })
         table.innerHTML = row

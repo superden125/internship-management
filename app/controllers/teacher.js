@@ -1,3 +1,5 @@
+import mongoose from "mongoose"
+import moment from "moment"
 import InternshipInfo from "../models/internshipInfo"
 import InternshipUnit from "../models/internshipUnit"
 import Milestone from '../models/milestone'
@@ -5,6 +7,7 @@ import Milestone from '../models/milestone'
 import {getNameTinh} from "../lib/tinh"
 import {status} from "../lib/convert"
 
+const ObjectId = mongoose.Types.ObjectId
 
 // [GET] /teacher/
 export async function index (req, res) {
@@ -27,7 +30,7 @@ export async function index (req, res) {
 
   const lookupStudent ={
     $lookup:{
-      from: 'students',
+      from: 'users',
       localField: "idSv",
       foreignField: "_id",
       as: "student"
@@ -45,10 +48,10 @@ export async function index (req, res) {
 
   const filter = {
     $match: {
-      idGv: idGv
+      idGv: ObjectId(idGv)
     }
   }
-
+  
   const select = {
     $project: {
       _id: 1,
@@ -80,12 +83,12 @@ export async function index (req, res) {
   InternshipInfo
     .aggregate([filter, lookupStudent, lookupInternUnit, {$unwind: "$student"}, {$unwind: "$internUnit"}, select])
     .exec((err, internInfos)=>{
-      //console.log(internInfos)
+      //console.log("aaa",internInfos)
       internInfos.forEach(intern => {
         intern.internUnit.cityName = getNameTinh(intern.internUnit.city)
       })
       data.internInfos = internInfos
-      //console.log(data.internInfos)
+      //console.log("data",data.internInfos)
 
       isCore ? res.render('teacher/core', data) : res.render('teacher/index', data)
     })
@@ -103,7 +106,7 @@ export async function getInternshipInfo(req,res){
 
   const lookupStudent ={
     $lookup:{
-      from: 'students',
+      from: 'users',
       localField: "idSv",
       foreignField: "_id",
       as: "student"
@@ -121,7 +124,7 @@ export async function getInternshipInfo(req,res){
 
   const filter = {
     $match: {
-      idGv: idGv,
+      idGv: ObjectId(idGv),
       shortId: req.params.id
     }
   }  
@@ -133,7 +136,7 @@ export async function getInternshipInfo(req,res){
         intern.statusStr = status[intern.status]
       })      
       data.internInfo = internInfos[0]
-      
+      console.log("data", data)
       res.render('teacher/internInfo', data)
     })
 
@@ -190,11 +193,14 @@ export async function getManyInternInfo(req,res){
     page: page
   }
   let startIndex = (page - 1)*limit
-  
+
+  const milestone = await Milestone.findById(idMilestone)
+  if(milestone) data.endCore = milestone.endCore //moment(milestone.endCore).format("DD-MM-YYYY")
+
 
   const lookupStudent ={
     $lookup:{
-      from: 'students',
+      from: 'users',
       localField: "idSv",
       foreignField: "_id",
       as: "student",      
@@ -203,7 +209,7 @@ export async function getManyInternInfo(req,res){
 
   const lookupStudent2 = {
     $lookup:{
-      from: 'students',
+      from: 'users',
       //let: {idSv: "$idSv"},
       pipeline: [
         {
@@ -232,11 +238,11 @@ export async function getManyInternInfo(req,res){
 
   const filter = {
     $match: {
-      idGv: idGv,
-      idMilestone: idMilestone.toString()
+      idGv: ObjectId(idGv),
+      idMilestone: ObjectId(idMilestone)
     }  
   }
-
+  
   const search = {
     $match: {
       $text:{
@@ -256,7 +262,7 @@ export async function getManyInternInfo(req,res){
       shortId: 1,
       student: 1,
       internUnit: 1,
-      core: 1
+      core: 1,      
     }
   }
 
@@ -265,14 +271,14 @@ export async function getManyInternInfo(req,res){
    // { $group: { _id: null, count: { $sum: 1 } } },
    //{$count: "totalCount"},
     lookupStudent, 
-    lookupInternUnit, 
+    lookupInternUnit,     
     {$unwind: "$student"}, 
-    {$unwind: "$internUnit"},
+    {$unwind: "$internUnit"},    
     {$skip: startIndex},
     {$limit: data.pagination.limit},
     select
   ]
-
+  console.log("query", query)
   InternshipInfo
     .aggregate(query)
     .exec((err, internInfos)=>{
@@ -282,8 +288,7 @@ export async function getManyInternInfo(req,res){
         intern.internUnit.cityName = getNameTinh(intern.internUnit.city)
       })
       data.internInfos = internInfos
-      //console.log(data.internInfos)
-
+      console.log("data", data)
       res.json({success: true, data})
     })
 

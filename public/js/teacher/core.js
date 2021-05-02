@@ -24,12 +24,12 @@ function addEventInputCore(){
 }
 
 
-document.querySelector("#search").addEventListener('keypress', (e)=>{
-    if(e.key=="Enter"){
-        const queries = { search: e.target.value}
-        loadData(queries)
-    }
-})
+// document.querySelector("#search").addEventListener('keypress', (e)=>{
+//     if(e.key=="Enter"){
+//         const queries = { search: e.target.value}
+//         loadData(queries)
+//     }
+// })
 
 
 function getInput(){
@@ -97,7 +97,11 @@ function loadData(queries){
         data:params
     }).done((res)=>{
         if(res.success){
-                              
+            
+            const endCore = res.data.endCore
+            if(document.getElementById)
+                document.getElementById('endCore').innerHTML = formatDate(endCore)
+
             data = res.data.internInfos
             data.forEach((val, index)=>{
 
@@ -107,13 +111,13 @@ function loadData(queries){
                     `<td><span class="sd-icon mr-4" onclick="saveCore('${val._id}')"> <i class="fas fa-save"></i> </span></td>`
                 }
                 else{
-                    core = `<td>${val.core}</td>`+
-                    `<td><span class="sd-icon" id="editCore" onclick="editCore('${val._id}')"><i class="fas fa-edit"></i></span></td>`
+                    core = `<td>${val.core}</td>
+                            ${new Date(endCore) >= Date.now() ? `<td><span class="sd-icon" id="editCore" onclick="editCore('${val._id}')"><i class="fas fa-edit"></i></span></td>`:""}`
                 }
 
                 row += `<tr id="${val._id}">`+
                     `<td class="text-left align-middle">${index + 1}</td>`+
-                    `<td class="text-left align-middle">${val.student.mssv}</td>`+
+                    `<td class="text-left align-middle">${val.student.ms}</td>`+
                     `<td class="text-left align-middle">${val.student.name}</td>`+
                     `<td class="text-left align-middle">${val.internUnit.name}</td>`+
                     `<td class="text-left align-middle">${val.internUnit.cityName}</td>`+
@@ -161,7 +165,7 @@ function loadDataIndex(queries){
             data.forEach((val, index)=>{
                 row +=  `<tr id="${val._id}"  onclick="return window.location.href ='/teacher/${val.shortId}'">`+
                 `<td class="text-left align-middle">${index + 1}</td>`+
-                `<td class="text-left align-middle">${val.student.mssv}</td>`+
+                `<td class="text-left align-middle">${val.student.ms}</td>`+
                 `<td class="text-left align-middle">${val.student.name}</td>`+
                 `<td class="text-left align-middle">${val.internUnit.name}</td>`+
                 `<td class="text-left align-middle">${val.internUnit.cityName}</td>`+
