@@ -26,7 +26,7 @@
                 <select class="form-control" id="milestone" name="milestone">
                   <% milestone.forEach((val)=>{%>
                   <option value="<%= val._id %> ">
-                    <%= "Năm học "+val.semester+", HK "+val.hk+", Hạn đăng ký "+val.endRegister %>
+                    <%= "Năm học "+val.schoolYear+", HK "+val.semester+", Hạn đăng ký "+val.endRegister %>
                   </option>
                   <%});%>
                 </select>

@@ -12,6 +12,16 @@
     <%- include('../layouts/navbar') %>
 
     <div class="row mb-4">
+      <div class="col-auto">
+        <select name="" id="" class="custom-select">
+          <option value="">-- Lọc theo năm học --</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <select name="" id="" class="custom-select">
+          <option value="">-- Lọc theo học kỳ --</option>
+        </select>
+      </div>
       <div class="col-auto ml-auto">
         <button class="btn btn-primary" id="assign-all-button" onclick="assignMultipleTeacher()">Phân công</button>
         <button class="btn btn-secondary ml-3" onclick="loadAssignTeacher()">Hủy bỏ</button>
@@ -21,8 +31,6 @@
     <div class="alert alert-success d-none" id="success-alert" role="alert">
       Phân công giảng viên thành công
     </div>
-
-
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">

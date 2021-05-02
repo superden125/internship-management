@@ -15,7 +15,7 @@
               <label>Năm học</label>
               <select name="" id="" class="custom-select">
                   <% milestones.forEach((val)=>{ %> 
-                    <option value="<%= val.semester %>"><%= val.semester %></option>
+                    <option value="<%= val.semester %>"><%= val.schoolYear %></option>
                   <% }); %>   
               </select>
           </div>
@@ -77,8 +77,8 @@
               </tr>
             <% milestones.forEach((val)=>{ %> 
                 <tr id="<%= val._id %>">
+                    <td><%= val.schoolYear %></td>
                     <td><%= val.semester %></td>
-                    <td><%= val.hk %></td>
                     <td><%= val.endRegister %></td>
                     <td><%= val.startIntern %></td>
                     <td><%= val.endIntern %></td>

@@ -92,7 +92,7 @@ export async function registerInternshipGet(req, res) {
   };
   const year = new Date().getFullYear();
   const milestone = await Milestone.find({
-    semester: {
+    schoolYear: {
       $regex: year
     },
     endRegister: {
@@ -110,8 +110,8 @@ export async function registerInternshipGet(req, res) {
   for (let i = 0; i < milestone.length; i++) {
     const obj = {};
     obj._id = milestone[i]._id
+    obj.schoolYear = milestone[i].schoolYear
     obj.semester = milestone[i].semester
-    obj.hk = milestone[i].hk
     obj.startIntern = milestone[i].startIntern
     obj.endIntern = milestone[i].endIntern
     obj.endRegister = moment(milestone[i].endRegister).format("DD-MM-YYYY")
@@ -127,7 +127,7 @@ export async function registerInternshipGet(req, res) {
     if (internInfo) {
       data.error = {
         err: true,
-        msg: `Bạn đã đăng ký thực tập năm học ${milestone1[i].semester}, học kỳ  ${milestone1[i].hk}`
+        msg: `Bạn đã đăng ký thực tập năm học ${milestone1[i].schoolYear}, học kỳ  ${milestone1[i].semester}`
       }
       return res.render("student/register-internship", data)
     }

@@ -11,55 +11,157 @@
   <div id="content">
     <%- include('../layouts/navbar') %>
 
-    <table class="table table-hover" id="approve-internship">
-      <thead>
-        <!-- <tr>
-          <th class="text-left align-middle" scope="col">#</th>
-          <th class="text-left align-middle" scope="col">
-            Mã số sinh viên
-            <a class="ml-1" href="?_sort&column=student.mssv&type=1"><i class="fas fa-sort text-body"></i></a>
-          </th>
-          <th class="text-left align-middle" scope="col">
-            Họ và tên
-            <a class="ml-1" href="?_sort&column=student.name&type=1"><i class="fas fa-sort text-body"></i></a>
-          </th>
-          <th class="text-left align-middle" scope="col">
-            Tên công ty
-            <a class="ml-1" href="?_sort&column=internshipUnit.name&type=1"><i
-                class="fas fa-sort text-body"></i></a>
-          </th>
-          <th class="text-left align-middle" scope="col">
-            Tỉnh/ Thành phố
-            <a class="ml-1" href="?_sort&column=internshipUnit.city&type=1"><i
-                class="fas fa-sort text-body"></i></a>
-          </th>
-          <th class="text-left align-middle" scope="col">
-            Trạng thái
-            <a class="ml-1" href="?_sort&column=status&type=1"><i class="fas fa-sort text-body"></i></a>
-          </th>
-        </tr> -->
-      </thead>
-      <tbody>
-        
-      </tbody>
-    </table>
-    <div class="d-flex justify-content-center" id="loading">
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
+    <div class="row mb-4">
+      <div class="col-auto">
+        <select name="" id="school-year-filter" class="custom-select">
+          <option value="all">-- Lọc theo năm học --</option>
+          <% milestone.forEach(item => { %>
+            <% if (item.schoolYear == schoolYear) { %>
+              <option value="?schoolYear=<%= item.schoolYear %>" selected>Năm học <%= item.schoolYear %></option>
+            <% } else { %>
+              <option value="?schoolYear=<%= item.schoolYear %>">Năm học <%= item.schoolYear %></option>
+            <% } %>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col-auto">
+        <select name="" id="semester-filter" class="custom-select">
+          <option value="all">-- Lọc theo học kỳ --</option>
+          <option value="?semester=1">Học kỳ 1</option>
+          <option value="?semester=2">Học kỳ 2</option>
+          <option value="?semester=3">Học kỳ 3</option>
+        </select>
       </div>
     </div>
+
+    <% if (internInfos.length == 0) { %>
+      <p>Chưa có đơn yêu cầu xét duyệt nào</p>
+    <% } else { %>
+      <table class="table table-hover" id="approve-internship">
+        <thead>
+          <tr>
+            <th class="text-left align-middle" scope="col">#</th>
+            <th class="text-left align-middle" scope="col">
+              Mã số sinh viên
+              <a class="ml-1" href="?_sort&column=student.ms&type=<%= type %>"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="text-left align-middle" scope="col">
+              Họ và tên
+              <a class="ml-1" href="?_sort&column=student.name&type=<%= type %>"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="text-left align-middle" scope="col">
+              Tên công ty
+              <a class="ml-1" href="?_sort&column=internshipUnit.name&type=<%= type %>"><i
+                  class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="text-left align-middle" scope="col">
+              Tỉnh/ Thành phố
+              <a class="ml-1" href="?_sort&column=internshipUnit.city&type=<%= type %>"><i
+                  class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="text-left align-middle" scope="col">
+              Trạng thái
+              <a class="ml-1" href="?_sort&column=status&type=<%= type %>"><i class="fas fa-sort text-body"></i></a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% internInfos.forEach((item, index) => { %>
+            <% index = index + indexCount %>
+            <tr id="<%= item.shortId %>">
+              <td class="text-left align-middle <%= item.styleClass %>"><%= index + 1 %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.ms %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.name %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.internshipUnit.name %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.city %></td>
+              <td class="text-left align-middle <%= item.styleClass %>"><%= item.statusString %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+        
+    <% if (totalPages > 1) { %>
+      <nav aria-label="Page navigation" class="ml-auto mt-4 mb-4">
+        <ul class="pagination pagination-static-b">
+          <% if (current == 1) { %>
+            <li class="page-item disabled">
+              <a href="#" class="page-link">&laquo;</a>
+            </li>
+          <% } else { %>
+            <li class="page-item">
+              <a href="/admin/internship/approve?page=<%= current - 1 %>" class="page-link">&laquo;</a>
+            </li>
+          <% } %>
+          <!-- First index -->
+          <% if (current == 1) { %>
+            <li class="page-item active">
+              <a href="#" class="page-link">1</a>
+            </li>
+          <% } else { %>
+            <li class="page-item">
+              <a href="?page=1" class="page-link">1</a>
+            </li>
+          <% } %>
+          <% var i = current > 3 ? current - 1 : 2 %>
+          <% if (i !== 2) { %>
+            <li class="page-item disabled">
+              <a href="#" class="page-link">...</a>
+            </li>
+          <% } %>
+          <!-- Middle indexes loop -->
+          <% while (i <= (totalPages - 1) && (i < (current + 2)) ) { %>
+            
+            <% if (i == current) { %>
+              <li class="page-item active">
+                <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+              </li>
+            <% } %>
+            <% if ((i == (current + 1) && i < totalPages - 1)) { %>
+              <li class="page-item disabled">
+                <a href="/admin/internship/approve" class="page-link">...</a>
+              </li>
+            <% } %>
+            <% i++ %>
+          <% } %>
+          <!-- Last index -->
+          <% if (current == totalPages) { %>
+            <li class="page-item active">
+              <a href="#" class="page-link"><%= totalPages %></a>
+            </li>
+          <% } else { %>
+            <li class="page-item">
+              <a href="?page=<%= totalPages %>" class="page-link"><%= totalPages %></a>
+            </li>
+          <% } %>
+          <% if (current == totalPages) { %>
+            <li class="page-item disabled">
+              <a href="#" class="page-link">&raquo;</a>
+            </li>
+          <% } else { %>
+            <li class="page-item">
+              <a href="?page=<%= current + 1 %>" class="page-link">&raquo;</a>
+            </li>
+          <% } %>
+        </ul>
+      </nav>
+    <% } %>
   </div>
 
   <%- include('../layouts/script') %>
   <script src="/js/admin/approve.js"></script>
-  <script>
+  <!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.onload = function () {
-        getAllInternInfos();
+        // getAllInternInfos();
         // $('#success-alert').hide();
       }
     });
-  </script>
+  </script> -->
   <script type="text/javascript">
     $('#approve-internship tbody tr').click(function () {
       var id = $(this).attr('id');
@@ -79,7 +181,27 @@
         var url = currentUrl + '&' + $(this).attr('href').slice(1);
         $(this).attr('href', url);
       }
-    })
+    });
+
+    $('#school-year-filter').change(function() {
+      var value = $(this).val();
+
+      if (value == 'all') {
+        window.location = '/admin/internship/approve';
+      } else {
+        window.location = value;
+      }
+    });
+
+    $('#semester-filter').change(function() {
+      var value = $(this).val();
+      
+      if (value == 'all') {
+        window.location = '/admin/internship/approve';
+      } else {
+        window.location = value;
+      }
+    });
   </script>
 </body>
 

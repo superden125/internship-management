@@ -62,16 +62,8 @@ module.exports.getAllStudents = async (req, res) => {
     });
 }
 
-module.exports.loadAproveInternshipUnitPage = (req, res) => {
-  res.render('admin/internship-approve-all', {
-    roleName: 'Giáo vụ khoa',
-    urlInfo: 'Xét duyệt điểm thực tập',
-  });
-}
-
-module.exports.showAllApproveInternshipUnit = async (req, res) => {
+module.exports.getAproveInternshipUnitInfo = async (req, res) => {
   var page = 1;
-
   var sortType = {
     column: 'timestamp',
     type: -1,
@@ -79,17 +71,20 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
 
   var paginationObj = {
     page: 1,
-    limit: 6,
+    limit: 10,
     skip: 0
   };
+
+  var schoolYear = req.query.schoolYear || '';
+  var semester = req.query.semester || '';
+
+  var milestone = null;
 
   if (req.query.hasOwnProperty('_sort')) {
     Object.assign(sortType, {
       column: req.query.column,
       type: parseInt(req.query.type),
     });
-
-    // sortType.icon = sortType.type == -1 ? 'fas fa-sort-down': 'fas fa-sort-up';
   }
 
   if (req.query.hasOwnProperty('page') || req.query.hasOwnProperty('limit')) {
@@ -117,7 +112,8 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
   var sort = sortType.column;
   sortField['$sort'][sort] = sortType.type;
 
-  const query = [{
+  const query = [
+    {
       $lookup: {
         from: 'users',
         localField: 'idSv',
@@ -138,33 +134,72 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
     },
     {
       $unwind: '$internshipUnit'
+    },
+    {
+      $facet: {
+        metadata: [{
+          $group: {
+            _id: null,
+            total: {
+              $sum: 1
+            }
+          }
+        }],
+        data: [
+          sortField,
+          skipField,
+          limitField,
+        ]
+      }
+    }, {
+      $project: {
+        data: 1,
+        total: {
+          $arrayElemAt: ['$metadata.total', 0]
+        }
+      }
     }
   ];
 
-  query.push({
-    $facet: {
-      metadata: [{
-        $group: {
-          _id: null,
-          total: {
-            $sum: 1
-          }
+  if (req.query.hasOwnProperty('schoolYear')) {
+    var idArr = [];
+    var milestones = await Milestone.find({ schoolYear: req.query.schoolYear });
+    
+    milestones.forEach(item => {
+      idArr.push(mongoose.Types.ObjectId(item._id));
+    });
+
+    var matchQuery = {
+      $match: {
+        idMilestone: {
+          $in: idArr
         }
-      }],
-      data: [
-        sortField,
-        skipField,
-        limitField,
-      ]
-    }
-  }, {
-    $project: {
-      data: 1,
-      total: {
-        $arrayElemAt: ['$metadata.total', 0]
       }
     }
-  });
+    
+    query.splice(0, 0, matchQuery);
+  }
+
+  if (req.query.hasOwnProperty('semester')) {
+    var idArr = [];
+    var milestones = await Milestone.find({ semester: parseInt(req.query.semester) });
+    
+    milestones.forEach(item => {
+      idArr.push(mongoose.Types.ObjectId(item._id));
+    });
+
+    var matchQuery = {
+      $match: {
+        idMilestone: {
+          $in: idArr
+        }
+      }
+    }
+    
+    query.splice(0, 0, matchQuery);
+  }
+
+  milestone = await Milestone.find();
 
   await InternshipInfo
     .aggregate(query)
@@ -178,16 +213,17 @@ module.exports.showAllApproveInternshipUnit = async (req, res) => {
         obj.city = tinh.find((tinh) => tinh.id == obj.internshipUnit.city).name;
       });
 
-      return res.json({
-        status: 'success',
-        data: {
-          internInfos,
-          type: -(sortType.type),
-          totalDocs,
-          current: page,
-          totalPages: Math.ceil(totalDocs / paginationObj.limit),
-          indexCount: paginationObj.skip,
-        }
+      return res.render('admin/internship-approve-all', {
+        roleName: 'Giáo vụ khoa',
+        urlInfo: 'Xét duyệt điểm thực tập',
+        milestone,
+        internInfos,
+        type: -(sortType.type),
+        totalDocs,
+        current: page,
+        totalPages: Math.ceil(totalDocs / paginationObj.limit),
+        indexCount: paginationObj.skip,
+        schoolYear
       });
     });
 }
@@ -392,14 +428,13 @@ module.exports.assignTeacher = async (req, res) => {
 }
 
 module.exports.getStudentsOfInternUnit = async (req, res) => {
-  var query = [
-    {
+  var query = [{
       $match: {
         _id: mongoose.Types.ObjectId(req.params.id)
       }
     },
     {
-      $lookup: {                              
+      $lookup: {
         from: 'internshipinfos',
         localField: '_id',
         foreignField: 'idIntern',
@@ -437,10 +472,12 @@ module.exports.getStudentsOfInternUnit = async (req, res) => {
 
   await InternshipUnit
     .aggregate(query)
-    .exec((err, students) => {    
+    .exec((err, students) => {
       if (err) {
-        res.json({ err: true });
-      } else { 
+        res.json({
+          err: true
+        });
+      } else {
         res.json({
           err: false,
           data: students
@@ -462,8 +499,8 @@ module.exports.milestoneGet = async (req, res) => {
   milestones.forEach((val) => {
     const obj = {}
     obj._id = val._id
+    obj.schoolYear = val.schoolYear
     obj.semester = val.semester
-    obj.hk = val.hk
     obj.startIntern = moment(val.startIntern).format("DD-MM-YYYY")
     obj.endIntern = moment(val.endIntern).format("DD-MM-YYYY")
     obj.endRegister = moment(val.endRegister).format("DD-MM-YYYY")
