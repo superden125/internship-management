@@ -28,14 +28,29 @@ function deleteMilestone(id) {
     //current = {}  
 }
 
-function saveMilestone(id) {
-    if (!id) {
-        let schoolYear = document.querySelector("#schoolYear").value
+function saveMilestone(id){
+    if(endRegister == "Invalid Date" || startIntern == "Invalid Date" || endIntern == "Invalid Date"){
+        const alter = document.querySelector('#alter')
+        alterError("Thời gian trống hoặc sai định dạng")            
+        return false
+    }
+
+    if(endRegister >= startIntern){
+        alterError("Hạn đăng ký phải trước thời gian bắt đầu thực tập")            
+        return false
+    }
+    
+    if(startIntern >= endIntern){
+        alterError("Thời gian bắt đầu phải trước thời gian kết thúc thực tập")            
+        return false
+    }
+    if(!id){
         let semester = document.querySelector("#semester").value
         let endRegister = new Date(document.querySelector("#endRegister").value)
         let startIntern = new Date(document.querySelector("#startIntern").value)
         let endIntern = new Date(document.querySelector("#endIntern").value)
-
+        console.log(endRegister)        
+        
         const data = {
             schoolYear,
             semester,
@@ -61,6 +76,7 @@ function saveMilestone(id) {
                     `<td><span class="sd-icon" id="editMilestone" onclick="editMilestone('${res.data._id}')"><i class="fas fa-edit"></i></span></td>` +
                     `</tr>`
                 $('#table-milestone > tbody > tr:first').before(data)
+                alterSuccess("Lưu thành công")
             }
         })
     } else {
@@ -94,7 +110,8 @@ function saveMilestone(id) {
                 current.endRegister = `${format0(endRegister.getDate())}-${format0(endRegister.getMonth()+1)}-${endRegister.getFullYear()}`
                 current.startIntern = `${format0(startIntern.getDate())}-${format0(startIntern.getMonth()+1)}-${startIntern.getFullYear()}`
                 current.endIntern = `${format0(endIntern.getDate())}-${format0(endIntern.getMonth()+1)}-${endIntern.getFullYear()}`
-                deleteMilestone(res.data._id)
+                deleteMilestone(res.data._id)                
+                alterSuccess("Lưu thành công")
             }
         })
     }
@@ -139,3 +156,22 @@ function format0(val) {
     val = "0" + val
     return val.slice(-2)
 }
+// function alterSuccess(str){
+//     const alter = document.querySelector('#alter')
+//     alter.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+//                         ${str}
+//                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+//                             <span aria-hidden="true">&times;</span>
+//                         </button>
+//                 </div>`
+// }
+
+// function alterError(str){
+//     const alter = document.querySelector('#alter')
+//     alter.innerHTML = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+//                         ${str}
+//                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+//                             <span aria-hidden="true">&times;</span>
+//                         </button>
+//                 </div>`
+// }

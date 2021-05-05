@@ -1,7 +1,9 @@
 import InternshipInfo from "../models/internshipInfo";
 import InternshipUnit from "../models/internshipUnit";
+import Milestone from "../models/milestone"
 import Teacher from "../models/teacher";
-import tinh from "../lib/tinh";
+import {getNameTinh} from "../lib/tinh";
+import {status} from "../lib/convert"
 
 export async function getInternshipInfo(req, res) {
   const idSv = req.session.user.userId;
@@ -9,11 +11,24 @@ export async function getInternshipInfo(req, res) {
     title: "Internship Management System",
     roleName: "Sinh viên",
     urlInfo: "Thông tin thực tập",
+    internInfo: {},
+    internUnit: {},
+    teacher: {}
   };
 
-  const internInfo = await InternshipInfo.findOne({ idSv }).sort({
-    timestamp: -1,
-  });
+  const milestones = await Milestone.find({}).limit(12).sort({endRegister: -1})
+  data.milestones = milestones
+  console.log(milestones)
+  if(milestones.length === 0) return res.render(
+      "student/home",
+      Object.assign(data, {
+        error: { err: true, msg: "Not found semester" },
+      })
+    );
+   
+
+  const internInfo = await InternshipInfo.findOne({ idSv, idMilestone: milestones[0]._id })
+  console.log(internInfo, milestones)
   if (!internInfo)
     return res.render(
       "student/home",
@@ -31,17 +46,12 @@ export async function getInternshipInfo(req, res) {
         error: { err: true, msg: "Not found Intern Info" },
       })
     );
-  const city = tinh.find((city) => city.id == internUnit.city).name;
+  const city =  getNameTinh(internUnit.city)
   internUnit.city = city;
-  if (internInfo.status == 0) {
-    internInfo.statusStr = "Chờ xét duyệt";
-  }
-  if (internInfo.status == 1) {
-    internInfo.statusStr = "Đã duyệt";
-  }
+  internInfo.statusStr = status[parseInt(internInfo.status)]
 
-  data.internInfo = internInfo;
-  data.internUnit = internUnit;
+  data.internInfo = internInfo
+  data.internUnit = internUnit
 
   if (internInfo.idGv !== "none") {
     const teacher = await Teacher.findById(internInfo.idGv);
@@ -50,4 +60,35 @@ export async function getInternshipInfo(req, res) {
 
   data.error = { err: false };
   res.render("student/home", data);
+}
+
+export async function getInternInfo(req,res){
+  
+  const {semester, hk} = req.query
+  const idSv = req.session.user.userId
+  let data = {}
+
+  const milestone = await Milestone.findOne({semester, hk})
+  if(!milestone) return res.json({success: false, msg: "milestone not found"})  
+
+  const internInfo = await InternshipInfo.findOne({idSv, idMilestone: milestone._id})
+  if(!internInfo) return res.json({success: false, msg: "internship info not found"})
+  console.log(internInfo)
+
+  const internUnit = await InternshipUnit.findById(internInfo.idIntern)
+  if(!internUnit) return res.json({success: false, msg: "internship unit not found"})
+
+  const city =  getNameTinh(internUnit.city)
+  internUnit.city = city;
+  data.statusStr = status[parseInt(internInfo.status)]
+
+  data.internInfo = internInfo
+  data.internUnit = internUnit  
+  console.log(data)
+  if(internInfo.idGv !== "none"){
+    const teacher = await Teacher.findById(internInfo.idGv)
+    data.teacher = teacher
+  }
+
+  res.json({success:true, data})
 }

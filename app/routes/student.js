@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(isStudent);
 
 router.get("/", internInfoController.getInternshipInfo);
-
+router.get("/get-interninfo", internInfoController.getInternInfo)
 router
   .get("/register-internship", studentController.registerInternshipGet)
   .post("/register-internship", studentController.registerInternshipPost);

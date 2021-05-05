@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../layouts/meta') %>
+</head>
+<body>
+  <%- include('../layouts/teacher-sidebar') %>
+  
+  <div id="content">
+
+    <%- include('../layouts/navbar') %>    
+    
+    <button class="btn btn-info mb-4" onclick="return window.location.href='/teacher'"> < Trở về</button>
+
+    <div class="card border-light card-content">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Thông tin sinh viên</h5>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Mã số sinh viên</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.student.mssv %></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Họ tên</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.student.name %></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Số điện thoại</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.phone %></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Email</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.student.email %></p>
+            </div>
+          </div>
+                   
+        </div>
+      </div>
+
+      <div class="card border-light card-content">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Thông tin công ty</h5>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Tên công ty</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.internUnit.name %></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Địa chỉ</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.internUnit.address %></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Tỉnh/ Thành phố</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.internUnit.cityName%></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Số điện thoại</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.internUnit.phone %></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Website</p>
+            </div>
+            <div class="col-md-8">
+              <a
+                href="https://www.techbase.com"
+                class="grey-text"
+                target="_blank"
+                ><%= internInfo.internUnit.website %>
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Email</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.internUnit.email %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-light card-content">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Thông tin người hướng dẫn</h5>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Họ và tên</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.internUnit.mentor.name %></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Email</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.internUnit.mentor.email%></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Số điện thoại</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.internUnit.mentor.phone%></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-light card-content">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Nội dung thực tập</h5>
+          <% internInfo.work.forEach((item,index)=>{%>
+            <div class="row">
+                <div class="offset-1 col-md-2">
+                    <p class="black-text">Tuần <%= index + 1%></p>
+                </div>
+                <div class="col-md-8">
+                    <p class="grey-text"><%= item %></p>
+                </div>
+            </div>
+          <% }) %> 
+                    
+        </div>
+      </div>
+
+      <div class="card border-light card-content">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Thông tin thực tập</h5>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Trạng thái</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text"><%= internInfo.statusStr%></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-1 col-md-2">
+              <p class="black-text">Kết quả</p>
+            </div>
+            <div class="col-md-8">
+              <p class="grey-text">
+                <%= internInfo.core === -1 ? "Chưa có" : internInfo.core;%>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+  <%- include('../layouts/script') %>
+</body>
+</html>

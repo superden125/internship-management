@@ -1,10 +1,7 @@
 import bcrypt from "bcryptjs";
-import mongoose from 'mongoose';
 
 import Major from '../models/major';
 import User from '../models/user';
-import Teacher from '../models/teacher';
-import Student from '../models/student';
 import Milestone from '../models/milestone';
 import InternshipUnit from '../models/internshipUnit';
 

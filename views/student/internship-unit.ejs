@@ -8,6 +8,38 @@
 
     <div id="content">
       <%- include('../layouts/navbar') %>
+
+      <div class="row mb-4">
+        <div class="col-auto">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Năm học</span>
+            </div>
+            <select class="custom-select" name="schoolYear" id="schoolYear">                   
+              <option value="">Tất cả năm học</option>
+            </select>
+          </div>
+        </div>
+        
+
+        <div class="col-auto">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Học kỳ</span>
+            </div>
+            <select class="custom-select" name="semester" id="semester">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <button id="filter" class="btn btn-info" onclick="loadData()">Tìm kiếm</button>
+        </div>
+      </div>
+
       <div>
         <table class="table table-hover">
           <thead>

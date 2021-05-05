@@ -78,7 +78,8 @@ p {
   margin-bottom: 23px;
 }
 
-.login-card form {
+.login-card form,
+.login-card #alter {
   max-width: 326px;
 }
 
@@ -383,6 +384,10 @@ ul ul a {
 
 .sd-icon:hover {
   cursor: pointer;
+}
+
+.display-none{
+  display: none;
 }
 
 /* Content Style */

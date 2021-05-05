@@ -6,7 +6,7 @@ import Student from '../models/student';
 import User from '../models/user';
 import Milestone from '../models/milestone';
 import InternshipInfo from '../models/internshipInfo';
-import tinh from "../lib/tinh";
+import {tinh} from "../lib/tinh";
 
 
 module.exports.index = async (req, res) => {
