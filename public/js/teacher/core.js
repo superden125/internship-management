@@ -145,7 +145,7 @@ function loadDataIndex(queries){
         })
     }
     
-    console.log(params)
+    
     const table = document.querySelector("#table-index-body")
     table.innerHTML="<tbody></tbody>"
     $.ajax({
@@ -284,10 +284,12 @@ function saveCore(id){
 }
 
 function editCore(id){
+    console.log("call")
     const row = document.getElementById(`${id}`).childNodes
     const tdCore = row[5]
-    const tdButton = row[6]
+    const tdButton = row[7]
     const currentCore = tdCore.innerHTML
+    console.log(row)
     tdCore.innerHTML = `<td><input value="${currentCore}" type="number" max="10" min="0" name="core-${id}" id="core-${id}" class="core"/></td>`
     tdButton.innerHTML = `<span class="sd-icon mr-4" onclick="saveCore('${id}')"> <i class="fas fa-save"></i> </span><span class="sd-icon" onclick="deleteCore('${id}', '${currentCore}')"> <i class="fas fa-backspace"></i> </span>`
 }
@@ -295,7 +297,7 @@ function editCore(id){
 function deleteCore(id, currentCore){
     const row = document.getElementById(`${id}`).childNodes
     const tdCore = row[5]
-    const tdButton = row[6]
+    const tdButton = row[7]
     tdCore.innerHTML = `<td>${currentCore}</td>`
     tdButton.innerHTML = `<span class="sd-icon" id="editCore" onclick="editCore('${id}')"><i class="fas fa-edit"></i></span>`
 }

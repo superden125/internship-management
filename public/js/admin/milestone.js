@@ -212,7 +212,7 @@ function loadData(){
                     <td>${val.startIntern}</td>
                     <td>${val.endIntern}</td>
                     <td>${val.endCore}</td>
-                    ${val.endRegister < Date.now() ? `<td class="align-middle"><span class="sd-icon" id="editMilestone" onclick="editMilestone('${val._id}')"><i class="fas fa-edit"></i></span></td>`: ""}
+                    ${new Date(val.endRegister2)> Date.now() ? `<td class="align-middle"><span class="sd-icon" id="editMilestone" onclick="editMilestone('${val._id}')"><i class="fas fa-edit"></i></span></td>`: ""}
                 </tr>`
         })
         table.innerHTML = row

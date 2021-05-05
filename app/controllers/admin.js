@@ -406,6 +406,7 @@ module.exports.milestoneGet = async (req, res) => {
     obj.endIntern = moment(val.endIntern).format("DD-MM-YYYY")
     obj.endRegister = moment(val.endRegister).format("DD-MM-YYYY")
     obj.endCore = moment(val.endCore).format("DD-MM-YYYY")
+    obj.endRegister2 = moment(val.endRegister).format("MM-DD-YYYY")
     milestones1.push(obj)
     semesters.push(val.semester)
   })
@@ -431,6 +432,7 @@ module.exports.milestoneGets = async (req,res)=>{
     obj.endIntern = moment(val.endIntern).format("DD-MM-YYYY")
     obj.endRegister = moment(val.endRegister).format("DD-MM-YYYY")
     obj.endCore = moment(val.endCore).format("DD-MM-YYYY")
+    obj.endRegister2 = moment(val.endRegister).format("MM-DD-YYYY")
     milestones1.push(obj)
   })
   
