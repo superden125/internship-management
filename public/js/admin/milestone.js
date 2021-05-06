@@ -3,10 +3,10 @@ let current = {}
 function addMilestone() {
     const row = document.querySelector("#addMilestone")
     let year = new Date().getFullYear();
-    const semester1 = `${year}-${year+1}`
-    const semester2 = `${year-1}-${year}`
+    const schoolYear1 = `${year}-${year+1}`
+    const schoolYear2 = `${year-1}-${year}`
     // console.log(semester1, semester2)
-    row.innerHTML = `<td> <select name="semester" id="semester" class="custom-select"> <option value="${semester1}">${semester1}</option> <option value="${semester2}">${semester2}</option> </select> </td> <td> <select name="hk" id="hk" class="custom-select"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> </select> </td> <td> <input type="date" name="endRegister" id="endRegister"> </td> <td> <input type="date" name="startIntern" id="startIntern"> </td> <td> <input type="date" name="endIntern" id="endIntern"> </td><td> <input type="date" name="endCore" id="endCore"> </td> <td> <span class="sd-icon mr-4" onclick="saveMilestone()"> <i class="fas fa-save"></i> </span><span class="sd-icon" onclick="deleteMilestone()"> <i class="fas fa-trash-alt"></i> </span> </td>`
+    row.innerHTML = `<td> <select name="schoolYear" id="schoolYear" class="custom-select"> <option value="${schoolYear1}">${schoolYear1}</option> <option value="${schoolYear2}">${schoolYear2}</option> </select> </td> <td> <select name="semester" id="semester" class="custom-select"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> </select> </td> <td> <input type="date" name="endRegister" id="endRegister"> </td> <td> <input type="date" name="startIntern" id="startIntern"> </td> <td> <input type="date" name="endIntern" id="endIntern"> </td> <td> <span class="sd-icon mr-4" onclick="saveMilestone()"> <i class="fas fa-save"></i> </span><span class="sd-icon" onclick="deleteMilestone()"> <i class="fas fa-trash-alt"></i> </span> </td>`
 }
 
 function deleteMilestone(id) {
@@ -18,8 +18,8 @@ function deleteMilestone(id) {
         const row = document.getElementById(id)
         const child = row.querySelectorAll("td")
 
-        child[0].innerHTML = current.semester
-        child[1].innerHTML = current.hk
+        child[0].innerHTML = current.schoolYear
+        child[1].innerHTML = current.semester
         child[2].innerHTML = current.endRegister
         child[3].innerHTML = current.startIntern
         child[4].innerHTML = current.endIntern
@@ -68,8 +68,8 @@ function saveMilestone(id){
         
         
         const data = {
+            schoolYear,
             semester,
-            hk,
             endRegister,
             startIntern,
             endIntern,
@@ -84,8 +84,8 @@ function saveMilestone(id){
             if (res.success) {
                 deleteMilestone()
                 const data = `<tr id="${res.data._id}">` +
+                    `<td>${schoolYear}</td>` +
                     `<td>${semester}</td>` +
-                    `<td>${hk}</td>` +
                     `<td>${format0(endRegister.getDate())}-${format0(endRegister.getMonth()+1)}-${endRegister.getFullYear()}</td>` +
                     `<td>${format0(startIntern.getDate())}-${format0(startIntern.getMonth()+1)}-${startIntern.getFullYear()}</td>` +
                     `<td>${format0(endIntern.getDate())}-${format0(endIntern.getMonth()+1)}-${endIntern.getFullYear()}</td>` +
@@ -104,8 +104,8 @@ function saveMilestone(id){
         //console.log(child[0].firstChild.value)
         const data = {
             _id: id,
-            semester: child[0].firstChild.value,
-            hk: child[1].firstChild.value,
+            schoolYear: child[0].firstChild.value,
+            semester: child[1].firstChild.value,
             endRegister: new Date(child[2].firstChild.value),
             startIntern: new Date(child[3].firstChild.value),
             endIntern: new Date(child[4].firstChild.value),
@@ -125,8 +125,8 @@ function saveMilestone(id){
                 const endIntern = new Date(res.data.endIntern)
                 const endCore = new Date(res.data.endCore)
 
+                current.schoolYear = res.data.schoolYear
                 current.semester = res.data.semester
-                current.hk = res.data.hk
                 current.endRegister = `${format0(endRegister.getDate())}-${format0(endRegister.getMonth()+1)}-${endRegister.getFullYear()}`
                 current.startIntern = `${format0(startIntern.getDate())}-${format0(startIntern.getMonth()+1)}-${startIntern.getFullYear()}`
                 current.endIntern = `${format0(endIntern.getDate())}-${format0(endIntern.getMonth()+1)}-${endIntern.getFullYear()}`
@@ -145,8 +145,8 @@ function editMilestone(id) {
     const child = row.getElementsByTagName("td")
 
     // console.log(child[0].innerHTML)
-    current.semester = child[0].innerHTML
-    current.hk = child[1].innerHTML
+    current.schoolYear = child[0].innerHTML
+    current.semester = child[1].innerHTML
     current.endRegister = child[2].innerHTML
     current.startIntern = child[3].innerHTML
     current.endIntern = child[4].innerHTML

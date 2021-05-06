@@ -9,19 +9,15 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
 
-      <% if(semesters && semesters.length > 0){%> 
-        <div class="row mb-4">
-          <div class="col-md-2">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Năm học</span>
-              </div>
-              <select class="custom-select" name="semester" id="semester">
-                <% semesters.forEach((val)=>{%> 
-                  <option value="<%= val %>"><%= val %> </option>
-                <% }) %> 
-              </select>
+      <div class="row mb-4">
+        <div class="col-auto">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Năm học</span>
             </div>
+            <select class="custom-select" name="schoolYear" id="schoolYear">                   
+              <option value="">Tất cả năm học</option>
+            </select>
           </div>
           
 
@@ -30,7 +26,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">Học kỳ</span>
               </div>
-              <select class="custom-select" name="hk" id="hk">
+              <select class="custom-select" name="semester" id="semester">
                 <option value="1" <%= currentHk.hk == 1 ? "selected" : "" %>>1</option>
                 <option value="2" <%= currentHk.hk == 2 ? "selected" : "" %>>2</option>
                 <option value="3" <%= currentHk.hk == 3 ? "selected" : "" %>>3</option>

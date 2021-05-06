@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const MilestoneSchema = mongoose.Schema({
-  semester: {
+  schoolYear: {
     type: String,
     require: true,
   },
-  hk: {
+  semester: {
     type: Number,
     require: true,
   },

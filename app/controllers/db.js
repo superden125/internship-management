@@ -253,8 +253,8 @@ module.exports.mockInternshipUnitDB = async (req, res) => {
 
 module.exports.mockMilestone = async (req, res) => {
   const data = {
-    semester: "2020-2021",
-    hk: 3,
+    schoolYear: "2020-2021",
+    semester: 3,
     startIntern: new Date(2021, 6, 1),
     endIntern: new Date(2021, 8, 1),
     endRegister: new Date(2021, 5, 15),
