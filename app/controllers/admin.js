@@ -516,8 +516,8 @@ module.exports.milestoneGet = async (req, res) => {
 }
 
 module.exports.milestoneGets = async (req,res)=>{
-  const {semester, hk} = req.query  
-  const milestones = await Milestone.find({semester, hk: parseInt(hk)}).sort({
+  const {semester, schoolYear} = req.query  
+  const milestones = await Milestone.find({schoolYear, semester: parseInt(semester)}).sort({
     endRegister: -1
   })
   
@@ -526,8 +526,8 @@ module.exports.milestoneGets = async (req,res)=>{
   milestones.forEach((val) => {
     const obj = {}
     obj._id = val._id
+    obj.schoolYear = val.schoolYear
     obj.semester = val.semester
-    obj.hk = val.hk
     obj.startIntern = moment(val.startIntern).format("DD-MM-YYYY")
     obj.endIntern = moment(val.endIntern).format("DD-MM-YYYY")
     obj.endRegister = moment(val.endRegister).format("DD-MM-YYYY")
@@ -542,7 +542,7 @@ module.exports.milestoneGets = async (req,res)=>{
 module.exports.milestonePost = async (req, res) => {
   try {
     console.log(req.body)
-    const existMilestone = await Milestone.findOne({semester: req.body.semester, hk: req.body.hk})
+    const existMilestone = await Milestone.findOne({semester: req.body.semester, schoolYear: req.body.schoolYear})
     if(existMilestone) return res.json({success: false, msg: "Thời gian thực tập đã tồn tại"})
     const milestone = new Milestone(req.body)
     const result = await milestone.save()
@@ -563,7 +563,7 @@ module.exports.milestonePost = async (req, res) => {
 module.exports.milestonePut = async (req, res) => {
   const data = req.body;
 
-  const existMilestone = await Milestone.findOne({semester: data.semester, hk: data.hk})
+  const existMilestone = await Milestone.findOne({semester: data.semester, schoolYear: data.schoolYear})
   
   if(existMilestone && data._id != existMilestone._id) return res.json({success: false, msg: "Thời gian thực tập đã tồn tại"})
   
@@ -574,7 +574,7 @@ module.exports.milestonePut = async (req, res) => {
   })
 
   milestone.semester = data.semester
-  milestone.hk = data.hk
+  milestone.schoolYear = data.schoolYear
   milestone.endRegister = data.endRegister
   milestone.startIntern = data.startIntern
   milestone.endIntern = data.endIntern

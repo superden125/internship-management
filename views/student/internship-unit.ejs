@@ -16,29 +16,30 @@
               <span class="input-group-text">Năm học</span>
             </div>
             <select class="custom-select" name="schoolYear" id="schoolYear">                   
-              <option value="">Tất cả năm học</option>
+              <% schoolYears.forEach((schoolYear)=>{%> 
+                <option value="<%= schoolYear %>"><%= schoolYear %></option>
+              <% }) %>   
             </select>
           </div>
-          
+        </div>  
 
-          <div class="col-md-2">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Học kỳ</span>
-              </div>
-              <select class="custom-select" name="semester" id="semester">
-                <option value="1" <%= currentHk.hk == 1 ? "selected" : "" %>>1</option>
-                <option value="2" <%= currentHk.hk == 2 ? "selected" : "" %>>2</option>
-                <option value="3" <%= currentHk.hk == 3 ? "selected" : "" %>>3</option>
-              </select>
+        <div class="col-md-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Học kỳ</span>
             </div>
-          </div>
-
-          <div class="col-md-1">
-            <button id="filter" class="btn btn-info" onclick="loadDataInternUnit()">Tìm kiếm</button>
+            <select class="custom-select" name="semester" id="semester">
+              <option value="1" <%= currentHk.semester == 1 ? "selected" : "" %>>1</option>
+              <option value="2" <%= currentHk.semester == 2 ? "selected" : "" %>>2</option>
+              <option value="3" <%= currentHk.semester == 3 ? "selected" : "" %>>3</option>
+            </select>
           </div>
         </div>
-      <% } %> 
+
+        <div class="col-md-1">
+          <button id="filter" class="btn btn-info" onclick="loadDataInternUnit()">Tìm kiếm</button>
+        </div>
+      </div>      
       <div>
         <table class="table table-hover">
           <thead>
@@ -52,16 +53,16 @@
           </thead>
           <tbody id="table-intern-unit">
             <% internUnits.forEach((internUnit)=>{%>
-            <tr
-              onclick="window.location.href='/student/internship-unit/<%= internUnit._id%>';"
-            >
-              <td><%= internUnit.name %></td>
-              <td><%= internUnit.city %></td>
-              <td><%= internUnit.maxSv %></td>
-              <td><%= internUnit.currentSv %></td>
-              <td><%= internUnit.reqTime %></td>
-            </tr>
-            <% }); %>
+              <tr
+                onclick="window.location.href='/student/internship-unit/<%= internUnit._id%>';"
+              >
+                <td><%= internUnit.name %></td>
+                <td><%= internUnit.city %></td>
+                <td><%= internUnit.maxSv %></td>
+                <td><%= internUnit.currentSv %></td>
+                <td><%= internUnit.reqTime %></td>
+              </tr>
+              <% }); %>
           </tbody>
         </table>
       </div>

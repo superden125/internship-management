@@ -6,7 +6,7 @@ function addMilestone() {
     const schoolYear1 = `${year}-${year+1}`
     const schoolYear2 = `${year-1}-${year}`
     // console.log(semester1, semester2)
-    row.innerHTML = `<td> <select name="schoolYear" id="schoolYear" class="custom-select"> <option value="${schoolYear1}">${schoolYear1}</option> <option value="${schoolYear2}">${schoolYear2}</option> </select> </td> <td> <select name="semester" id="semester" class="custom-select"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> </select> </td> <td> <input type="date" name="endRegister" id="endRegister"> </td> <td> <input type="date" name="startIntern" id="startIntern"> </td> <td> <input type="date" name="endIntern" id="endIntern"> </td> <td> <span class="sd-icon mr-4" onclick="saveMilestone()"> <i class="fas fa-save"></i> </span><span class="sd-icon" onclick="deleteMilestone()"> <i class="fas fa-trash-alt"></i> </span> </td>`
+    row.innerHTML = `<td> <select name="schoolYear" id="schoolYear" class="custom-select"> <option value="${schoolYear1}">${schoolYear1}</option> <option value="${schoolYear2}">${schoolYear2}</option> </select> </td> <td> <select name="semester" id="semester" class="custom-select"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> </select> </td> <td> <input type="date" name="endRegister" id="endRegister"> </td> <td> <input type="date" name="startIntern" id="startIntern"> </td> <td> <input type="date" name="endIntern" id="endIntern"> </td><td> <input type="date" name="endCore" id="endCore"> </td> <td> <span class="sd-icon mr-4" onclick="saveMilestone()"> <i class="fas fa-save"></i> </span><span class="sd-icon" onclick="deleteMilestone()"> <i class="fas fa-trash-alt"></i> </span> </td>`
 }
 
 function deleteMilestone(id) {
@@ -31,8 +31,8 @@ function deleteMilestone(id) {
 
 function saveMilestone(id){
 
-    let semester = document.querySelector("#semester").value    
-    let hk = document.querySelector("#hk").value
+    let schoolYear = document.querySelector("#schoolYear").value    
+    let semester = document.querySelector("#semester").value
     let endRegister = new Date(document.querySelector("#endRegister").value)
     let startIntern = new Date(document.querySelector("#startIntern").value)
     let endIntern = new Date(document.querySelector("#endIntern").value)
@@ -167,8 +167,8 @@ function editMilestone(id) {
     const dateEndCore = `${endCore[2]}-${endCore[1]}-${endCore[0]}`
 
     
-    child[0].innerHTML = `<select name="semester" id="semester" class="custom-select"> <option value="${semester1}">${semester1}</option> <option value="${semester2}">${semester2}</option> </select>`
-    child[1].innerHTML = `<select name="hk" id="hk" class="custom-select"> <option value="1" ${current.hk === "1" ? "selected":""}>1</option> <option value="2" ${current.hk === "2" ? "selected":""}>2</option> <option value="3" ${current.hk === "3" ? "selected":""}>3</option> </select>`
+    child[0].innerHTML = `<select name="schoolYear" id="schoolYear" class="custom-select"> <option value="${semester1}" ${current.schoolYear === semester1 ? "selected": ""}>${semester1}</option> <option value="${semester2}" ${current.schoolYear === semester2 ? "selected": ""}>${semester2}</option> </select>`
+    child[1].innerHTML = `<select name="semester" id="semester" class="custom-select"> <option value="1" ${current.semester === "1" ? "selected":""}>1</option> <option value="2" ${current.semester === "2" ? "selected":""}>2</option> <option value="3" ${current.semester === "3" ? "selected":""}>3</option> </select>`
     child[2].innerHTML = `<input class="form-control" type="date" name="endRegister" id="endRegister" value="${dateEndRegister}" >`
     child[3].innerHTML = `<input class="form-control" type="date" name="startIntern" id="startIntern" value="${dateStartIntern}">`
     child[4].innerHTML = `<input class="form-control" type="date" name="endIntern" id="endIntern" value="${dateEndIntern}">`
@@ -185,10 +185,10 @@ function format0(val) {
 
 function loadData(){
     const params = {
-        semester: document.getElementById('semester-filter').value,
-        hk: document.getElementById('hk-filter').value
+        schoolYear: document.getElementById('schoolYear-filter').value,
+        semester: document.getElementById('semester-filter').value
       }
-    
+    console.log(params)
     $.ajax({
     type: "get",
     url: "/admin/manage/milestones",
@@ -206,8 +206,8 @@ function loadData(){
         data.forEach((val, index)=>{
         row += `<tr id="addMilestone"><tr>
                 <tr id="${val._id}">
+                    <td>${val.schoolYear}</td>
                     <td>${val.semester}</td>
-                    <td>${val.hk}</td>
                     <td>${val.endRegister}</td>
                     <td>${val.startIntern}</td>
                     <td>${val.endIntern}</td>

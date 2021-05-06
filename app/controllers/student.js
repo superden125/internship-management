@@ -161,14 +161,14 @@ export async function getListInternshipUnit(req, res) {
         error: { err: true, msg: "Not found internship unit is this semester" },
       })
   );
-  let semesters = []
+  let schoolYears = []
   milestones.forEach((val)=>{
-    semesters.push(val.semester)
+    schoolYears.push(val.schoolYear)
   })
-  semesters = semesters.filter((val,i,a)=>a.indexOf(val)===i)
-  console.log(semesters)
-  data.semesters = semesters
-  data.currentHk = milestones[0].hk
+  schoolYears = schoolYears.filter((val,i,a)=>a.indexOf(val)===i)
+  console.log(schoolYears)
+  data.schoolYears = schoolYears
+  data.currentHk = milestones[0]
   const internUnits = await InternshipUnit.find({
     introBy: null,
     idMilestone: milestones[0]._id
@@ -177,13 +177,14 @@ export async function getListInternshipUnit(req, res) {
     internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
   });
   data.internUnits = internUnits;
+  console.log(data)
   res.render("student/internship-unit", data);
 }
 
 export async function getListInternUnit(req, res){
   let data = {};
-  const {semester, hk} = req.query  
-  const milestone = await Milestone.findOne({semester ,hk: parseInt(hk)})  
+  const {semester, schoolYear} = req.query  
+  const milestone = await Milestone.findOne({schoolYear ,semester: parseInt(semester)})  
   data.milestone = milestone 
   if(!milestone) return res.json({success: false, msg:"Milestone not found"})  
   

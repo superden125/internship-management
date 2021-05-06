@@ -25,12 +25,11 @@ export async function getInternshipInfo(req, res) {
         error: { err: true, msg: "Not found semester" },
       })
   );
-  let semesters = []
+  let schoolYears = []
   milestones.forEach((val)=>{
-    semesters.push(val.semester)
+    schoolYears.push(val.schoolYear)
   })
-  data.semesters = semesters.filter((val,i,a)=>a.indexOf(val)===i)
-  data.currentHk = milestones[0].hk 
+  data.schoolYears = schoolYears.filter((val,i,a)=>a.indexOf(val)===i)  
 
   const internInfo = await InternshipInfo.findOne({ idSv, idMilestone: milestones[0]._id })
   
@@ -62,18 +61,18 @@ export async function getInternshipInfo(req, res) {
     const teacher = await User.findById(internInfo.idGv);
     data.teacher = teacher;
   }
-  
+  console.log(data)
   data.error = { err: false };
   res.render("student/home", data);
 }
 
 export async function getInternInfo(req,res){
   
-  const {semester, hk} = req.query
+  const {semester, schoolYear} = req.query
   const idSv = req.session.user.userId
   let data = {}
 
-  const milestone = await Milestone.findOne({semester, hk})
+  const milestone = await Milestone.findOne({semester, schoolYear})
   if(!milestone) return res.json({success: false, msg: "milestone not found"})  
 
   const internInfo = await InternshipInfo.findOne({idSv, idMilestone: milestone._id})

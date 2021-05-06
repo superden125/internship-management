@@ -77,9 +77,9 @@ function saveManyCore(){
 function loadData(queries){
 
     let params = {}
-    let hk = document.querySelector("#hk").value
+    let schoolYear = document.querySelector("#schoolYear").value
     let semester = document.querySelector("#semester").value
-    params.hk = hk
+    params.schoolYear = schoolYear
     params.semester = semester
     if(queries){
         Object.keys(queries).forEach((key)=>{
@@ -135,9 +135,9 @@ function loadData(queries){
 function loadDataIndex(queries){
     
     let params = {}
-    let hk = document.querySelector("#hk").value
+    let schoolYear = document.querySelector("#schoolYear").value
     let semester = document.querySelector("#semester").value
-    params.hk = hk
+    params.schoolYear = schoolYear
     params.semester = semester
     if(queries){
         Object.keys(queries).forEach((key)=>{
@@ -156,7 +156,7 @@ function loadDataIndex(queries){
         if(res.success){
             console.log(res.data)
             document.querySelector("#semester").value = res.data.semester
-            document.querySelector("#hk").value = res.data.hk
+            document.querySelector("#schoolYear").value = res.data.schoolYear
 
             const table = document.querySelector("#table-index-body")
             table.innerHTML="<tbody></tbody>"

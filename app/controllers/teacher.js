@@ -45,13 +45,7 @@ export async function index (req, res) {
       as: "internUnit"
     }    
   }
-
-  const filter = {
-    $match: {
-      idGv: ObjectId(idGv)
-    }
-  }
-  
+ 
   const select = {
     $project: {
       _id: 1,
@@ -65,20 +59,29 @@ export async function index (req, res) {
     }
   }
 
-  const milestone = await Milestone.find().limit(12).sort({endRegister:-1})
-  if(!milestone) return res.render(
+  const milestones = await Milestone.find().limit(12).sort({endRegister:-1})
+  if(!milestones) return res.render(
     "teacher/index",
     Object.assign(data, {
       error: { err: true, msg: "Not found semester" },
-      listSemester: []
+      schoolYears: []
     })
   );
-  let semesters = []
-  milestone.forEach((val)=>{
-    semesters.push(val.semester)
+  let schoolYears = []
+  milestones.forEach((val)=>{
+    schoolYears.push(val.schoolYear)
   })
    
-  data.listSemester = semesters.filter((val,i,a)=> a.indexOf(val)===i)
+  data.schoolYears = schoolYears.filter((val,i,a)=> a.indexOf(val)===i)
+
+  const filter = {
+    $match: {
+      idGv: ObjectId(idGv),
+      idMilestone: milestones[0]._id
+    }
+  }
+
+  data.milestones = milestones
 
   InternshipInfo
     .aggregate([filter, lookupStudent, lookupInternUnit, {$unwind: "$student"}, {$unwind: "$internUnit"}, select])
@@ -169,23 +172,23 @@ export async function getManyInternInfo(req,res){
   let limit = req.query.limit ? parseInt(req.query.limit) : 10
   let page = req.query.page ? parseInt(req.query.page) : 1
   let s = req.query.search ? req.query.search : ""
-  let hk = req.query.hk ? req.query.hk : ""
+  let schoolYear = req.query.schoolYear ? req.query.schoolYear : ""
   let semester = req.query.semester ? req.query.semester : ""  
   
-  if(!hk && !semester){
+  if(!schoolYear && !semester){
     const lasterMilestone = await Milestone.findOne().sort({endRegister: -1})  
-    hk = lasterMilestone.hk
+    schoolYear = lasterMilestone.schoolYear
     semester = lasterMilestone.semester
     idMilestone = lasterMilestone._id
   } else{
-    const lasterMilestone = await Milestone.findOne({hk, semester})
+    const lasterMilestone = await Milestone.findOne({schoolYear, semester})
     if(!lasterMilestone) return res.json({success:false, msg:"Invalid params"})
       idMilestone = lasterMilestone._id            
   }
 
   const countDocuments = await InternshipInfo.find({idGv, idMilestone}).countDocuments()
 
-  data.hk=hk
+  data.schoolYear=schoolYear
   data.semester=semester
   data.pagination = {
     totalRow: Math.ceil(countDocuments / limit),

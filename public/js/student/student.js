@@ -101,8 +101,8 @@ function resetForm(){
 
 function loadData(){
   const semester = document.querySelector("#semester").value
-  const hk = document.querySelector("#hk").value
-  const params = {semester, hk}  
+  const schoolYear = document.querySelector("#schoolYear").value
+  const params = {semester, schoolYear}  
   $.ajax({
     type: "get",
     url: "/student/get-interninfo",
@@ -150,7 +150,7 @@ function loadData(){
 function loadDataInternUnit(){
   const params = {
     semester: document.getElementById('semester').value,
-    hk: document.getElementById('hk').value
+    schoolYear: document.getElementById('schoolYear').value
   }
 
   $.ajax({
