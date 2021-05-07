@@ -10,43 +10,43 @@
 
       <%- include('../layouts/navbar') %>
 
-      <% if(milestones.length > 0){%> 
+      <% if(schoolYears.length > 0){%> 
         <div class="row mb-4">
-          <div class="col-md-2">
+          <div class="col-auto">
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">Năm học</span>
               </div>
-              <select class="custom-select" name="semester" id="semester">                   
+              <select class="custom-select" name="schoolYear" id="schoolYear">                   
                     <% milestones.forEach((val)=>{%> 
-                      <option value="<%= val.semester %>"><%= val.semester %></option>
+                      <option value="<%= val.schoolYear %>"><%= val.schoolYear %></option>
                     <% }) %> 
               </select>
             </div>
           </div>
           
 
-          <div class="col-md-2">
+          <div class="col-auto">
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">Học kỳ</span>
               </div>
-              <select class="custom-select" name="hk" id="hk">
-                <option value="1" <%= milestones[0].hk == 1 ? "selected" : "" %>>1</option>
-                <option value="2" <%= milestones[0].hk == 2 ? "selected" : "" %>>2</option>
-                <option value="3" <%= milestones[0].hk == 3 ? "selected" : "" %>>3</option>
+              <select class="custom-select" name="semester" id="semester">
+                <option value="1" <%= milestones[0].semester == 1 ? "selected" : "" %>>1</option>
+                <option value="2" <%= milestones[0].semester == 2 ? "selected" : "" %>>2</option>
+                <option value="3" <%= milestones[0].semester == 3 ? "selected" : "" %>>3</option>
               </select>
             </div>
           </div>
            
 
-        <div class="col-md-1">
+        <div class="col-auto">
           <button id="filter" class="btn btn-info" onclick="loadData()">Tìm kiếm</button>
         </div>
       </div>
       
       <% } %>
-
+      <div id="alter"></div>
       <div id="err"><%= error.err ? error.msg : "" %> </div>
       <div class="<%= error.err ? "display-none" : "" %>" id="card-intern-info">
         <div class="card border-light card-content">

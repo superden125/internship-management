@@ -16,24 +16,49 @@
               <div class="brand-wrapper">
                 <img src="img/logo.png" alt="logo" class="logo">
               </div>
-              <!-- <p class="login-card-description">Đăng nhập vào hệ thống</p> -->
-              <form action="/login" method="POST">
-                  <div class="form-group">
-                    <label for="email" class="sr-only">Tên tài khoản</label>
-                    <input type="text" name="username" id="email" class="form-control" placeholder="Tên tài khoản hoặc Email">
-                  </div>
-                  <div class="form-group mb-4">
-                    <label for="password" class="sr-only">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="Mật khẩu">
-                  </div>
-                  <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Đăng nhập">
-                </form>
-                <!-- <p class="login-card-footer-text">Don't have an account? <a href="#!" class="text-reset">Register here</a></p> -->
+              <div id="alter"></div>
+              <form action="/login" method="POST" class="needs-validation" novalidate>
+                <div class="form-group">
+                  <label for="email" class="sr-only">Tên tài khoản</label>
+                  <input type="text" name="username" id="email" class="form-control" placeholder="Tên tài khoản hoặc Email" required>
+                </div>
+                <div class="form-group mb-4">
+                  <label for="password" class="sr-only">Password</label>
+                  <input type="password" name="password" id="password" class="form-control" placeholder="Mật khẩu" required>
+                </div>
+                <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Đăng nhập">
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
   </main>
+  <%- include('layouts/script') %>
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+
+    var error = '<%= err %>';
+    if (error.length != 0) {
+      alterError(error);
+    }
+  </script>
 </body>
 </html>

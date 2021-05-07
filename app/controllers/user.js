@@ -33,12 +33,12 @@ module.exports = {
     });
 
     if (!user) return {
-      err: "user not found"
+      err: "Người dùng không tồn tại"
     };
 
     let match = await bcryptjs.compare(password, user.password);
     if (!match) return {
-      err: "password not match"
+      err: "Mật khẩu không đúng"
     };
 
     return {

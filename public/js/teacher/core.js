@@ -24,12 +24,12 @@ function addEventInputCore(){
 }
 
 
-document.querySelector("#search").addEventListener('keypress', (e)=>{
-    if(e.key=="Enter"){
-        const queries = { search: e.target.value}
-        loadData(queries)
-    }
-})
+// document.querySelector("#search").addEventListener('keypress', (e)=>{
+//     if(e.key=="Enter"){
+//         const queries = { search: e.target.value}
+//         loadData(queries)
+//     }
+// })
 
 
 function getInput(){
@@ -77,9 +77,9 @@ function saveManyCore(){
 function loadData(queries){
 
     let params = {}
-    let hk = document.querySelector("#hk").value
+    let schoolYear = document.querySelector("#schoolYear").value
     let semester = document.querySelector("#semester").value
-    params.hk = hk
+    params.schoolYear = schoolYear
     params.semester = semester
     if(queries){
         Object.keys(queries).forEach((key)=>{
@@ -97,7 +97,11 @@ function loadData(queries){
         data:params
     }).done((res)=>{
         if(res.success){
-                              
+            
+            const endCore = res.data.endCore
+            if(document.getElementById)
+                document.getElementById('endCore').innerHTML = formatDate(endCore)
+
             data = res.data.internInfos
             data.forEach((val, index)=>{
 
@@ -107,13 +111,13 @@ function loadData(queries){
                     `<td><span class="sd-icon mr-4" onclick="saveCore('${val._id}')"> <i class="fas fa-save"></i> </span></td>`
                 }
                 else{
-                    core = `<td>${val.core}</td>`+
-                    `<td><span class="sd-icon" id="editCore" onclick="editCore('${val._id}')"><i class="fas fa-edit"></i></span></td>`
+                    core = `<td>${val.core}</td>
+                            ${new Date(endCore) >= Date.now() ? `<td><span class="sd-icon" id="editCore" onclick="editCore('${val._id}')"><i class="fas fa-edit"></i></span></td>`:""}`
                 }
 
                 row += `<tr id="${val._id}">`+
                     `<td class="text-left align-middle">${index + 1}</td>`+
-                    `<td class="text-left align-middle">${val.student.mssv}</td>`+
+                    `<td class="text-left align-middle">${val.student.ms}</td>`+
                     `<td class="text-left align-middle">${val.student.name}</td>`+
                     `<td class="text-left align-middle">${val.internUnit.name}</td>`+
                     `<td class="text-left align-middle">${val.internUnit.cityName}</td>`+
@@ -131,9 +135,9 @@ function loadData(queries){
 function loadDataIndex(queries){
     
     let params = {}
-    let hk = document.querySelector("#hk").value
+    let schoolYear = document.querySelector("#schoolYear").value
     let semester = document.querySelector("#semester").value
-    params.hk = hk
+    params.schoolYear = schoolYear
     params.semester = semester
     if(queries){
         Object.keys(queries).forEach((key)=>{
@@ -141,7 +145,7 @@ function loadDataIndex(queries){
         })
     }
     
-    console.log(params)
+    
     const table = document.querySelector("#table-index-body")
     table.innerHTML="<tbody></tbody>"
     $.ajax({
@@ -152,7 +156,7 @@ function loadDataIndex(queries){
         if(res.success){
             console.log(res.data)
             document.querySelector("#semester").value = res.data.semester
-            document.querySelector("#hk").value = res.data.hk
+            document.querySelector("#schoolYear").value = res.data.schoolYear
 
             const table = document.querySelector("#table-index-body")
             table.innerHTML="<tbody></tbody>"
@@ -161,7 +165,7 @@ function loadDataIndex(queries){
             data.forEach((val, index)=>{
                 row +=  `<tr id="${val._id}"  onclick="return window.location.href ='/teacher/${val.shortId}'">`+
                 `<td class="text-left align-middle">${index + 1}</td>`+
-                `<td class="text-left align-middle">${val.student.mssv}</td>`+
+                `<td class="text-left align-middle">${val.student.ms}</td>`+
                 `<td class="text-left align-middle">${val.student.name}</td>`+
                 `<td class="text-left align-middle">${val.internUnit.name}</td>`+
                 `<td class="text-left align-middle">${val.internUnit.cityName}</td>`+
@@ -280,10 +284,12 @@ function saveCore(id){
 }
 
 function editCore(id){
+    console.log("call")
     const row = document.getElementById(`${id}`).childNodes
     const tdCore = row[5]
-    const tdButton = row[6]
+    const tdButton = row[7]
     const currentCore = tdCore.innerHTML
+    console.log(row)
     tdCore.innerHTML = `<td><input value="${currentCore}" type="number" max="10" min="0" name="core-${id}" id="core-${id}" class="core"/></td>`
     tdButton.innerHTML = `<span class="sd-icon mr-4" onclick="saveCore('${id}')"> <i class="fas fa-save"></i> </span><span class="sd-icon" onclick="deleteCore('${id}', '${currentCore}')"> <i class="fas fa-backspace"></i> </span>`
 }
@@ -291,7 +297,7 @@ function editCore(id){
 function deleteCore(id, currentCore){
     const row = document.getElementById(`${id}`).childNodes
     const tdCore = row[5]
-    const tdButton = row[6]
+    const tdButton = row[7]
     tdCore.innerHTML = `<td>${currentCore}</td>`
     tdButton.innerHTML = `<span class="sd-icon" id="editCore" onclick="editCore('${id}')"><i class="fas fa-edit"></i></span>`
 }

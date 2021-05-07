@@ -19,7 +19,7 @@ export async function registerInternshipPost(req, res) {
     };
     data = Object.assign(data, req.body);
     if (data.internshipUnit == "0") {
-      console.log("tst", data);
+      
       const internshipUnit = new InternshipUnit({
         name: data.internName,
         address: data.internAddress,
@@ -36,6 +36,7 @@ export async function registerInternshipPost(req, res) {
         reqInfo: data.internRequire,
         benefit: data.internBenefit,
         introBy: data.idSv,
+        idMilestone: data.milestone.trim()
       });
       const result = await internshipUnit.save();
       data.idUnit = result._id;
@@ -92,7 +93,7 @@ export async function registerInternshipGet(req, res) {
   };
   const year = new Date().getFullYear();
   const milestone = await Milestone.find({
-    semester: {
+    schoolYear: {
       $regex: year
     },
     endRegister: {
@@ -110,8 +111,8 @@ export async function registerInternshipGet(req, res) {
   for (let i = 0; i < milestone.length; i++) {
     const obj = {};
     obj._id = milestone[i]._id
+    obj.schoolYear = milestone[i].schoolYear
     obj.semester = milestone[i].semester
-    obj.hk = milestone[i].hk
     obj.startIntern = milestone[i].startIntern
     obj.endIntern = milestone[i].endIntern
     obj.endRegister = moment(milestone[i].endRegister).format("DD-MM-YYYY")
@@ -127,7 +128,7 @@ export async function registerInternshipGet(req, res) {
     if (internInfo) {
       data.error = {
         err: true,
-        msg: `Bạn đã đăng ký thực tập năm học ${milestone1[i].semester}, học kỳ  ${milestone1[i].hk}`
+        msg: `Bạn đã đăng ký thực tập năm học ${milestone1[i].schoolYear}, học kỳ  ${milestone1[i].semester}`
       }
       return res.render("student/register-internship", data)
     }
@@ -137,6 +138,7 @@ export async function registerInternshipGet(req, res) {
 
   const internshipUnit = await InternshipUnit.find({
     introBy: null,
+    idMilestone: milestone1[0]._id
   });
   data.internshipUnit = internshipUnit;
   data.tinh = tinh.sort((a, b) => a.name - b.name);
@@ -148,16 +150,53 @@ export async function getListInternshipUnit(req, res) {
   let data = {
     title: "Internship Management System",
     roleName: "Sinh viên",
-    urlInfo: "Danh sách đơn vị thực tập",
+    urlInfo: "Danh sách đơn vị thực tập",    
   };
+
+  const milestones = await Milestone.find({}).limit(12).sort({endRegister: -1})
+  
+  if(milestones.length === 0) return res.render(
+      "student/internship-unit",
+      Object.assign(data, {
+        error: { err: true, msg: "Not found internship unit is this semester" },
+      })
+  );
+  let schoolYears = []
+  milestones.forEach((val)=>{
+    schoolYears.push(val.schoolYear)
+  })
+  schoolYears = schoolYears.filter((val,i,a)=>a.indexOf(val)===i)
+  console.log(schoolYears)
+  data.schoolYears = schoolYears
+  data.currentHk = milestones[0]
   const internUnits = await InternshipUnit.find({
     introBy: null,
+    idMilestone: milestones[0]._id
   });
   internUnits.forEach((internUnit) => {
     internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
   });
   data.internUnits = internUnits;
+  console.log(data)
   res.render("student/internship-unit", data);
+}
+
+export async function getListInternUnit(req, res){
+  let data = {};
+  const {semester, schoolYear} = req.query  
+  const milestone = await Milestone.findOne({schoolYear ,semester: parseInt(semester)})  
+  data.milestone = milestone 
+  if(!milestone) return res.json({success: false, msg:"Milestone not found"})  
+  
+  const internUnits = await InternshipUnit.find({
+    introBy: null,
+    idMilestone: milestone._id
+  });
+  internUnits.forEach((internUnit) => {
+    internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
+  });
+  data.internUnits = internUnits;
+  res.json({success: true, data})
 }
 
 export async function getInternshipUnitById(req, res) {

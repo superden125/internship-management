@@ -11,16 +11,16 @@
     <%- include('../layouts/navbar') %>    
     
     <div class="row mb-4">
-      <div class="col-md-3">
+      <!-- <div class="col-md-3">
           <input class="form-control" type="text" name="search" id="search" placeholder="Tìm kiếm theo mssv hoặc tên sinh viên">            
-      </div>        
+      </div>         -->
       <div class="col-md-2">
           <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">Năm học</span>
               </div>
-              <select class="custom-select" name="semester" id="semester">
-                  <% listSemester.forEach((val)=>{ %> 
+              <select class="custom-select" name="schoolYear" id="schoolYear">
+                  <% schoolYears.forEach((val)=>{ %> 
                       <option value="<%= val %>"><%= val %></option>
                   <% }) %> 
               </select>
@@ -31,10 +31,10 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">Học kỳ</span>
               </div>
-              <select class="custom-select" name="hk" id="hk">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
+              <select class="custom-select" name="semester" id="semester">
+                <option value="1" <%= milestones[0].semester == 1 ? "selected" : "" %>>1</option>
+                <option value="2" <%= milestones[0].semester == 2 ? "selected" : "" %>>2</option>
+                <option value="3" <%= milestones[0].semester == 3 ? "selected" : "" %>>3</option>
               </select>
             </div>
       </div>

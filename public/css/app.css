@@ -78,7 +78,8 @@ p {
   margin-bottom: 23px;
 }
 
-.login-card form {
+.login-card form,
+.login-card #alter {
   max-width: 326px;
 }
 
