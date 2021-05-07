@@ -9,7 +9,6 @@ import Milestone from '../models/milestone';
 import InternshipInfo from '../models/internshipInfo';
 import {tinh} from "../lib/tinh";
 import * as password from "../lib/password";
-import User from '../models/user';
 import Major from '../models/major';
 
 
@@ -62,16 +61,6 @@ module.exports.getAllTeachers = async (req, res) => {
         $unwind: '$major'
       },
     ])
-
-  // res.render('admin', {
-  //   roleName: 'Giáo vụ khoa',
-  //   urlInfo: 'Quản lý giáo viên'
-  // });
-  // const teachers = await Teacher.find();
-  // res.json(teachers);
-  await User.find({
-      role: 'teacher'
-    })
     .exec(function (err, teachers) {
       return res.render("admin/show-teacher", {
        teachers: teachers,
@@ -110,7 +99,7 @@ module.exports.getAllStudents = async (req, res) => {
   });
 }
 
-module.exports.loadAproveInternshipUnitPage = (req, res) => {
+module.exports.loadAproveInternshipUnitPage =  async (req, res) => {
   res.render('admin/internship-approve-all', {
     roleName: 'Giáo vụ khoa',
     urlInfo: 'Xét duyệt điểm thực tập',
