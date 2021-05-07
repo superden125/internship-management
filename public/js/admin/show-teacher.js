@@ -74,7 +74,7 @@ $('#add_teacher') && $("#add_teacher").on("submit", (e) => {
       error.name = data.name == "" ? "Required" : "";
       error.phone = data.phone == "" ? "Required" : "";
       error.email = data.email == "" ? "Required" : "";
-      error.major = data.majors == "" ? "Required" : "";
+      
       
       
       //var emailPatt = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;

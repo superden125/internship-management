@@ -50,7 +50,7 @@ router.get('/manage/teachers/add_teacher', adminController.addTeacher);
 router.post('/manage/teachers',adminController.createTeacher);
 router.get('/manage/teachers/:id', adminController.getUpdateTeacher);
 router.post('/manage/teachers/:id', adminController.updateTeacher);
-router.delete('/manage/teachers/:id', adminController.deleteTeacher);
+router.delete('/manage/teachers', adminController.deleteTeacher);
 
 //Students
 router.get('/manage/students/add_student', adminController.addStudent);

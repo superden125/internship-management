@@ -564,7 +564,7 @@ export async function getUpdateInternshipUnit(req, res){
     },
   }
   const internshipunits = await InternshipUnit.findOne({_id:req.params.id});
-  internshipunits.cityName = tinh.find((tinh) => tinh.id == internshipunits.city).name;
+  //internshipunits.cityName = tinh.find((tinh) => tinh.id == internshipunits.city).name;
   data.tinh = tinh.sort((a, b) => a.name - b.name);
   data.internshipunits = internshipunits;
   res.render("admin/update_internship-unit",data)
@@ -794,8 +794,8 @@ export async function getUpdateStudent(req, res){
     },
   }
   const student = await User.findOne({_id:req.params.id});
-  const majors = await Major.find({})
-  data.majors = majors
+  const majors = await Major.find({});
+  data.majors = majors;
   data.student = student;
   res.render("admin/update_student",data)
 }
@@ -825,7 +825,7 @@ exports.updateStudent = (req, res) =>{
 
 exports.deleteStudent = (req, res)=>{
   const id = req.params.id;
-
+// return res.json(req.body)
   User.findByIdAndDelete(id)
       .then(data => {
           if(!data){

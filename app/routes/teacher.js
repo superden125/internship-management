@@ -1,10 +1,11 @@
 import express from 'express';
 
+import { isTeacher } from "../middleware/auth";
 import * as teacherController from '../controllers/teacher';
 
 const router = express.Router();
 
-//router.use(auth.isTeacher)
+router.use(isTeacher);
 
 router.get('/', teacherController.index)
 router.get('/core', teacherController.index)
