@@ -9,14 +9,25 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
 
+      <div class="row mb-3">
+        <div class="col-auto">
+          <button id="redirectBack" title="Back" class="btn btn-light" type="button">
+            <i class="fas fa-angle-left mr-2"></i>
+            Trở về
+          </button>
+        </div>
+      </div>
+      
       <!-- Trạng thái -->
       <% if (internInfo.status == 0) { %>
         <div class="alert alert-warning" role="alert">
-          <strong><%= internInfo.statusString %></strong>
+          <strong class="mr-2"><%= internInfo.statusString %></strong>
+          <i class="fas fa-spinner" style="color: #856417; font-size: 1.1rem;"></i>
         </div>
       <% } else { %>
         <div class="alert alert-success" role="alert">
-          <strong><%= internInfo.statusString %></strong>
+          <strong class="mr-2"><%= internInfo.statusString %></strong>
+          <i class="far fa-check-circle" style="color: #155724; font-size: 1.1rem;"></i>
         </div>
       <% } %>
 
@@ -31,7 +42,7 @@
               <span class="">Mã số sinh viên</span>
             </div>
             <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.student.mssv %></span>
+              <span class="text-muted"><%= internInfo.student.ms %></span>
             </div>
           </div>
           <div class="row m-3">
@@ -72,6 +83,31 @@
             </div>
             <div class="col-md-8">
               <span class="text-muted"><%= internInfo.student.email %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thông tin năm học/ học kỳ -->
+      <div class="card border-black card-content">
+        <div class="card-header">
+          <h5 class="card-title">Thông tin về năm học/ học kỳ</h5>
+        </div>
+        <div class="card-body">
+          <div class="row m-3">
+            <div class="col-md-3">
+              <span class="">Năm học</span>
+            </div>
+            <div class="col-md-8">
+              <span class="text-muted"><%= internInfo.milestone[0].schoolYear %></span>
+            </div>
+          </div>
+          <div class="row m-3">
+            <div class="col-md-3">
+              <span class="">Học kỳ</span>
+            </div>
+            <div class="col-md-8">
+              <span class="text-muted"><%= internInfo.milestone[0].semester %></span>
             </div>
           </div>
         </div>
@@ -216,7 +252,7 @@
             </div>
           <% }) %>
         </div>
-      </div>      
+      </div>
 
       <!-- Button -->
       <form method="POST" action="">

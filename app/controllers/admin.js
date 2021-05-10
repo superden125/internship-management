@@ -1,13 +1,19 @@
-import bcrypt, { hashSync } from "bcryptjs";
+import bcrypt, {
+  hashSync
+} from "bcryptjs";
 import moment from "moment"
 import InternshipUnit from '../models/internshipUnit';
-import mongoose, { model } from 'mongoose';
+import mongoose, {
+  model
+} from 'mongoose';
 import Teacher from '../models/teacher';
 import Student from '../models/student';
 import User from '../models/user';
 import Milestone from '../models/milestone';
 import InternshipInfo from '../models/internshipInfo';
-import {tinh} from "../lib/tinh";
+import {
+  tinh
+} from "../lib/tinh";
 import * as password from "../lib/password";
 import Major from '../models/major';
 
@@ -33,73 +39,71 @@ module.exports.getAllInternshipUnit = async (req, res) => {
   }
   const internshipunits = await InternshipUnit.find({});
   // internshipunits.cityName = tinh.find((tinh) => tinh.id == internshipunits.city).name;
-    internshipunits.forEach(internshipunit => {
+  internshipunits.forEach(internshipunit => {
     internshipunit.cityName1 = tinh.find((tinh) => tinh.id == internshipunit.city).name;
   });
   //data.tinh = tinh.sort((a, b) => a.name - b.name);
   data.internshipunits = internshipunits;
-  res.render("admin/show-internship-unit",data);
+  res.render("admin/show-internship-unit", data);
 }
 
 module.exports.getAllTeachers = async (req, res) => {
 
-   const teachers = await User.aggregate([
-     {
-        $match:{
-          role:'teacher'
+  const teachers = await User.aggregate([{
+        $match: {
+          role: 'teacher'
         },
-     },
-     {
-      $lookup: {
-        from: 'majors',
-        localField: 'idMajor',
-        foreignField: '_id',
-        as: 'major'
-      }
-     },
-     {
+      },
+      {
+        $lookup: {
+          from: 'majors',
+          localField: 'idMajor',
+          foreignField: '_id',
+          as: 'major'
+        }
+      },
+      {
         $unwind: '$major'
       },
     ])
     .exec(function (err, teachers) {
       return res.render("admin/show-teacher", {
-       teachers: teachers,
-       roleName: 'Giáo vụ khoa',
-      urlInfo: 'Giáo viên',
+        teachers: teachers,
+        roleName: 'Giáo vụ khoa',
+        urlInfo: 'Giáo viên',
       });
-   });
+    });
 }
 
 module.exports.getAllStudents = async (req, res) => {
 
-  const students = await User.aggregate([
-    {
-       $match:{
-         role:'student'
-       },
-    },
-    {
-     $lookup: {
-       from: 'majors',
-       localField: 'idMajor',
-       foreignField: '_id',
-       as: 'major'
-     }
-    },
-    {
-       $unwind: '$major'
-     },
-   ])
-   .exec(function (err, students) {
-     return res.render("admin/show-student", {
-      students: students,
-      roleName: 'Giáo vụ khoa',
-     urlInfo: 'Sinh viên',
-     });
-  });
+  const students = await User.aggregate([{
+        $match: {
+          role: 'student'
+        },
+      },
+      {
+        $lookup: {
+          from: 'majors',
+          localField: 'idMajor',
+          foreignField: '_id',
+          as: 'major'
+        }
+      },
+      {
+        $unwind: '$major'
+      },
+    ])
+    .exec(function (err, students) {
+      return res.render("admin/show-student", {
+        students: students,
+        roleName: 'Giáo vụ khoa',
+        urlInfo: 'Sinh viên',
+      });
+    });
 }
 
-module.exports.loadAproveInternshipUnitPage =  async (req, res) => {
+module.exports.loadAproveInternshipUnitPage = async (req, res) => {
   res.render('admin/internship-approve-all', {
     roleName: 'Giáo vụ khoa',
     urlInfo: 'Xét duyệt điểm thực tập',
@@ -134,8 +138,8 @@ module.exports.getAproveInternshipUnitInfo = async (req, res) => {
     skip: 0
   };
 
-  var schoolYear = req.query.schoolYear || '';
-  var semester = req.query.semester || '';
+  var selectedSchoolYear = req.query.schoolYear || '';
+  var selectedSemester = req.query.semester || '';
 
   var milestone = null;
 
@@ -171,8 +175,7 @@ module.exports.getAproveInternshipUnitInfo = async (req, res) => {
   var sort = sortType.column;
   sortField['$sort'][sort] = sortType.type;
 
-  const query = [
-    {
+  const query = [{
       $lookup: {
         from: 'users',
         localField: 'idSv',
@@ -220,45 +223,63 @@ module.exports.getAproveInternshipUnitInfo = async (req, res) => {
     }
   ];
 
-  if (req.query.hasOwnProperty('schoolYear')) {
+  const milestones = await Milestone.find({})
+    .limit(12)
+    .sort({
+      endRegister: -1
+    });
+
+  if (!milestones) {
+    return res.render('/admin/internship/approve', Object.assign(data, {
+      error: {
+        err: true,
+        msg: 'Không tìm thấy năm học'
+      },
+      schoolYears: []
+    }));
+  }
+
+  let schoolYears = []
+  milestones.forEach((val) => {
+    schoolYears.push(val.schoolYear);
+  });
+
+  schoolYears = schoolYears.filter((val, i, a) => a.indexOf(val) === i);
+
+  var matchField = {
+    $match: {}
+  }
+
+  if (req.query.hasOwnProperty('schoolYear') && req.query.hasOwnProperty('semester')) {
     var idArr = [];
-    var milestones = await Milestone.find({ schoolYear: req.query.schoolYear });
+    var milestonesTemp = await Milestone.find({ schoolYear: req.query.schoolYear, semester: req.query.semester });
     
-    milestones.forEach(item => {
+    milestonesTemp.forEach(item => {
       idArr.push(mongoose.Types.ObjectId(item._id));
     });
 
-    var matchQuery = {
-      $match: {
-        idMilestone: {
-          $in: idArr
-        }
-      }
-    }
-    
-    query.splice(0, 0, matchQuery);
-  }
-
-  if (req.query.hasOwnProperty('semester')) {
+    matchField.$match.idMilestone = { $in: idArr }
+  } else if (req.query.hasOwnProperty('semester')) {
     var idArr = [];
-    var milestones = await Milestone.find({ semester: parseInt(req.query.semester) });
+    var milestonesTemp = await Milestone.find({ semester: req.query.semester });
     
-    milestones.forEach(item => {
+    milestonesTemp.forEach(item => {
       idArr.push(mongoose.Types.ObjectId(item._id));
     });
 
-    var matchQuery = {
-      $match: {
-        idMilestone: {
-          $in: idArr
-        }
-      }
-    }
+    matchField.$match.idMilestone = { $in: idArr }
+  } else if (req.query.hasOwnProperty('schoolYear')) {
+    var idArr = [];
+    var milestonesTemp = await Milestone.find({ schoolYear: req.query.schoolYear });
     
-    query.splice(0, 0, matchQuery);
+    milestonesTemp.forEach(item => {
+      idArr.push(mongoose.Types.ObjectId(item._id));
+    });
+
+    matchField.$match.idMilestone = { $in: idArr }
   }
 
-  milestone = await Milestone.find();
+  query.splice(0, 0, matchField);
 
   await InternshipInfo
     .aggregate(query)
@@ -282,7 +303,9 @@ module.exports.getAproveInternshipUnitInfo = async (req, res) => {
         current: page,
         totalPages: Math.ceil(totalDocs / paginationObj.limit),
         indexCount: paginationObj.skip,
-        schoolYear
+        selectedSchoolYear,
+        selectedSemester,
+        schoolYears
       });
     });
 }
@@ -324,10 +347,19 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
             foreignField: '_id',
             as: 'internshipUnit'
           }
-        }
+        },
+        {
+          $lookup: {
+            from: 'milestones',
+            localField: 'idMilestone',
+            foreignField: '_id',
+            as: 'milestone'
+          }
+        },
       ])
       .exec(function (err, internInfos) {
         var internInfo = internInfos[0];
+        
         internInfo.haveRoomString = !internInfo.haveRoom ? 'Không' : 'Có';
         internInfo.havePCString = !internInfo.havePC ? 'Không' : 'Có';
         internInfo.city = tinh.find((tinh) => tinh.id == internInfo.internshipUnit[0].city).name;
@@ -570,17 +602,26 @@ module.exports.milestoneGet = async (req, res) => {
     semesters.push(val.semester)
   })
   data.milestones = milestones1
-  data.semesters = semesters.filter((val,i,a)=>a.indexOf(val)===i)
+  data.semesters = semesters.filter((val, i, a) => a.indexOf(val) === i)
   res.render("admin/milestone", data)
 }
 
-module.exports.milestoneGets = async (req,res)=>{
-  const {semester, schoolYear} = req.query  
-  const milestones = await Milestone.find({schoolYear, semester: parseInt(semester)}).sort({
+module.exports.milestoneGets = async (req, res) => {
+  const {
+    semester,
+    schoolYear
+  } = req.query
+  const milestones = await Milestone.find({
+    schoolYear,
+    semester: parseInt(semester)
+  }).sort({
     endRegister: -1
   })
-  
-  if(milestones.length == 0) return res.json({success: false, msg: "Not found milestone"})
+
+  if (milestones.length == 0) return res.json({
+    success: false,
+    msg: "Not found milestone"
+  })
   let milestones1 = [];
   milestones.forEach((val) => {
     const obj = {}
@@ -594,15 +635,26 @@ module.exports.milestoneGets = async (req,res)=>{
     obj.endRegister2 = moment(val.endRegister).format("MM-DD-YYYY")
     milestones1.push(obj)
   })
-  
-  res.json({success:true, data: {milestones: milestones1}})
+
+  res.json({
+    success: true,
+    data: {
+      milestones: milestones1
+    }
+  })
 }
 
 module.exports.milestonePost = async (req, res) => {
   try {
     console.log(req.body)
-    const existMilestone = await Milestone.findOne({semester: req.body.semester, schoolYear: req.body.schoolYear})
-    if(existMilestone) return res.json({success: false, msg: "Thời gian thực tập đã tồn tại"})
+    const existMilestone = await Milestone.findOne({
+      semester: req.body.semester,
+      schoolYear: req.body.schoolYear
+    })
+    if (existMilestone) return res.json({
+      success: false,
+      msg: "Thời gian thực tập đã tồn tại"
+    })
     const milestone = new Milestone(req.body)
     const result = await milestone.save()
     if (!result) return res.json({
@@ -622,10 +674,16 @@ module.exports.milestonePost = async (req, res) => {
 module.exports.milestonePut = async (req, res) => {
   const data = req.body;
 
-  const existMilestone = await Milestone.findOne({semester: data.semester, schoolYear: data.schoolYear})
-  
-  if(existMilestone && data._id != existMilestone._id) return res.json({success: false, msg: "Thời gian thực tập đã tồn tại"})
-  
+  const existMilestone = await Milestone.findOne({
+    semester: data.semester,
+    schoolYear: data.schoolYear
+  })
+
+  if (existMilestone && data._id != existMilestone._id) return res.json({
+    success: false,
+    msg: "Thời gian thực tập đã tồn tại"
+  })
+
   const milestone = await Milestone.findById(data._id);
 
   if (!milestone) return res.json({
@@ -640,9 +698,14 @@ module.exports.milestonePut = async (req, res) => {
   milestone.endCore = data.endCore
 
   const result = await milestone.save()
-  if(!result) return res.json({success: false})
-  return res.json({success: true, data: result})
-  
+  if (!result) return res.json({
+    success: false
+  })
+  return res.json({
+    success: true,
+    data: result
+  })
+
 }
 
 //Internship Unit
@@ -658,27 +721,31 @@ module.exports.addInternshipUnit = async (req, res) => {
   const internshipunits = await InternshipUnit.find({})
   data.internshipunits = internshipunits
   data.tinh = tinh.sort((a, b) => a.name - b.name);
-  res.render("admin/add_internship-unit",data)
+  res.render("admin/add_internship-unit", data)
 }
 
 //create and save new internship-unit
 exports.createInternshipUnit = (req, res) => {
-  if(!req.body){
-    res.status(400).send({message: "Content can not be emtpy!"});
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be emtpy!"
+    });
     return;
   }
-  
+
   //new internship-unit
   const internshipunit = new InternshipUnit({
     name: req.body.name,
-    address:  req.body.address,
+    address: req.body.address,
     email: req.body.email,
     city: req.body.city,
     phone: req.body.phone,
     website: req.body.website,
-    mentor: {name: req.body.mentorName,
-     phone: req.body.mentorPhone,
-     email: req.body.mentorEmail},
+    mentor: {
+      name: req.body.mentorName,
+      phone: req.body.mentorPhone,
+      email: req.body.mentorEmail
+    },
     workEnv: req.body.workEnv,
     workContent: req.body.workContent,
     reqTime: req.body.reqTime,
@@ -688,7 +755,7 @@ exports.createInternshipUnit = (req, res) => {
     benefit: req.body.benefit,
     note: req.body.note,
     introBy: req.body.introBy
-  }) 
+  })
 
   // save intership-unit in the database
   internshipunit
@@ -703,69 +770,81 @@ exports.createInternshipUnit = (req, res) => {
     });
 }
 
-export async function getUpdateInternshipUnit(req, res){
+export async function getUpdateInternshipUnit(req, res) {
   // const internshipUnit = await InternshipUnit.find({});
   //  res.json(internshipUnit);
 
   // return res.json(req.body);
-    
+
   let data = {
     roleName: 'Giáo vụ khoa',
-    urlInfo: 'Đơn vị thực tập / Thêm mới',  
+    urlInfo: 'Đơn vị thực tập / Thêm mới',
     error: {
       err: false
     },
   }
-  const internshipunits = await InternshipUnit.findOne({_id:req.params.id});
+  const internshipunits = await InternshipUnit.findOne({
+    _id: req.params.id
+  });
   //internshipunits.cityName = tinh.find((tinh) => tinh.id == internshipunits.city).name;
   data.tinh = tinh.sort((a, b) => a.name - b.name);
   data.internshipunits = internshipunits;
-  res.render("admin/update_internship-unit",data)
+  res.render("admin/update_internship-unit", data)
 }
 
 //Update a new idetified internship-unit by internship-unit id
-exports.updateInternshipUnit = (req, res) =>{
-  if(!req.body){
+exports.updateInternshipUnit = (req, res) => {
+  if (!req.body) {
     return res
       .status(400)
-      .send({message: "Data to update cannot be empty"})
+      .send({
+        message: "Data to update cannot be empty"
+      })
   }
 
   const id = req.params.id;
 
   // return res.json(req.body)
-  InternshipUnit.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
+  InternshipUnit.findByIdAndUpdate(id, req.body, {
+      useFindAndModify: false
+    })
     .then(data => {
-      if(!data){
-        res.status(404).send({message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`})
-      }else{
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`
+        })
+      } else {
         res.redirect('/admin/manage/internship-unit')
       }
     })
     .catch(err => {
-        res.status(500).send({ message: "Error Update internship-unit information"})
+      res.status(500).send({
+        message: "Error Update internship-unit information"
+      })
     })
 }
 
 // Delete a user with specified user id in the request
-exports.deleteInternshipUnit = (req, res)=>{
+exports.deleteInternshipUnit = (req, res) => {
   const id = req.params.id;
 
   InternshipUnit.findByIdAndDelete(id)
-      .then(data => {
-          if(!data){
-              res.status(404).send({ message : `Cannot Delete with id ${id}. Maybe id is wrong`})
-          }else{
-              res.send({
-                  message : "User was deleted successfully!"
-              })
-          }
-      })
-      .catch(err =>{
-          res.status(500).send({
-              message: "Could not delete User with id=" + id
-          });
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot Delete with id ${id}. Maybe id is wrong`
+        })
+      } else {
+        res.send({
+          message: "User was deleted successfully!"
+        })
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete User with id=" + id
       });
+    });
 }
 
 exports.addTeacher = async (req, res) => {
@@ -780,19 +859,21 @@ exports.addTeacher = async (req, res) => {
   const majors = await Major.find({})
   data.majors = majors
   data.teachers = teachers
- 
-  res.render("admin/add_teacher",data)
-  
+
+  res.render("admin/add_teacher", data)
+
 }
 
 exports.createTeacher = async (req, res) => {
-  if(!req.body){
-    res.status(400).send({message: "Content can not be emtpy!"});
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be emtpy!"
+    });
     return;
   }
-  
+
   var pwd = password.genRandomString(9);
-  
+
   const salt = await bcrypt.genSalt(10);
   const hashPass = await bcrypt.hash(pwd, salt);
 
@@ -805,7 +886,7 @@ exports.createTeacher = async (req, res) => {
     password: hashPass,
     phone: req.body.phone,
     role: "teacher"
-  }) 
+  })
 
   // save intership-unit in the database
   teacher
@@ -820,67 +901,79 @@ exports.createTeacher = async (req, res) => {
     });
 }
 
-export async function getUpdateTeacher(req, res){
+export async function getUpdateTeacher(req, res) {
   // const internshipUnit = await InternshipUnit.find({});
   //  res.json(internshipUnit);
 
   // return res.json(req.body);
-    
+
   let data = {
     roleName: 'Giáo vụ khoa',
-    urlInfo: 'Giáo viên / Cập nhật',  
+    urlInfo: 'Giáo viên / Cập nhật',
     error: {
       err: false
     },
   }
-  const teacher = await User.findOne({_id:req.params.id});
+  const teacher = await User.findOne({
+    _id: req.params.id
+  });
   const majors = await Major.find({})
   data.majors = majors
   data.teacher = teacher;
-  res.render("admin/update_teacher",data)
+  res.render("admin/update_teacher", data)
 }
 
-exports.updateTeacher = (req, res) =>{
-  if(!req.body){
+exports.updateTeacher = (req, res) => {
+  if (!req.body) {
     return res
       .status(400)
-      .send({message: "Data to update cannot be empty"})
+      .send({
+        message: "Data to update cannot be empty"
+      })
   }
 
   const id = req.params.id;
 
   // return res.json(req.body)
-  User.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
+  User.findByIdAndUpdate(id, req.body, {
+      useFindAndModify: false
+    })
     .then(data => {
-      if(!data){
-        res.status(404).send({message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`})
-      }else{
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`
+        })
+      } else {
         res.redirect('/admin/manage/teachers')
       }
     })
     .catch(err => {
-        res.status(500).send({ message: "Error Update internship-unit information"})
+      res.status(500).send({
+        message: "Error Update internship-unit information"
+      })
     })
 }
 
-exports.deleteTeacher = (req, res)=>{
+exports.deleteTeacher = (req, res) => {
   const id = req.params.id;
 
   User.findByIdAndDelete(id)
-      .then(data => {
-          if(!data){
-              res.status(404).send({ message : `Cannot Delete with id ${id}. Maybe id is wrong`})
-          }else{
-              res.send({
-                  message : "User was deleted successfully!"
-              })
-          }
-      })
-      .catch(err =>{
-          res.status(500).send({
-              message: "Could not delete User with id=" + id
-          });
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot Delete with id ${id}. Maybe id is wrong`
+        })
+      } else {
+        res.send({
+          message: "User was deleted successfully!"
+        })
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete User with id=" + id
       });
+    });
 }
 
 //manage students
@@ -896,19 +989,21 @@ exports.addStudent = async (req, res) => {
   const majors = await Major.find({})
   data.majors = majors
   data.students = students
- 
-  res.render("admin/add_student",data)
-  
+
+  res.render("admin/add_student", data)
+
 }
 
 exports.createStudent = async (req, res) => {
-  if(!req.body){
-    res.status(400).send({message: "Content can not be emtpy!"});
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be emtpy!"
+    });
     return;
   }
-  
+
   var pwd = password.genRandomString(9);
-  
+
   const salt = await bcrypt.genSalt(10);
   const hashPass = await bcrypt.hash(pwd, salt);
 
@@ -922,7 +1017,7 @@ exports.createStudent = async (req, res) => {
     password: hashPass,
     phone: req.body.phone,
     role: "student"
-  }) 
+  })
 
   // save user in the database
   student
@@ -937,63 +1032,73 @@ exports.createStudent = async (req, res) => {
     });
 }
 
-export async function getUpdateStudent(req, res){
-  
+export async function getUpdateStudent(req, res) {
+
   let data = {
     roleName: 'Giáo vụ khoa',
-    urlInfo: 'Sinh viên / Cập nhật',  
+    urlInfo: 'Sinh viên / Cập nhật',
     error: {
       err: false
     },
   }
-  const student = await User.findOne({_id:req.params.id});
+  const student = await User.findOne({
+    _id: req.params.id
+  });
   const majors = await Major.find({});
   data.majors = majors;
   data.student = student;
-  res.render("admin/update_student",data)
+  res.render("admin/update_student", data)
 }
 
-exports.updateStudent = (req, res) =>{
-  if(!req.body){
+exports.updateStudent = (req, res) => {
+  if (!req.body) {
     return res
       .status(400)
-      .send({message: "Data to update cannot be empty"})
+      .send({
+        message: "Data to update cannot be empty"
+      })
   }
 
   const id = req.params.id;
 
   // return res.json(req.body)
-  User.findByIdAndUpdate(id, req.body, { useFindAndModify: false})
+  User.findByIdAndUpdate(id, req.body, {
+      useFindAndModify: false
+    })
     .then(data => {
-      if(!data){
-        res.status(404).send({message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`})
-      }else{
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`
+        })
+      } else {
         res.redirect('/admin/manage/students')
       }
     })
     .catch(err => {
-        res.status(500).send({ message: "Error Update internship-unit information"})
+      res.status(500).send({
+        message: "Error Update internship-unit information"
+      })
     })
 }
 
-exports.deleteStudent = (req, res)=>{
+exports.deleteStudent = (req, res) => {
   const id = req.params.id;
-// return res.json(req.body)
+  // return res.json(req.body)
   User.findByIdAndDelete(id)
-      .then(data => {
-          if(!data){
-              res.status(404).send({ message : `Cannot Delete with id ${id}. Maybe id is wrong`})
-          }else{
-              res.send({
-                  message : "User was deleted successfully!"
-              })
-          }
-      })
-      .catch(err =>{
-          res.status(500).send({
-              message: "Could not delete User with id=" + id
-          });
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot Delete with id ${id}. Maybe id is wrong`
+        })
+      } else {
+        res.send({
+          message: "User was deleted successfully!"
+        })
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete User with id=" + id
       });
+    });
 }
-
-

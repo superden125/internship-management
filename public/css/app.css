@@ -411,7 +411,7 @@ ul ul a {
 }
 
 #approve-internship th {
-  cursor: default;
+  cursor: pointer;
 }
 
 #approve-internship tr {
