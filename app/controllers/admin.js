@@ -31,7 +31,25 @@ module.exports.getAllInternshipUnit = async (req, res) => {
       err: false
     },
   }
-  const internshipunits = await InternshipUnit.find({});
+
+  const milestones = await Milestone.find().limit(12).sort({endRegister:-1})
+  if(!milestones) return res.render(
+    "admin/show-internship-unit",
+    Object.assign(data, {
+      error: { err: true, msg: "Not found semester" },
+      schoolYears: []
+    })
+  );
+  let schoolYears = []
+  milestones.forEach((val)=>{
+    schoolYears.push(val.schoolYear)
+  })
+   
+  data.schoolYears = schoolYears.filter((val,i,a)=> a.indexOf(val)===i)
+
+  data.milestones = milestones
+
+  const internshipunits = await InternshipUnit.find({idMilestone: milestones[0]._id, introBy: null});
   // internshipunits.cityName = tinh.find((tinh) => tinh.id == internshipunits.city).name;
     internshipunits.forEach(internshipunit => {
     internshipunit.cityName1 = tinh.find((tinh) => tinh.id == internshipunit.city).name;

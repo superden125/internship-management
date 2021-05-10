@@ -5,7 +5,7 @@ import * as studentController from "../controllers/student";
 import * as internInfoController from "../controllers/internshipInfo";
 const router = express.Router();
 
-// router.use(isStudent);
+router.use(isStudent);
 
 router.get("/", internInfoController.getInternshipInfo);
 router.get("/get-interninfo", internInfoController.getInternInfo)

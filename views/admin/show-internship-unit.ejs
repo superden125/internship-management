@@ -9,11 +9,48 @@
         <div id="content">
           <%- include('../layouts/navbar') %>
 
-          <div>
-            <a href="/admin/manage/internship-unit/add_internship-unit" class="border-shadow">
+          <div class="row mb-4">
+            <div class="col-auto">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Năm học</span>
+                </div>
+                <select class="custom-select" name="schoolYear-filter" id="schoolYear-filter">
+                  <% milestones.forEach((val)=>{ %>
+                  <option value="<%= val.schoolYear %>"><%= val.schoolYear %></option>
+                  <% }); %>
+                </select>
+              </div>
+            </div>
+      
+      
+            <div class="col-auto">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Học kỳ</span>
+                </div>
+                <select class="custom-select" name="semester-filter" id="semester-filter">
+                  <option value="1" <%= milestones[0].semester == 1 ? "selected" : "" %>>1</option>
+                  <option value="2" <%= milestones[0].semester == 2 ? "selected" : "" %>>2</option>
+                  <option value="3" <%= milestones[0].semester == 3 ? "selected" : "" %>>3</option>
+                </select>
+              </div>
+            </div>
+      
+            <div class="col-auto">
+              <button id="filter" class="btn btn-info" onclick="loadData()">Lọc</button>
+              
+            </div>
+      
+            <div class="col-auto ml-auto mb-3">
+              <a href="/admin/manage/internship-unit/add_internship-unit" class="border-shadow btn btn-info">
                 <span class="text-gradient">Thêm <i class="fas fa-user"></i></span>
-            </a>
+              </a>
+            </div>  
           </div>
+
+          <div id="alter"></div>
+
           <table class="table table-hover">
               <thead>
                 <tr >
@@ -26,15 +63,15 @@
                     <th></th>
                 </tr>              
               </thead>
-              <tbody>
+              <tbody id="table-body-internUnit">
                 <% for(var i = 0; i < internshipunits.length; i++) { %>
-                  <tr onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';">
-                    <td><%= i + 1 %></td>
-                    <td><%= internshipunits[i].name %></td>
-                    <td><%= internshipunits[i].email %></td>
-                    <td><%= internshipunits[i].address %></td>
-                    <td><%= internshipunits[i].cityName1 %></td>
-                    <td><%= internshipunits[i].phone %></td>
+                  <tr>
+                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= i + 1 %></td>
+                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].name %></td>
+                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].email %></td>
+                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].address %></td>
+                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].cityName1 %></td>
+                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].phone %></td>
                     <td class="delete-intern-unit">
                       
 

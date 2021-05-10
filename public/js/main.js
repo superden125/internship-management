@@ -18,6 +18,10 @@ function alterError(str) {
                 </div>`
 }
 
+function clearAlters(){
+    document.getElementById("alter").innerHTML = ""
+}
+
 function formatDate(date){
     const dateObj = new Date(date)
     return `${dateObj.getDate()}-${dateObj.getMonth()+1}-${dateObj.getFullYear()}`

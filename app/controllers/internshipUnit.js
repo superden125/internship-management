@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import InternshipUnit from "../models/internshipUnit";
-
+import Milestone from "../models/milestone"
+import {getNameTinh} from '../lib/tinh'
 const ObjectId = mongoose.Types.ObjectId
 module.exports = {
   getAllInternshipUnit: async (query) => {
@@ -11,10 +12,24 @@ module.exports = {
   },
   getManyInternUnit: async (req,res)=>{
     let query = req.query
+    let {schoolYear, semester} = query
+    delete query.schoolYear
+    delete query.semester
     if(!query.introBy) query.introBy = null
-    const result = await InternshipUnit.find(query);
+    if(schoolYear && semester){
+        const milestone = await Milestone.findOne({schoolYear, semester})
+        if(!milestone) return res.json({success: false, msg: "Not found milestone"})
+        query.idMilestone = milestone._id
+        
+    }
+    const internshipUnits = await InternshipUnit.find(query)
+    internshipUnits.forEach(internUnit=>{
+      
+      internUnit.city = getNameTinh(internUnit.city)
+      
+    })
     
-    res.json(result)
+    res.json({success: true, data: internshipUnits})
   }
   
 };
