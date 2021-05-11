@@ -288,7 +288,18 @@ module.exports.getAproveInternshipUnitInfo = async (req, res) => {
       var totalDocs = objData[0].total;
       // return res.json(internInfos[0].data);
       internInfos.forEach(obj => {
-        obj.statusString = obj.status == 0 ? 'Chờ xét duyệt' : 'Đã xét duyệt';
+        switch (obj.status) {
+          case 0:
+            obj.statusString = 'Chờ xét duyệt'
+            break
+          case 1:
+            obj.statusString = 'Đã xét duyệt'
+            break
+          case 2:
+            obj.statusString = 'Đã từ chối'
+            break
+        }
+
         obj.styleClass = obj.status == 0 ? 'font-weight-bold' : '';
         obj.city = tinh.find((tinh) => tinh.id == obj.internshipUnit.city).name;
       });
@@ -364,14 +375,16 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
         internInfo.havePCString = !internInfo.havePC ? 'Không' : 'Có';
         internInfo.city = tinh.find((tinh) => tinh.id == internInfo.internshipUnit[0].city).name;
 
-        if (internInfo.status == 0) {
-          internInfo.statusString = 'Chờ xét duyệt';
-          internInfo.disabledApproveButton = '';
-          internInfo.disabledCancelButton = 'disabled';
-        } else {
-          internInfo.statusString = 'Đã xét duyệt';
-          internInfo.disabledApproveButton = 'disabled';
-          internInfo.disabledCancelButton = '';
+        switch (internInfo.status) {
+          case 0:
+            internInfo.statusString = 'Chờ xét duyệt'
+            break
+          case 1:
+            internInfo.statusString = 'Đã xét duyệt'
+            break
+          case 2:
+            internInfo.statusString = 'Đã từ chối'
+            break
         }
 
         res.render('admin/intership-approve-detail', {
@@ -382,9 +395,9 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
       });
   } else if (req.method == 'POST') {
     var idInternInfo = req.body.idInternInfo;
-    var refuseType = req.body.refuse;
+    var type = req.body.type;
 
-    if (!refuseType) {
+    if (type === 'approve') {
       InternshipInfo
         .findOneAndUpdate({
           shortId: idInternInfo
@@ -410,7 +423,21 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
               res.redirect('/admin/internship/approve');
             })
         });
-    } else {
+    } else if (type === 'refuse') {
+      InternshipInfo
+        .findOneAndUpdate({
+          shortId: idInternInfo
+        }, {
+          $set: {
+            status: 2
+          }
+        }, {
+          new: true
+        })
+        .exec(function (err, item) {
+          res.redirect('/admin/internship/approve');
+        });
+    } else if (type == 'restore') {
       InternshipInfo
         .findOneAndUpdate({
           shortId: idInternInfo
@@ -422,19 +449,7 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
           new: true
         })
         .exec(function (err, item) {
-          InternshipUnit
-            .findOneAndUpdate({
-              _id: item.idIntern
-            }, {
-              $inc: {
-                currentSv: -1
-              }
-            }, {
-              new: true
-            })
-            .exec(function (err, item1) {
-              res.redirect('/admin/internship/approve');
-            })
+          res.redirect('/admin/internship/approve');
         });
     }
   }
@@ -527,9 +542,18 @@ module.exports.getStudentsOfInternUnit = async (req, res) => {
     {
       $lookup: {
         from: 'internshipinfos',
-        localField: '_id',
-        foreignField: 'idIntern',
-        as: 'internInfos'
+        let: {
+          internUnit: '$idIntern'
+        },
+        pipeline: [
+          {
+            $match: {
+              status: 1,
+              idIntern: mongoose.Types.ObjectId(req.params.id)
+            }
+          }
+        ],
+        as: 'internInfos',
       }
     },
     {

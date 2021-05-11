@@ -1,269 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('../layouts/meta') %>
-  </head>
-  <body>
-    <%- include('../layouts/admin-sidebar') %>
 
-    <div id="content">
-      <%- include('../layouts/navbar') %>
+<head>
+  <%- include('../layouts/meta') %>
+</head>
 
-      <div class="row mb-3">
-        <div class="col-auto">
-          <button id="redirectBack" title="Back" class="btn btn-light" type="button">
-            <i class="fas fa-angle-left mr-2"></i>
-            Trở về
-          </button>
+<body>
+  <%- include('../layouts/admin-sidebar') %>
+
+  <div id="content">
+    <%- include('../layouts/navbar') %>
+
+    <div class="row mb-3">
+      <div class="col-auto">
+        <button id="redirectBack" title="Back" class="btn btn-light" type="button">
+          <i class="fas fa-angle-left mr-2"></i>
+          Trở về
+        </button>
+      </div>
+    </div>
+
+    <!-- Trạng thái -->
+    <% if (internInfo.status == 0) { %>
+    <div class="alert alert-warning" role="alert">
+      <strong class="mr-2"><%= internInfo.statusString %></strong>
+      <i class="fas fa-spinner" style="color: #856417; font-size: 1.1rem;"></i>
+    </div>
+    <% } else if (internInfo.status == 1) { %>
+    <div class="alert alert-success" role="alert">
+      <strong class="mr-2"><%= internInfo.statusString %></strong>
+      <i class="far fa-check-circle" style="color: #155724; font-size: 1.1rem;"></i>
+    </div>
+    <% } else if (internInfo.status == 2) { %>
+      <div class="alert alert-danger" role="alert">
+        <strong class="mr-2"><%= internInfo.statusString %></strong>
+        <i class="far fa-times-circle" style="color: #9D1C24; font-size: 1.1rem;"></i>
+      </div>
+    <% } %>
+
+    <!-- Thông tin sinh viên -->
+    <div class="card border-black card-content">
+      <div class="card-header">
+        <h5 class="card-title">Thông tin sinh viên</h5>
+      </div>
+      <div class="card-body">
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Mã số sinh viên</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.student.ms %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Họ và tên</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.student.name %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Mã lớp</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.student.idClass %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Ngành học</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.major[0].name %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Số điện thoại</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.phone %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Email</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.student.email %></span>
+          </div>
         </div>
       </div>
-      
-      <!-- Trạng thái -->
-      <% if (internInfo.status == 0) { %>
-        <div class="alert alert-warning" role="alert">
-          <strong class="mr-2"><%= internInfo.statusString %></strong>
-          <i class="fas fa-spinner" style="color: #856417; font-size: 1.1rem;"></i>
+    </div>
+
+    <!-- Thông tin năm học/ học kỳ -->
+    <div class="card border-black card-content">
+      <div class="card-header">
+        <h5 class="card-title">Thông tin về năm học/ học kỳ</h5>
+      </div>
+      <div class="card-body">
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Năm học</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.milestone[0].schoolYear %></span>
+          </div>
         </div>
-      <% } else { %>
-        <div class="alert alert-success" role="alert">
-          <strong class="mr-2"><%= internInfo.statusString %></strong>
-          <i class="far fa-check-circle" style="color: #155724; font-size: 1.1rem;"></i>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Học kỳ</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.milestone[0].semester %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thông tin đơn vị thực tập -->
+    <div class="card border-black card-content">
+      <div class="card-header">
+        <h5 class="card-title">Thông tin đơn vị thực tập</h5>
+      </div>
+      <div class="card-body">
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Tên đơn vị thực tập</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.internshipUnit[0].name %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Địa chỉ</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.internshipUnit[0].address %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Tỉnh/ Thành phố</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.city %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Số điện thoại</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.internshipUnit[0].phone %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Website</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.internshipUnit[0].website %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Số buổi thực tập trong tuần</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.shiftPerWeek %> buổi/ tuần</span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Có phòng làm việc</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.haveRoomString %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Có máy tính</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.havePCString %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Yêu cầu của công ty thực tập</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.internshipUnit[0].reqInfo %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Hỗ trợ của đơn vị thực tập</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.internshipUnit[0].benefit %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thông tin người hướng dẫn -->
+    <div class="card border-black card-content">
+      <div class="card-header">
+        <h5 class="card-title">Thông tin người hướng dẫn</h5>
+      </div>
+      <div class="card-body">
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Tên người hướng dẫn</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.internshipUnit[0].mentor.name %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Số điện thoại</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.internshipUnit[0].mentor.phone %></span>
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Email</span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= internInfo.internshipUnit[0].mentor.email %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thông tin công việc theo tuần -->
+    <div class="card border-black card-content">
+      <div class="card-header">
+        <h5 class="card-title">Thông tin công việc theo tuần</h5>
+      </div>
+      <div class="card-body">
+        <% internInfo.work.forEach((item, index) => { %>
+        <div class="row m-3">
+          <div class="col-md-3">
+            <span class="">Tuần <%= index + 1 %></span>
+          </div>
+          <div class="col-md-8">
+            <span class="text-muted"><%= item %></span>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" action="" name="approve-form">
+      <input type="hidden" name="idInternInfo" value="<%= internInfo.shortId %>">
+
+      <% if (internInfo.status == 0) { %>
+        <div class="m-auto" style="width: fit-content">
+          <button class="m-2 btn btn-info" name="type" value="approve" type="submit">Xét duyệt</button>
+          <button class="m-2 btn btn-danger" type="button" data-toggle="modal"
+            data-target="#modalRefuse">Từ chối</button>
+        </div>
+      <% } else if (internInfo.status == 2) { %>
+        <div class="m-auto" style="width: fit-content">
+          <button class="m-2 btn btn-info" name="type" value="restore" type="submit">Phục hồi</button>
         </div>
       <% } %>
 
-      <!-- Thông tin sinh viên -->
-      <div class="card border-black card-content">
-        <div class="card-header">
-          <h5 class="card-title">Thông tin sinh viên</h5>
-        </div>
-        <div class="card-body">
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Mã số sinh viên</span>
+      <!-- Modal -->
+      <div class="modal fade" id="modalRefuse" tabindex="-1" aria-labelledby="modalRefuseLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Từ chối đơn xét duyệt?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.student.ms %></span>
+            <div class="modal-body">
+              Bạn chắc chắn muốn từ chối đơn xét duyệt này?
             </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Họ và tên</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.student.name %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Mã lớp</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.student.idClass %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Ngành học</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.major[0].name %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Số điện thoại</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.phone %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Email</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.student.email %></span>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+              <button type="submit" class="btn btn-danger" name="type" value="refuse">Từ chối</button>
             </div>
           </div>
         </div>
       </div>
+    </form>
 
-      <!-- Thông tin năm học/ học kỳ -->
-      <div class="card border-black card-content">
-        <div class="card-header">
-          <h5 class="card-title">Thông tin về năm học/ học kỳ</h5>
-        </div>
-        <div class="card-body">
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Năm học</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.milestone[0].schoolYear %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Học kỳ</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.milestone[0].semester %></span>
-            </div>
-          </div>
-        </div>
-      </div>
+  </div>
 
-      <!-- Thông tin đơn vị thực tập -->
-      <div class="card border-black card-content">
-        <div class="card-header">
-          <h5 class="card-title">Thông tin đơn vị thực tập</h5>
-        </div>
-        <div class="card-body">
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tên đơn vị thực tập</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.internshipUnit[0].name %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Địa chỉ</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.internshipUnit[0].address %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tỉnh/ Thành phố</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.city %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Số điện thoại</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.internshipUnit[0].phone %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Website</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.internshipUnit[0].website %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Số buổi thực tập trong tuần</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.shiftPerWeek %> buổi/ tuần</span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Có phòng làm việc</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.haveRoomString %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Có máy tính</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.havePCString %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Yêu cầu của công ty thực tập</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.internshipUnit[0].reqInfo %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Hỗ trợ của đơn vị thực tập</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.internshipUnit[0].benefit %></span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Thông tin người hướng dẫn -->
-      <div class="card border-black card-content">
-        <div class="card-header">
-          <h5 class="card-title">Thông tin người hướng dẫn</h5>
-        </div>
-        <div class="card-body">
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Tên người hướng dẫn</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.internshipUnit[0].mentor.name %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Số điện thoại</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.internshipUnit[0].mentor.phone %></span>
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-md-3">
-              <span class="">Email</span>
-            </div>
-            <div class="col-md-8">
-              <span class="text-muted"><%= internInfo.internshipUnit[0].mentor.email %></span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Thông tin công việc theo tuần -->
-      <div class="card border-black card-content">
-        <div class="card-header">
-          <h5 class="card-title">Thông tin công việc theo tuần</h5>
-        </div>
-        <div class="card-body">
-          <% internInfo.work.forEach((item, index) => { %>
-            <div class="row m-3">
-              <div class="col-md-3">
-                <span class="">Tuần <%= index + 1 %></span>
-              </div>
-              <div class="col-md-8">
-                <span class="text-muted"><%= item %></span>
-              </div>
-            </div>
-          <% }) %>
-        </div>
-      </div>
+  <%- include('../layouts/script') %>
+</body>
 
-      <!-- Button -->
-      <form method="POST" action="">
-        <input type="hidden" name="idInternInfo" value="<%= internInfo.shortId %>">
-        <div class="m-auto" style="width: fit-content">
-          <button class="m-2 btn btn-info <%= internInfo.disabledApproveButton %>" name="approve" value="approve" type="submit" <%= internInfo.disabledApproveButton %>>Xét duyệt</button>
-          <button class="m-2 btn btn-secondary <%= internInfo.disabledCancelButton %>" name="refuse" value="refuse" type="submit" <%= internInfo.disabledCancelButton %>>Hủy bỏ</button>
-        </div>
-      </form>
-    </div>
-
-    <%- include('../layouts/script') %>
-  </body>
 </html>
