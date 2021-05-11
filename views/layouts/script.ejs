@@ -26,6 +26,10 @@
     }
   });
 
+  $('#redirectBack').click(() => {
+    window.location.replace('/admin/internship/approve');
+  });
+
   $('#scrollToTop').click(() => {
     $('html, body').animate({ scrollTop: 0 }, 400);
   });
@@ -33,10 +37,6 @@
   $(function() {
     $('#sidebar li').has('a[href="' + location.pathname + '"]').addClass('active');
   });
-
-  // $('#checkAllApprove').click(function() {
-  //   $('input[type=checkbox]').prop('checked', $(this).prop('checked'));
-  // });
 </script>
 
 <script src="/js/main.js"></script>

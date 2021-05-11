@@ -15,6 +15,7 @@ router.get('/manage/teachers', adminController.getAllTeachers);
 router.get('/manage/students', adminController.getAllStudents);
 router.get('/manage/internship-unit', adminController.getAllInternshipUnit);
 
+router.get('/manage/json-teachers', adminController.getJSONTeachers);
 
 router
   .get('/manage/milestone', adminController.milestoneGet)

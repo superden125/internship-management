@@ -18,12 +18,12 @@
             <span class="input-group-text">Năm học</span>
           </div>
           <select name="" id="school-year-filter" class="custom-select">
-            <option value="all">Tất cả năm học</option>
-            <% milestone.forEach(item => { %>
-              <% if (item.schoolYear == schoolYear) { %>
-                <option value="?schoolYear=<%= item.schoolYear %>" selected>Năm học <%= item.schoolYear %></option>
+            <option value="">-- Chọn năm học --</option>
+            <% schoolYears.forEach(item => { %>
+              <% if (selectedSchoolYear == item) { %>
+                <option value="<%= item %>" selected><%= item %></option>  
               <% } else { %>
-                <option value="?schoolYear=<%= item.schoolYear %>">Năm học <%= item.schoolYear %></option>
+                <option value="<%= item %>"><%= item %></option>
               <% } %>
             <% }) %>
           </select>
@@ -35,12 +35,20 @@
             <span class="input-group-text">Học kỳ</span>
           </div>
           <select name="" id="semester-filter" class="custom-select">
-            <option value="all">Tất cả học kỳ</option>
-            <option value="?semester=1">Học kỳ 1</option>
-            <option value="?semester=2">Học kỳ 2</option>
-            <option value="?semester=3">Học kỳ 3</option>
+            <option value="">-- Chọn học kỳ --</option>
+            <% for (var i = 1; i <= 3; i++) { %>
+              <% if (i == selectedSemester) { %>
+                <option value="<%= i %>" selected><%= i %></option>
+              <% } else { %>
+                <option value="<%= i %>"><%= i %></option>
+              <% } %>
+
+            <% } %>
           </select>
         </div>
+      </div>
+      <div class="col-auto">
+        <button id="filter-schoolyear-semester" class="btn btn-info">Lọc</button>
       </div>
     </div>
 
@@ -51,27 +59,25 @@
         <thead>
           <tr>
             <th class="text-left align-middle" scope="col">#</th>
-            <th class="text-left align-middle" scope="col">
+            <th id="student-id-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=student.ms&type=<%= type %>'">
               Mã số sinh viên
-              <a class="ml-1" href="?_sort&column=student.ms&type=<%= type %>"><i class="fas fa-sort text-body"></i></a>
+              <i class="fas fa-sort text-body"></i>
             </th>
-            <th class="text-left align-middle" scope="col">
+            <th id="student-name-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=student.name&type=<%= type %>'">
               Họ và tên
-              <a class="ml-1" href="?_sort&column=student.name&type=<%= type %>"><i class="fas fa-sort text-body"></i></a>
+              <i class="fas fa-sort text-body"></i>
             </th>
-            <th class="text-left align-middle" scope="col">
+            <th id="intern-unit-name-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=internshipUnit.name&type=<%= type %>'">
               Tên công ty
-              <a class="ml-1" href="?_sort&column=internshipUnit.name&type=<%= type %>"><i
-                  class="fas fa-sort text-body"></i></a>
+              <i class="fas fa-sort text-body"></i>
             </th>
-            <th class="text-left align-middle" scope="col">
+            <th id="city-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=internshipUnit.city&type=<%= type %>'">
               Tỉnh/ Thành phố
-              <a class="ml-1" href="?_sort&column=internshipUnit.city&type=<%= type %>"><i
-                  class="fas fa-sort text-body"></i></a>
+              <i class="fas fa-sort text-body"></i>
             </th>
-            <th class="text-left align-middle" scope="col">
+            <th id="status-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=status&type=<%= type %>'">
               Trạng thái
-              <a class="ml-1" href="?_sort&column=status&type=<%= type %>"><i class="fas fa-sort text-body"></i></a>
+              <i class="fas fa-sort text-body"></i>
             </th>
           </tr>
         </thead>
@@ -164,55 +170,6 @@
 
   <%- include('../layouts/script') %>
   <script src="/js/admin/approve.js"></script>
-  <!-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      window.onload = function () {
-        // getAllInternInfos();
-        // $('#success-alert').hide();
-      }
-    });
-  </script> -->
-  <script type="text/javascript">
-    $('#approve-internship tbody tr').click(function () {
-      var id = $(this).attr('id');
-      window.location.href = `/admin/internship/approve/${id}`;
-      // console.log(id);
-    });
-
-    $('.pagination a').click(function () {
-      // debugger;
-      var currentUrl = window.location.href;
-      if (currentUrl.includes('?_sort')) {
-        if (currentUrl.includes('page')) {
-          var index = currentUrl.indexOf('page');
-          currentUrl = currentUrl.slice(0, index - 1);
-        }
-
-        var url = currentUrl + '&' + $(this).attr('href').slice(1);
-        $(this).attr('href', url);
-      }
-    });
-
-    $('#school-year-filter').change(function() {
-      var value = $(this).val();
-
-      if (value == 'all') {
-        window.location = '/admin/internship/approve';
-      } else {
-        window.location = value;
-      }
-    });
-
-    $('#semester-filter').change(function() {
-      var value = $(this).val();
-      
-      if (value == 'all') {
-        window.location = '/admin/internship/approve';
-      } else {
-        window.location = value;
-      }
-    });
-  </script>
 </body>
 
 </html>

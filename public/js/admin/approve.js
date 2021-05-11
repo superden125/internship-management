@@ -85,3 +85,46 @@ function redirectDetailApprove(id) {
 function sort(column, type) {
   return `${window.location.href}/get_sort&column=${column}&type=${type}`;
 }
+
+$('#approve-internship tbody tr').click(function () {
+  var id = $(this).attr('id');
+  window.location.href = `/admin/internship/approve/${id}`;
+  // console.log(id);
+});
+
+$('.pagination a').click(function () {
+  // debugger;
+  var currentUrl = window.location.href;
+  if (currentUrl.includes('?_sort')) {
+    if (currentUrl.includes('page')) {
+      var index = currentUrl.indexOf('page');
+      currentUrl = currentUrl.slice(0, index - 1);
+    }
+
+    var url = currentUrl + '&' + $(this).attr('href').slice(1);
+    $(this).attr('href', url);
+  }
+});
+
+$('#filter-schoolyear-semester').click(function() {
+  const queries = {
+    schoolYear: $('#school-year-filter').val(),
+    semester: $('#semester-filter').val()
+  }
+
+  var query = '/admin/internship/approve?'
+  
+  if (queries.schoolYear !== '') {
+    query += `schoolYear=${queries.schoolYear}`
+  }
+
+  if (queries.semester !== '') {
+    if (query.includes('schoolYear')) {
+      query += `&semester=${queries.semester}`
+    } else {
+      query += `semester=${queries.semester}`
+    }
+  }
+
+  window.location = query;
+})
