@@ -23,8 +23,11 @@ $("#isSelf").click((e) => {
   const check = e.target.checked;
   if (check) {
     $(".intern-new").css({ display: "block" });
+    document.getElementById("internshipUnit").setAttribute("disabled", "")
+    document.getElementById("internshipUnit").value = 0
   } else {
     $(".intern-new").css({ display: "none" });
+    document.getElementById("internshipUnit").removeAttribute("disabled")
   }
 });
 
@@ -82,7 +85,7 @@ function validFormTTT(data) {
   });
 
   if(check > 0) alterError("Thông tin không hợp lệ")
-
+  
   return check > 0 ? false : true;
 }
 
@@ -202,6 +205,13 @@ function getInternUnit(){
     }
     internUnitDom.innerHTML = options    
   })
-  
+}
 
+function changeInternUnit(){
+  const internUnit = document.getElementById("internshipUnit")
+  
+  if(internUnit.value == 0 )
+    return document.getElementById("isSelf").removeAttribute("disabled")
+  document.getElementById("isSelf").setAttribute("disabled","") 
+  
 }

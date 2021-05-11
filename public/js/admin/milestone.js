@@ -33,10 +33,10 @@ function saveMilestone(id){
 
     let schoolYear = document.querySelector("#schoolYear").value    
     let semester = document.querySelector("#semester").value
-    let endRegister = new Date(document.querySelector("#endRegister").value)
-    let startIntern = new Date(document.querySelector("#startIntern").value)
-    let endIntern = new Date(document.querySelector("#endIntern").value)
-    let endCore = new Date(document.querySelector("#endCore").value)
+    let endRegister = new Date(document.querySelector("#endRegister").value + " 23:59:59")
+    let startIntern = new Date(document.querySelector("#startIntern").value + " 23:59:59")
+    let endIntern = new Date(document.querySelector("#endIntern").value + " 23:59:59")
+    let endCore = new Date(document.querySelector("#endCore").value + " 23:59:59")
     console.log(semester)
     if(endRegister == "Invalid Date" || startIntern == "Invalid Date" || endIntern == "Invalid Date"){
         const alter = document.querySelector('#alter')
@@ -106,10 +106,10 @@ function saveMilestone(id){
             _id: id,
             schoolYear: child[0].firstChild.value,
             semester: child[1].firstChild.value,
-            endRegister: new Date(child[2].firstChild.value),
-            startIntern: new Date(child[3].firstChild.value),
-            endIntern: new Date(child[4].firstChild.value),
-            endCore: new Date(child[5].firstChild.value)
+            endRegister: new Date(child[2].firstChild.value + " 23:59:59"),
+            startIntern: new Date(child[3].firstChild.value + " 23:59:59"),
+            endIntern: new Date(child[4].firstChild.value + " 23:59:59"),
+            endCore: new Date(child[5].firstChild.value + " 23:59:59")
         }
         // console.log(data)
 

@@ -24,6 +24,7 @@
               class="sd-form"
               id="formTT"
             >
+              <div><input type="hidden" name="id" value="<%= internInfo._id %>"></div>
               <div class="mb-3">
                 <label for="milestone" class="form-label">Học kỳ thực tập</label>
                 <select class="form-control" id="milestone" name="milestone" onchange="getInternUnit()">
@@ -46,6 +47,7 @@
                   class="form-control"
                   id="svPhone"
                   name="svPhone"
+                  value="<%= internInfo.phone %>"
                 />
                 <span class="text-danger" id="err-svPhone"></span>
               </div>
@@ -57,12 +59,15 @@
                   class="form-control"
                   id="internshipUnit"
                   name="internshipUnit"
+                  onchange="changeInternUnit()"
+                  <%= internUnit.introBy ? "disabled" : "" %>
                 >
-                  <option value="0">Chọn đơn vị thực tập từ khoa ...</option>
+                  <option value="0" selected>Chọn đơn vị thực tập từ khoa ...</option>
   
                   <% internshipUnit.forEach((unit)=>{%>
-                  <option value="<%= unit._id%>"><%-unit.name%></option>
+                    <option value="<%= unit._id%>" <%= internUnit._id ? unit._id.toString() == internUnit._id.toString() ? "selected":"":""%>><%=unit.name%></option>
                   <%});%>
+                  
                 </select>
                 <span class="text-danger" id="err-internshipUnit"></span>
               </div>
@@ -73,12 +78,13 @@
                   type="checkbox"
                   id="isSelf"
                   name="isSelf"
+                  <%= internUnit.introBy ? "checked" : "" %> 
                 />
                 <label class="form-check-label mb-3" for="isSelf">
                   Đơn vị sinh viên tự liên hệ
                 </label>
               </div>
-              <div class="intern-new">
+              <div class="intern-new" <%=internUnit.introBy ? "style=display:block" : "none" %>>
                 <div class="mb-3">
                   <label for="internName" class="form-label">Tên công ty</label>
                   <input
@@ -86,6 +92,7 @@
                     class="form-control"
                     id="internName"
                     name="internName"
+                    value="<%= internUnit.name %>"
                   />
                   <span class="text-danger" id="err-internName"></span>
                 </div>
@@ -97,7 +104,7 @@
                     id="internAddress"
                     name="internAddress"
                     style="height: 100px"
-                  ></textarea>
+                  ><%= internUnit.address %>"</textarea>
                   <span class="text-danger" id="err-internAddress"></span>
                 </div>
                 <div class="mb-3">
@@ -112,7 +119,7 @@
                     <option value="0">Chọn Tỉnh/ Thành phố ...</option>
   
                     <% tinh.forEach((val)=>{ %>
-                    <option value="<%= val.id%>"><%= val.name%></option>
+                    <option value="<%= val.id%>" <%= internUnit.city == val.id ? "selected":"" %>><%= val.name%></option>
                     <% })%>
                   </select>
                 </div>
@@ -126,6 +133,7 @@
                     class="form-control"
                     id="internPhone"
                     name="internPhone"
+                    value="<%= internUnit.phone %>"
                   />
                   <span class="text-danger" id="err-internPhone"></span>
                 </div>
@@ -138,6 +146,7 @@
                     class="form-control"
                     id="internEmail"
                     name="internEmail"
+                    value="<%= internUnit.email %>"
                   />
                   <span class="text-danger" id="err-internEmail"></span>
                 </div>
@@ -151,6 +160,7 @@
                     class="form-control"
                     id="internWebsite"
                     name="internWebsite"
+                    value="<%= internUnit.website %>"
                   />
                   <span class="text-danger" id="err-internWebsite"></span>
                 </div>
@@ -164,6 +174,7 @@
                     class="form-control"
                     id="mentorName"
                     name="mentorName"
+                    value="<%= internUnit.mentor ? internUnit.mentor.name : "" %>"
                   />
                   <span class="text-danger" id="err-mentorName"></span>
                 </div>
@@ -176,6 +187,7 @@
                     class="form-control"
                     id="mentorPhone"
                     name="mentorPhone"
+                    value="<%= internUnit.mentor ? internUnit.mentor.phone : "" %>"
                   />
                   <span class="text-danger" id="err-mentorPhone"></span>
                 </div>
@@ -188,6 +200,7 @@
                     class="form-control"
                     id="mentorEmail"
                     name="mentorEmail"
+                    value="<%= internUnit.mentor ? internUnit.mentor.email : "" %>"
                   />
                   <span class="text-danger" id="err-mentorEmail"></span>
                 </div>
@@ -201,6 +214,7 @@
                     class="form-control"
                     id="internRequire"
                     name="internRequire"
+                    value="<%= internUnit.reqInfo %>"
                   />
                   <span class="text-danger" id="err-internRequire"></span>
                 </div>
@@ -213,6 +227,7 @@
                     class="form-control"
                     id="internBenefit"
                     name="internBenefit"
+                    value="<%= internUnit.benefit %>"
                   />
                   <span class="text-danger" id="err-internBenefit"></span>
                 </div>
@@ -226,6 +241,7 @@
                     class="form-control"
                     id="internReqTime"
                     name="internReqTime"
+                    value="<%= internUnit.reqTime %>"
                   />
                   <span class="text-danger" id="err-internReqTime"></span>
                 </div>
@@ -239,6 +255,7 @@
                     type="checkbox"
                     id="inlineCheckbox1"
                     name="haveRoom"
+                    <%= internInfo.haveRoom ? "checked" : "" %> 
                   />
                   <label class="form-check-label" for="inlineCheckbox1"
                     >Có phòng làm việc</label
@@ -250,6 +267,7 @@
                     type="checkbox"
                     id="inlineCheckbox2"
                     name="havePc"
+                    <%= internInfo.havePC ? "checked": "" %> 
                   />
                   <label class="form-check-label" for="inlineCheckbox2"
                     >Có máy tính</label
@@ -266,49 +284,17 @@
                   class="form-control"
                   id="shiftPerWeek"
                   name="shiftPerWeek"
+                  value="<%= internInfo.shiftPerWeek %>"
                 />
                 <span class="text-danger" id="err-shiftPerWeek"></span>
               </div>
-              <div class="mb-3">
-                <label for="work1" class="form-label">Công việc tuần 1</label>
-                <input type="text" class="form-control" id="work1" name="work1" />
-                <span class="text-danger" id="err-work1"></span>
-              </div>
-              <div class="mb-3">
-                <label for="work2" class="form-label">Công việc tuần 2</label>
-                <input type="text" class="form-control" id="work2" name="work2" />
-                <span class="text-danger" id="err-work2"></span>
-              </div>
-              <div class="mb-3">
-                <label for="work3" class="form-label">Công việc tuần 3</label>
-                <input type="text" class="form-control" id="work3" name="work3" />
-                <span class="text-danger" id="err-work3"></span>
-              </div>
-              <div class="mb-3">
-                <label for="work4" class="form-label">Công việc tuần 4</label>
-                <input type="text" class="form-control" id="work4" name="work4" />
-                <span class="text-danger" id="err-work4"></span>
-              </div>
-              <div class="mb-3">
-                <label for="work5" class="form-label">Công việc tuần 5</label>
-                <input type="text" class="form-control" id="work5" name="work5" />
-                <span class="text-danger" id="err-work5"></span>
-              </div>
-              <div class="mb-3">
-                <label for="work6" class="form-label">Công việc tuần 6</label>
-                <input type="text" class="form-control" id="work6" name="work6" />
-                <span class="text-danger" id="err-work6"></span>
-              </div>
-              <div class="mb-3">
-                <label for="work7" class="form-label">Công việc tuần 7</label>
-                <input type="text" class="form-control" id="work7" name="work7" />
-                <span class="text-danger" id="err-work7"></span>
-              </div>
-              <div class="mb-3">
-                <label for="work8" class="form-label">Công việc tuần 8</label>
-                <input type="text" class="form-control" id="work8" name="work8" />
-                <span class="text-danger" id="err-work8"></span>
-              </div>
+              <% for(var i = 0; i<8; i++){ %> 
+                <div class="mb-3">
+                  <label for="work<%= i + 1 %>" class="form-label">Công việc tuần <%= i + 1 %></label>
+                  <input type="text" class="form-control" id="work<%= i + 1 %>" name="work<%= i + 1 %>" value="<%= internInfo.work ? internInfo.work[i] : "" %>"/>
+                  <span class="text-danger" id="err-work<%= i + 1 %>"></span>
+                </div>  
+              <% } %>               
               <div class="group-btn">
                 <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
                 <input type="reset" class="btn btn-reset ml-4" value="Huỷ bỏ" onclick="resetForm()"/>

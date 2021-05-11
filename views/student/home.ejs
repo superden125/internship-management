@@ -191,9 +191,16 @@
               </div>
             </div>
           </div>
-        </div>      
-       </div>
+        </div>
+
+        <% if( internInfo.status == 2 && milestones[0].endRegister >= new Date()){ %>
+          <div class="m-auto" style="width: fit-content">
+            <button class="m-2 btn btn-info" onclick="window.location='/student/register-internship/<%= internInfo._id%>'">Cập nhật thông tin</button>          
+          </div>
+        <% } %>  
+        
       </div>
+    </div>
       
 
     <%- include('../layouts/script') %>

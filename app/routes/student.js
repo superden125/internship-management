@@ -9,9 +9,9 @@ router.use(isStudent);
 
 router.get("/", internInfoController.getInternshipInfo);
 router.get("/get-interninfo", internInfoController.getInternInfo)
-router
-  .get("/register-internship", studentController.registerInternshipGet)
-  .post("/register-internship", studentController.registerInternshipPost);
+router.get("/register-internship/:id", studentController.registerInternshipGet)
+router.get("/register-internship", studentController.registerInternshipGet)
+router.post("/register-internship", studentController.registerInternshipPost);
 
 router.get("/internship-unit", studentController.getListInternshipUnit);
 router.get("/intern-unit", studentController.getListInternUnit);
