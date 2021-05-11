@@ -75,6 +75,16 @@ module.exports.getAllTeachers = async (req, res) => {
     });
 }
 
+module.exports.getJSONTeachers = async (req, res) => {
+  await User.find({ role: 'teacher' })
+    .exec((err, teachers) => {
+      if (!err) return res.json({
+        err: false,
+        data: teachers
+      })
+    })
+}
+
 module.exports.getAllStudents = async (req, res) => {
 
   const students = await User.aggregate([{
@@ -430,20 +440,6 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
         }, {
           $set: {
             status: 2
-          }
-        }, {
-          new: true
-        })
-        .exec(function (err, item) {
-          res.redirect('/admin/internship/approve');
-        });
-    } else if (type == 'restore') {
-      InternshipInfo
-        .findOneAndUpdate({
-          shortId: idInternInfo
-        }, {
-          $set: {
-            status: 0
           }
         }, {
           new: true

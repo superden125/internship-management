@@ -261,43 +261,40 @@
       </div>
     </div>
 
-    <!-- Form -->
-    <form method="POST" action="" name="approve-form">
-      <input type="hidden" name="idInternInfo" value="<%= internInfo.shortId %>">
+    <% if (internInfo.status == 0) { %>
+      <!-- Form -->
+      <form method="POST" action="" name="approve-form">
+        <input type="hidden" name="idInternInfo" value="<%= internInfo.shortId %>">
 
-      <% if (internInfo.status == 0) { %>
+        <!-- Button -->
         <div class="m-auto" style="width: fit-content">
           <button class="m-2 btn btn-info" name="type" value="approve" type="submit">Xét duyệt</button>
           <button class="m-2 btn btn-danger" type="button" data-toggle="modal"
             data-target="#modalRefuse">Từ chối</button>
         </div>
-      <% } else if (internInfo.status == 2) { %>
-        <div class="m-auto" style="width: fit-content">
-          <button class="m-2 btn btn-info" name="type" value="restore" type="submit">Phục hồi</button>
-        </div>
-      <% } %>
-
-      <!-- Modal -->
-      <div class="modal fade" id="modalRefuse" tabindex="-1" aria-labelledby="modalRefuseLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Từ chối đơn xét duyệt?</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              Bạn chắc chắn muốn từ chối đơn xét duyệt này?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-              <button type="submit" class="btn btn-danger" name="type" value="refuse">Từ chối</button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="modalRefuse" tabindex="-1" aria-labelledby="modalRefuseLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Từ chối đơn xét duyệt?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Bạn sẽ không thể phục hồi sau hành động này. Xác nhận từ chối đơn xét duyệt?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-danger" name="type" value="refuse">Từ chối</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    <% } %>
 
   </div>
 

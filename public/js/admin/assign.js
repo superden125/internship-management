@@ -8,7 +8,7 @@ function editTeacher(id) {
 
   $.ajax({
       method: 'GET',
-      url: '/admin/manage/teachers'
+      url: '/admin/manage/json-teachers'
     })
     .done(res => {
       res.data.forEach(teacher => {
@@ -76,7 +76,12 @@ function loadAssignTeacher() {
             tr += `<td class="align-middle">${item.teacherName}</td>`;
           }
 
-          tr += `<td class="align-middle"><a class="d-block" href="#" data-toggle="tooltip" data-placement="left" title="Chỉnh sửa" onclick="editTeacher('${item._id}')"><i class="fas fa-edit text-body"></i></a></td>`;
+          if (item.currentSv > 0) {
+            tr += `<td class="align-middle"><a class="d-block" href="#" data-toggle="tooltip" data-placement="left" title="Chỉnh sửa" onclick="editTeacher('${item._id}')"><i class="fas fa-edit text-body"></i></a></td>`;
+          } else {
+            tr += '<td></td>'
+          }
+
         });
 
         tbody.innerHTML = tr;
