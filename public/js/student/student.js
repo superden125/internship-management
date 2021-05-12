@@ -1,4 +1,3 @@
-console.log("student");
 
 $('#formTT') && $("#formTT").on("submit", (e) => {
   var list = e.target.querySelectorAll("input");
@@ -12,9 +11,11 @@ $('#formTT') && $("#formTT").on("submit", (e) => {
   data.isSelf = $("#isSelf").prop("checked");
   data.havePc = $("#inlineCheckbox2").prop("checked");
   data.haveRoom = $("#inlineCheckbox1").prop("checked");
-
-  console.log("check", validFormTTT(data));
+  
+  console.log("valie", validFormTTT(data))
   if (validFormTTT(data)) return;
+  
+  alterError("Thông tin không hợp lệ")
   e.preventDefault();
 });
 
@@ -38,6 +39,7 @@ function validFormTTT(data) {
     $(`#err-${key}`).text("");
     if (
       val == "" &&
+      key !== "id" &&
       key !== "haveRoom" &&
       key !== "havePc" &&
       key !== "internAddress" &&
@@ -57,6 +59,13 @@ function validFormTTT(data) {
     }
   });
 
+  if(!error.svPhone){
+    error.svPhone = checkPhoneNumber(data.svPhone) ? "" : "Invalid phone number"
+  }
+  if(!error.shiftPerWeek){
+    error.shiftPerWeek = parseInt(data.shiftPerWeek) >= 6 ? "" : "Must be >= 6"
+  }  
+
   if (data.internshipUnit == "0") {
     error.internshipUnit = "Required";
   }
@@ -64,7 +73,7 @@ function validFormTTT(data) {
   if (data.isSelf) {
     error.internshipUnit = "";
     error.internAddress = data.internAddress == "" ? "Required" : "";
-    error.internName = data.internName == "" ? "Required" : "";
+    error.internName = data.internName == "" ? "Required" : "";    
     error.internPhone = data.internPhone == "" ? "Required" : "";
     error.internEmail = data.internEmail == "" ? "Required" : "";
     error.internWebsite = data.internWebsite == "" ? "Required" : "";
@@ -74,6 +83,23 @@ function validFormTTT(data) {
     error.internRequire = data.internRequire == "" ? "Required" : "";
     error.internBenefit = data.internBenefit == "" ? "Required" : "";
     error.internReqTime = data.internReqTime == "" ? "Required" : "";
+
+    if(!error.internPhone){
+      error.internPhone = checkPhoneNumber(data.internPhone) ? "" : "Invalid phone number"
+    }
+    if(!error.internEmail){
+      error.internEmail = checkEmail(data.internEmail) ? "" : "Invalid email"
+    }
+    if(!error.mentorPhone){
+      error.mentorPhone = checkPhoneNumber(data.mentorPhone) ? "" : "Invalid phone number"
+    }
+    if(!error.mentorEmail){
+      error.mentorEmail = checkEmail(data.mentorEmail) ? "" : "Invalid email"
+    }
+    if(!error.interReqTime){
+      error.internReqTime = parseInt(data.internReqTime) > 0 ? "" : "Must > 0"
+    }
+    
   }
 
   var check = 0;
@@ -82,10 +108,8 @@ function validFormTTT(data) {
       $(`#err-${key}`).text(val);
       check++;
     }
-  });
-
-  if(check > 0) alterError("Thông tin không hợp lệ")
-  
+  });  
+  console.log("check error", check, error)
   return check > 0 ? false : true;
 }
 
@@ -214,4 +238,14 @@ function changeInternUnit(){
     return document.getElementById("isSelf").removeAttribute("disabled")
   document.getElementById("isSelf").setAttribute("disabled","") 
   
+}
+
+function checkPhoneNumber(phone){
+  const pattern = /^0[0-9]{9,12}$/
+  return pattern.test(phone)
+}
+
+function checkEmail(email){
+  const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+  return pattern.test(email)
 }

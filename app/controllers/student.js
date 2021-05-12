@@ -77,27 +77,63 @@ export async function registerInternshipPost(req, res) {
       console.log("update", data)
       const internInfo = await InternshipInfo.findById(data.id)
       const internUnit = await InternshipUnit.findById(internInfo.idIntern)
-      if(internUnit.introBy){
-        internUnit.name = data.internName
-        internUnit.address = data.internAddress
-        internUnit.city = data.internshipCity        
-        internUnit.email = data.internWebsite        
-        internUnit.phone = data.internPhone
-        internUnit.website = data.internWebsite
-        internUnit.mentor = {
-          name: data.mentorName,
-          phone: data.mentorPhone,
-          email: data.mentorEmail
+      let newIdInternUnit = data.internshipUnit
+      let idInternUnit = newIdInternUnit
+      console.log(internUnit._id, newIdInternUnit)
+      console.log(internUnit._id == newIdInternUnit)
+      if(internUnit._id == newIdInternUnit){
+        if(internUnit.introBy){
+          internUnit.name = data.internName
+          internUnit.address = data.internAddress
+          internUnit.city = data.internshipCity        
+          internUnit.email = data.internWebsite        
+          internUnit.phone = data.internPhone
+          internUnit.website = data.internWebsite
+          internUnit.mentor = {
+            name: data.mentorName,
+            phone: data.mentorPhone,
+            email: data.mentorEmail
+          }
+          internUnit.reqTime = data.internReqTime
+          internUnit.reqInfo = data.internRequire
+          internUnit.benefit = data.internBenefit
+  
+          await internUnit.save()
         }
-        internUnit.reqTime = data.internReqTime
-        internUnit.reqInfo = data.internRequire
-        internUnit.benefit = data.internBenefit
-
-        await internUnit.save()
+      }else{
+        if(internUnit.introBy){          
+          await InternshipUnit.findByIdAndDelete(internUnit._id)          
+        }else{
+          if(!newIdInternUnit) {
+            const internshipUnit = new InternshipUnit({
+              name: data.internName,
+              address: data.internAddress,
+              email: data.internEmail,
+              city: data.internshipCity,
+              phone: data.internPhone,
+              website: data.internWebsite,
+              mentor: {
+                name: data.mentorName,
+                phone: data.mentorPhone,
+                email: data.mentorEmail,
+              },
+              reqTime: parseInt(data.internReqTime),
+              reqInfo: data.internRequire,
+              benefit: data.internBenefit,
+              introBy: data.idSv,
+              idMilestone: data.milestone.trim()
+            });
+            await internshipUnit.save();
+            idInternUnit = internshipUnit._id
+          }
+          
+        }
       }
-      const idIntern = data.internshipUnit ? data.internshipUnit : internInfo.idIntern
+      
+      
+      //const idIntern = data.internshipUnit ? data.internshipUnit : internInfo.idIntern
 
-      internInfo.idIntern = idIntern
+      internInfo.idIntern = idInternUnit
       internInfo.phone = data.svPhone
       internInfo.status = 0
       internInfo.shiftPerWeek = data.shiftPerWeek
@@ -147,15 +183,8 @@ export async function registerInternshipGet(req, res) {
     internInfo: {},
     internUnit: {}
   };
-  const year = new Date().getFullYear();
-  const milestone = await Milestone.find({
-    schoolYear: {
-      $regex: year
-    },
-    endRegister: {
-      $gte: Date.now()
-    },
-  });
+  
+  const milestone = await Milestone.find({endRegister: {$gte: Date.now()}}).sort({endRegister: -1}).limit(5);
   if (milestone.length == 0) {
     data.error = {
       err: true,
@@ -175,23 +204,20 @@ export async function registerInternshipGet(req, res) {
     milestone1.push(obj)
   }
 
-  // var i = 0;
-  // while (i < milestone1.length) {
-  //   const internInfo = await InternshipInfo.findOne({
-  //     idSv: req.session.user.userId,
-  //     idMilestone: milestone1[i]._id
-  //   })
-  //   if (internInfo) {
-  //     data.error = {
-  //       err: true,
-  //       msg: `Bạn đã đăng ký thực tập năm học ${milestone1[i].schoolYear}, học kỳ  ${milestone1[i].semester}`
-  //     }
-  //     return res.render("student/register-internship", data)
-  //   }
-  //   i++
-  // }
-
-
+  
+  const internInfo = await InternshipInfo.findOne({
+    idSv: req.session.user.userId,
+    idMilestone: milestone1[0]._id,    
+  })
+  console.log(internInfo, id, internInfo.status)
+  if((internInfo && !id) || (internInfo && id && internInfo.status != 2)) {
+    data.error = {
+      err: true,
+      msg: `Bạn đã đăng ký thực tập năm học ${milestone1[0].schoolYear}, học kỳ  ${milestone1[0].semester}`
+    }
+    return res.render("student/register-internship", data)
+  }
+  
   const internshipUnit = await InternshipUnit.find({
     introBy: null,
     idMilestone: milestone1[0]._id
@@ -205,7 +231,7 @@ export async function registerInternshipGet(req, res) {
     if(!internInfo) return res.render("student/register-internship", data);
     const internUnit = await InternshipUnit.findById(internInfo.idIntern);
     data.internInfo = internInfo
-    data.internUnit = internUnit
+    data.internUnit = internUnit.introBy ? internUnit : {_id: internUnit._id}
   }
   
   res.render("student/register-internship", data);
