@@ -298,9 +298,12 @@
 
   </div>
 
-
-
   <%- include('../layouts/script') %>
+  <script>
+    $('#redirectBack').click(() => {
+      window.location.replace('/admin/internship/approve');
+    });
+  </script>
 </body>
 
 </html>

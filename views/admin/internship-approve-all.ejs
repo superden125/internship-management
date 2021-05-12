@@ -55,46 +55,48 @@
     <% if (internInfos.length == 0) { %>
       <p>Chưa có đơn yêu cầu xét duyệt nào</p>
     <% } else { %>
-      <table class="table table-hover" id="approve-internship">
-        <thead>
-          <tr>
-            <th class="text-left align-middle" scope="col">#</th>
-            <th id="student-id-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=student.ms&type=<%= type %>'">
-              Mã số sinh viên
-              <i class="fas fa-sort text-body"></i>
-            </th>
-            <th id="student-name-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=student.name&type=<%= type %>'">
-              Họ và tên
-              <i class="fas fa-sort text-body"></i>
-            </th>
-            <th id="intern-unit-name-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=internshipUnit.name&type=<%= type %>'">
-              Tên công ty
-              <i class="fas fa-sort text-body"></i>
-            </th>
-            <th id="city-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=internshipUnit.city&type=<%= type %>'">
-              Tỉnh/ Thành phố
-              <i class="fas fa-sort text-body"></i>
-            </th>
-            <th id="status-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=status&type=<%= type %>'">
-              Trạng thái
-              <i class="fas fa-sort text-body"></i>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <% internInfos.forEach((item, index) => { %>
-            <% index = index + indexCount %>
-            <tr id="<%= item.shortId %>">
-              <td class="text-left align-middle <%= item.styleClass %>"><%= index + 1 %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.ms %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.name %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.internshipUnit.name %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.city %></td>
-              <td class="text-left align-middle <%= item.styleClass %>"><%= item.statusString %></td>
+      <div class="table-responsive">
+        <table class="table table-hover" id="approve-internship">
+          <thead>
+            <tr>
+              <th class="text-left align-middle" scope="col">#</th>
+              <th id="student-id-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=student.ms&type=<%= type %>'">
+                Mã số sinh viên
+                <i class="fas fa-sort text-body"></i>
+              </th>
+              <th id="student-name-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=student.name&type=<%= type %>'">
+                Họ và tên
+                <i class="fas fa-sort text-body"></i>
+              </th>
+              <th id="intern-unit-name-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=internshipUnit.name&type=<%= type %>'">
+                Tên công ty
+                <i class="fas fa-sort text-body"></i>
+              </th>
+              <th id="city-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=internshipUnit.city&type=<%= type %>'">
+                Tỉnh/ Thành phố
+                <i class="fas fa-sort text-body"></i>
+              </th>
+              <th id="status-col" class="text-left align-middle" scope="col" onclick="window.location='?_sort&column=status&type=<%= type %>'">
+                Trạng thái
+                <i class="fas fa-sort text-body"></i>
+              </th>
             </tr>
-          <% }) %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% internInfos.forEach((item, index) => { %>
+              <% index = index + indexCount %>
+              <tr id="<%= item.shortId %>">
+                <td class="text-left align-middle <%= item.styleClass %>"><%= index + 1 %></td>
+                <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.ms %></td>
+                <td class="text-left align-middle <%= item.styleClass %>"><%= item.student.name %></td>
+                <td class="text-left align-middle <%= item.styleClass %>"><%= item.internshipUnit.name %></td>
+                <td class="text-left align-middle <%= item.styleClass %>"><%= item.city %></td>
+                <td class="text-left align-middle <%= item.styleClass %>"><%= item.statusString %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
     <% } %>
         
     <% if (totalPages > 1) { %>

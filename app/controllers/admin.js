@@ -798,7 +798,7 @@ export async function getUpdateInternshipUnit(req, res) {
 
   let data = {
     roleName: 'Giáo vụ khoa',
-    urlInfo: 'Đơn vị thực tập / Thêm mới',
+    urlInfo: 'Đơn vị thực tập / Cập nhật',
     error: {
       err: false
     },

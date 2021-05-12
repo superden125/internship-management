@@ -414,9 +414,15 @@ ul ul a {
   cursor: pointer;
 }
 
-#approve-internship tr {
+#approve-internship tr,
+#internship-unit tr {
   cursor: pointer;
 }
+
+#internship-unit th {
+  cursor: default;
+}
+
 
 /* Media Custom */
 

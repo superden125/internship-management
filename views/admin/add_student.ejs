@@ -2,92 +2,98 @@
 <html lang="en">
 
 <head>
-    <%- include('../layouts/meta') %>
+  <%- include('../layouts/meta') %>
 </head>
 
 <body>
-    <%- include('../layouts/admin-sidebar') %>
+  <%- include('../layouts/admin-sidebar') %>
 
-        <div id="content">
-            <%- include('../layouts/navbar') %>
+  <div id="content">
+    <%- include('../layouts/navbar') %>
 
-                <div class="container">
-                    <div class="box-nav d-flex justify-between">
-                        <div class="filter">
-                            <a href="/admin/manage/students"><i class="fas fa-angle-double-left"></i> Tất cả sinh
-                                viên</a>
-                        </div>
-                    </div>
-                    <div class="form-title text-center">
-                        <h2 class="text-dark">Sinh viên mới</h2>
-                        <span class="text-dark">Sử dụng biểu mẫu dưới đây để tạo sinh viên mới</span>
-                    </div>
+    <div class="row mb-3">
+      <div class="col-auto">
+        <button id="redirectBack" title="Back" class="btn btn-light" type="button">
+          <i class="fas fa-angle-left mr-2"></i>
+          Trở về
+        </button>
+      </div>
+    </div>
+    
+      <div class="form-title text-center">
+        <h2 class="text-dark">Sinh viên mới</h2>
+        <span class="text-dark">Sử dụng biểu mẫu dưới đây để tạo sinh viên mới</span>
+      </div>
+    <div class="row">
+      <% if(error.err) {%>
+      <div class="col-md-5">
+        <%- include("../error.ejs") %>
+      </div>
+      <% }else{ %>
+      <div class="col-md-5">
+        <div id="alter"></div>
 
-                    <% if(error.err) {%>
-                        <div class="col-md-5">
-                            <%- include("../error.ejs") %>
-                        </div>
-                        <% }else{ %>
-                            <div class="col-md-5">
-                                <div id="alter"></div>
+        <!-- add student form -->
+        <form action="/admin/manage/students" method="POST" id="add_student" class="student-form">
+          <div>
+            <div class="mb-3">
+              <label for="ms" class="form-label">Mã số sinh viên</label>
+              <input type="text" class="form-control" id="ms" name="ms" value="">
+              <span class="text-danger" id="err-ms"></span>
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Họ tên</label>
+              <input type="text" class="form-control" id="name" name="name" value="">
+              <span class="text-danger" id="err-name"></span>
+            </div>
+            <div class="mb-3">
+              <label for="idClass" class="form-label">Mã lớp</label>
+              <input type="text" class="form-control" id="idClass" name="idClass" value="">
+              <span class="text-danger" id="err-idClass"></span>
+            </div>
+            <div class="mb-3">
+              <label for="major" class="form-label">Mã ngành</label>
 
-                                <!-- add student form -->
-                                <form action="/admin/manage/students" method="POST" id="add_student" class="student-form">
-                                    <div>
-                                        <div class="mb-3">
-                                            <label for="ms" class="form-label">Mã số sinh viên</label>
-                                            <input type="text" class="form-control" id="ms" name="ms" value="">
-                                            <span class="text-danger" id="err-ms"></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Họ tên</label>
-                                            <input type="text" class="form-control" id="name" name="name" value="">
-                                            <span class="text-danger" id="err-name"></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="idClass" class="form-label">Mã lớp</label>
-                                            <input type="text" class="form-control" id="idClass" name="idClass" value="">
-                                            <span class="text-danger" id="err-idClass"></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="major" class="form-label">Mã ngành</label>
+              <select name="major" id="major" class="custom-select">
+                <% majors.forEach(val=> { %>
+                <option value="<%= val._id%>">
+                  <%= val.name%>
+                </option>
+                <%})%>
+              </select>
+              <span class="text-danger" id="err-major"></span>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="text" class="form-control" id="email" name="email" value="">
+              <span class="text-danger" id="err-email"></span>
+            </div>
 
-                                            <select name="major" id="major" class="custom-select">
-                                                <% majors.forEach(val=> { %>
-                                                    <option value="<%= val._id%>">
-                                                        <%= val.name%>
-                                                    </option>
-                                                    <%})%>
-                                            </select>
-                                            <span class="text-danger" id="err-major"></span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input type="text" class="form-control" id="email" name="email" value="">
-                                            <span class="text-danger" id="err-email"></span>
-                                        </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="text" class="form-control" id="phone" name="phone" value="">
+              <span class="text-danger" id="err-phone"></span>
+            </div>
 
-                                        <div class="mb-3">
-                                            <label for="phone" class="form-label">Phone</label>
-                                            <input type="text" class="form-control" id="phone" name="phone" value="">
-                                            <span class="text-danger" id="err-phone"></span>
-                                        </div>
+            <div class="group-btn">
+              <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
+              <input type="reset" class="btn btn-reset ml-4" value="Huỷ bỏ" onclick="resetFormStudent()" />
+            </div>
 
-                                        <div class="group-btn">
-                                            <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
-                                            <input type="reset" class="btn btn-reset ml-4" value="Huỷ bỏ"
-                                                onclick="resetFormStudent()" />
-                                        </div>
+          </div>
+        </form>
+      </div>
+      <%}%>
+    </div>
+  </div>
 
-                                    </div>
-                                </form>
-                            </div>
-                            <%}%>
-                </div>
-        </div>
-
-        <%- include('../layouts/script') %>
-        <script src="/js/admin/show-student.js"></script>
+  <%- include('../layouts/script') %>
+  <script src="/js/admin/show-student.js"></script>
+  <script>
+    $('#redirectBack').click(() => {
+      window.location.replace('/admin/manage/students');
+    });
+  </script>
 </body>
 
 </html>
