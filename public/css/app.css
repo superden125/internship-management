@@ -390,6 +390,15 @@ ul ul a {
   display: none;
 }
 
+.field-icon {  
+  float: right;
+  margin-left: 0px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+  right: 10px
+}
+
 /* Content Style */
 #content {
   width: calc(100% - 250px);

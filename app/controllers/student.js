@@ -209,7 +209,7 @@ export async function registerInternshipGet(req, res) {
     idSv: req.session.user.userId,
     idMilestone: milestone1[0]._id,    
   })
-  console.log(internInfo, id, internInfo.status)
+  
   if((internInfo && !id) || (internInfo && id && internInfo.status != 2)) {
     data.error = {
       err: true,

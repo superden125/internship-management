@@ -36,7 +36,7 @@ router.get('/internship/assign-method', adminController.assignTeacher)
 
 router.get('/internship/assign/student-list/:id', adminController.getStudentsOfInternUnit);
 
-router.get('/', adminController.index);
+router.get('/', adminController.getAproveInternshipUnitInfo);
 
 //Internship-unit
 router.post('/manage/internship-unit/:id',adminController.updateInternshipUnit);

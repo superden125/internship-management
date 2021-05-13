@@ -26,3 +26,22 @@ function formatDate(date){
     const dateObj = new Date(date)
     return `${dateObj.getDate()}-${dateObj.getMonth()+1}-${dateObj.getFullYear()}`
 }
+
+function randomPassword(length, id){
+    const input = document.getElementById(id)
+    if(input){
+        let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let str = "";
+        for(let i = 0; i<length; i++){
+            str +=charset.charAt(Math.floor(Math.random()*charset.length)) 
+        }
+        input.value = str;
+    } 
+    
+}
+
+function togglePassword(){
+    $("#toggle-password").toggleClass("fa-eye fa-eye-slash")
+    const input = document.getElementById("password")
+    input.getAttribute("type")=="password" ? input.setAttribute("type","text") : input.setAttribute("type","password")
+}

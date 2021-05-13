@@ -107,7 +107,7 @@ $('#add_teacher') && $("#add_teacher").on("submit", (e) => {
     var list = document.querySelectorAll("input") 
     list.forEach((val)=>{
       console.log(val.id, val.type)
-      if(val.type == "text" || val.type=='number'){
+      if(val.type == "text" || val.type=='number' || val.type=="password"){
         $(`#err-${val.id}`).text("")
       }
     })

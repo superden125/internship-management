@@ -39,6 +39,18 @@
                                             <input type="text" class="form-control" id="ms" name="ms" value="">
                                             <span class="text-danger" id="err-ms"></span>
                                         </div>
+
+                                        <div class="mb-3">                                            
+                                            <label for="password" class="form-label">Mật khẩu</label>
+                                            <input type="text" class="form-control" id="password" name="password" value="">                                            
+                                            <span toggle="#password-field" id="toggle-password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword()"></span>
+                                            <span class="text-danger" id="err-password"></span>    
+                                        </div>
+                                        
+                                        <div class="md-3">
+                                            <input onclick="randomPassword(8,'password')" type="button" class="btn btn-primary mb-4" value="Tạo mật khẩu"/>                                            
+                                        </div>
+
                                         <div class="mb-3">
                                             <label for="name" class="form-label">Họ tên</label>
                                             <input type="text" class="form-control" id="name" name="name" value="">
@@ -68,7 +80,7 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="phone" class="form-label">Phone</label>
+                                            <label for="phone" class="form-label">Số điện thoại</label>
                                             <input type="text" class="form-control" id="phone" name="phone" value="">
                                             <span class="text-danger" id="err-phone"></span>
                                         </div>
