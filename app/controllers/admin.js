@@ -451,10 +451,39 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
   }
 }
 
-module.exports.loadAssignTeacherPage = (req, res) => {
+module.exports.loadAssignTeacherPage = async (req, res) => {
+  var selectedSchoolYear = req.query.schoolYear || '';
+  var selectedSemester = req.query.semseter || '';
+
+  const milestones = await Milestone.find({})
+    .limit(12)
+    .sort({
+      endRegister: -1
+    });
+
+  if (!milestones) {
+    return res.render('/admin/internship/approve', Object.assign(data, {
+      error: {
+        err: true,
+        msg: 'Không tìm thấy năm học'
+      },
+      schoolYears: []
+    }));
+  }
+
+  let schoolYears = []
+  milestones.forEach((val) => {
+    schoolYears.push(val.schoolYear);
+  });
+
+  schoolYears = schoolYears.filter((val, i, a) => a.indexOf(val) === i);
+
   res.render('admin/assign-teacher', {
     roleName: 'Giáo vụ khoa',
     urlInfo: 'Phân công giáo viên thăm sinh viên',
+    schoolYears,
+    selectedSchoolYear,
+    selectedSemester
   });
 }
 
@@ -499,6 +528,8 @@ module.exports.assignTeacher = async (req, res) => {
         internshipUnits.forEach(internUnit => {
           internUnit.cityName = tinh.find((tinh) => tinh.id == internUnit.city).name;
         });
+
+        // return console.log(internshipUnits)
 
         return res.json({
           data: internshipUnits
@@ -666,7 +697,6 @@ module.exports.milestoneGets = async (req, res) => {
 
 module.exports.milestonePost = async (req, res) => {
   try {
-    console.log(req.body)
     const existMilestone = await Milestone.findOne({
       semester: req.body.semester,
       schoolYear: req.body.schoolYear

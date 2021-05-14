@@ -13,15 +13,45 @@
 
     <div class="row mb-4">
       <div class="col-auto">
-        <select name="" id="" class="custom-select">
-          <option value="">-- Lọc theo năm học --</option>
-        </select>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Năm học</span>
+          </div>
+          <select name="" id="school-year-filter" class="custom-select">
+            <option value="">-- Chọn năm học --</option>
+            <% schoolYears.forEach(item => { %>
+              <% if (selectedSchoolYear == item) { %>
+                <option value="<%= item %>" selected><%= item %></option>  
+              <% } else { %>
+                <option value="<%= item %>"><%= item %></option>
+              <% } %>
+            <% }) %>
+          </select>
+        </div>
       </div>
+
       <div class="col-auto">
-        <select name="" id="" class="custom-select">
-          <option value="">-- Lọc theo học kỳ --</option>
-        </select>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Học kỳ</span>
+          </div>
+          <select name="" id="semester-filter" class="custom-select">
+            <option value="">-- Chọn học kỳ --</option>
+            <% for (var i = 1; i <= 3; i++) { %>
+              <% if (i == selectedSemester) { %>
+                <option value="<%= i %>" selected><%= i %></option>
+              <% } else { %>
+                <option value="<%= i %>"><%= i %></option>
+              <% } %>
+            <% } %>
+          </select>
+        </div>
       </div>
+
+      <div class="col-auto">
+        <button id="filter-schoolyear-semester" class="btn btn-info">Lọc</button>
+      </div>
+
       <div class="col-auto ml-auto">
         <button class="btn btn-primary" id="assign-all-button" onclick="assignMultipleTeacher()">Phân công</button>
         <button class="btn btn-secondary ml-3" onclick="loadAssignTeacher()">Hủy bỏ</button>

@@ -50,11 +50,9 @@
                 <td class="text-left align-middle">
                   <%= teachers[i].email %>
                 </td>
-
-
                 <td class="text-left align-middle">
-                  <a class="btn border-shadow delete" data-id=<%=teachers[i]._id%> >
-                    <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
+                  <a class="btn border-shadow delete" data-id="<%=teachers[i]._id%>" data-toggle="tooltip" data-placement="top" title="Xóa">
+                    <i class="far fa-trash-alt text-body"></i>
                   </a>
                 </td>
               </tr>

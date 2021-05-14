@@ -107,8 +107,8 @@ function loadData(queries){
 
                 let core = ""
                 if(parseInt(val.core) == -1){
-                    core = `<td><input value="" type="number" max="10" min="0" name="core-${val._id}" id="core-${val._id}" class="core"/></td>`+
-                    `<td><span class="sd-icon mr-4" onclick="saveCore('${val._id}')"> <i class="fas fa-save"></i> </span></td>`
+                    core = `<td class="text-left align-middle"><input value="" type="number" max="10" min="0" name="core-${val._id}" id="core-${val._id}" class="core form-control form-control-sm"/></td>`+
+                    `<td class="text-left align-middle"><span class="sd-icon mr-4" onclick="saveCore('${val._id}')"> <i class="far fa-save"></i> </span></td>`
                 }
                 else{
                     core = `<td>${val.core}</td>
@@ -290,8 +290,8 @@ function editCore(id){
     const tdButton = row[7]
     const currentCore = tdCore.innerHTML
     console.log(row)
-    tdCore.innerHTML = `<td><input value="${currentCore}" type="number" max="10" min="0" name="core-${id}" id="core-${id}" class="core"/></td>`
-    tdButton.innerHTML = `<span class="sd-icon mr-4" onclick="saveCore('${id}')"> <i class="fas fa-save"></i> </span><span class="sd-icon" onclick="deleteCore('${id}', '${currentCore}')"> <i class="fas fa-backspace"></i> </span>`
+    tdCore.innerHTML = `<td class="text-left align-middle"><input value="${currentCore}" type="number" max="10" min="0" name="core-${id}" id="core-${id}" class="form-control core"/></td>`
+    tdButton.innerHTML = `<span class="sd-icon mr-4" onclick="saveCore('${id}')"> <i class="far fa-save"></i> </span><span class="sd-icon" onclick="deleteCore('${id}', '${currentCore}')"> <i class="fas fa-backspace"></i> </span>`
 }
 
 function deleteCore(id, currentCore){

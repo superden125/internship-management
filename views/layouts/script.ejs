@@ -18,6 +18,10 @@
     });
   });
 
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
   $(window).scroll(() => {
     if ($(this).scrollTop() >= 100) {
       $('#scrollToTop').fadeIn(150);
