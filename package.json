@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --inspect index.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "babel-core": "^6.26.3",

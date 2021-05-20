@@ -12,7 +12,9 @@ if(window.location.pathname == "/admin/manage/teachers"){
         }
 
         if(confirm("Do you really want to delete this record?")){
+          console.log("delete teacher")
             $.ajax(request).done(function(response){
+                console.log(response)
                 alert("Data Deleted Successfully!");
                 location.reload();
             })

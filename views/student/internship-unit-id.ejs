@@ -9,136 +9,150 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
 
-      <div class="card border-light card-content">
+      <div class="row mb-3">
+        <div class="col-auto">
+          <button id="redirectBack" title="Back" class="btn btn-light" type="button" onclick="window.location.href='/student/internship-unit'">
+            <i class="fas fa-angle-left mr-2"></i>
+            Trở về
+          </button>
+        </div>
+      </div>
+
+      <div class="card border-black card-content">
+        <div class="card-header">
+          <h5 class="card-title">Thông tin công ty</h5>
+        </div>
         <div class="card-body">
-          <h5 class="card-title mb-4">Thông tin công ty</h5>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Tên công ty</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Tên công ty</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.name %></p>
+              <p class=""><%= internUnit.name %></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Địa chỉ</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Địa chỉ</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.address %></p>
+              <p class=""><%= internUnit.address %></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Tỉnh/ Thành phố</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Tỉnh/ Thành phố</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.city%></p>
+              <p class=""><%= internUnit.city%></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Số điện thoại</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Số điện thoại</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.phone %></p>
+              <p class=""><%= internUnit.phone %></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Website</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Website</p>
             </div>
             <div class="col-md-8">
-              <a
-                href="https://www.techbase.com"
+                <a href="https://www.techbase.com"
                 class="grey-text"
                 target="_blank"
                 ><%= internUnit.website %>
               </a>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Email</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Email</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.email %></p>
+              <p class=""><%= internUnit.email %></p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="card border-light card-content">
+      <div class="card border-black card-content">
+        <div class="card-header">
+          <h5 class="card-title">Thông tin người hướng dẫn</h5>
+        </div>
         <div class="card-body">
-          <h5 class="card-title mb-4">Thông tin người hướng dẫn</h5>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Họ và tên</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Họ và tên</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.mentor.name %></p>
+              <p class=""><%= internUnit.mentor.name %></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Email</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Email</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.mentor.email%></p>
+              <p class=""><%= internUnit.mentor.email%></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Số điện thoại</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Số điện thoại</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.mentor.phone%></p>
+              <p class=""><%= internUnit.mentor.phone%></p>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="card border-light card-content">
+      <div class="card border-black card-content">
+        <div class="card-header">
+          <h5 class="card-title">Thông tin về yêu cầu và hỗ trợ của công ty</h5>
+        </div>
         <div class="card-body">
-          <h5 class="card-title mb-4">Thông tin thực tập</h5>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Số giờ thực tập trên tuần</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Số giờ thực tập trên tuần</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.reqTime %></p>
+              <p class=""><%= internUnit.reqTime %></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Yêu cầu của đơn vị thực tập</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Yêu cầu của đơn vị thực tập</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.reqInfo%></p>
+              <p class=""><%= internUnit.reqInfo%></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Môi trường làm việc</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Môi trường làm việc</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.workEnv%></p>
+              <p class=""><%= internUnit.workEnv%></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Nội dung thực tập</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Nội dung thực tập</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.workContent%></p>
+              <p class=""><%= internUnit.workContent%></p>
             </div>
           </div>
-          <div class="row">
-            <div class="offset-1 col-md-2">
-              <p class="black-text">Hỗ trợ của đơn vị</p>
+          <div class="row ml-4">
+            <div class="col-md-3">
+              <p class="text-muted">Hỗ trợ của đơn vị</p>
             </div>
             <div class="col-md-8">
-              <p class="grey-text"><%= internUnit.benefit%></p>
+              <p class=""><%= internUnit.benefit%></p>
             </div>
           </div>
         </div>

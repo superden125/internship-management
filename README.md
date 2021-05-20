@@ -1,4 +1,4 @@
-## Intership Management System
+## Internship Management System
 
 # Technologies
 

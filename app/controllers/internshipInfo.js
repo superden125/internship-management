@@ -61,7 +61,7 @@ export async function getInternshipInfo(req, res) {
     const teacher = await User.findById(internInfo.idGv);
     data.teacher = teacher;
   }
-  console.log(data)
+  
   data.error = { err: false };
   res.render("student/home", data);
 }

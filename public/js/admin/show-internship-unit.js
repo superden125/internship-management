@@ -139,42 +139,48 @@ function resetFormIU(){
   
 }
 
-// function loadData(){
-//   //const semester = document.querySelector("#semester").value
-//   //const hk = document.querySelector("#hk").value
-//   //const params = {semester, hk}
-//   //console.log(params)
-//   $.ajax({
-//     type: "get",
-//     url: "/internship-unit/",
-//     data: params
-//   }).done((res)=>{
-//     console.log(res)
-//     if(res.success){
-//       const data = res.data
-//       document.querySelector("#err").classList.add("display-none")
-//       document.querySelector("#card-intern-info").classList.remove("display-none")
-//       document.querySelector("#internUnit-name").innerHTML=data.internUnit.name
-//       document.querySelector("#internUnit-address").innerHTML=data.internUnit.address
-//       document.querySelector("#internUnit-city").innerHTML=data.internUnit.city
-//       document.querySelector("#internUnit-phone").innerHTML=data.internUnit.phone 
-//       document.querySelector("#internUnit-website").innerHTML=data.internUnit.website
-//       document.querySelector("#internUnit-website").href = data.internUnit.website
-//       document.querySelector("#internUnit-email").innerHTML=data.internUnit.email 
+function loadData(){
+  const semester = document.querySelector("#semester-filter").value
+  const schoolYear = document.querySelector("#schoolYear-filter").value
+  const params = {semester, schoolYear}
+  //console.log(params)
+  $.ajax({
+    type: "get",
+    url: "/intern-unit/",
+    data: params
+  }).done((res)=>{
+    console.log(res)
+    const table = document.getElementById("table-body-internUnit")
+    if(res.success){
+      const table = document.getElementById("table-body-internUnit")
+      table.innerHTML = ""
+      clearAlters()
+      const data = res.data
 
-//       document.querySelector("#mentor-name").innerHTML=data.internUnit.mentor.name 
-//       document.querySelector("#mentor-phone").innerHTML=data.internUnit.mentor.phone
-//       document.querySelector("#mentor-email").innerHTML=data.internUnit.mentor.email 
+      if(data.length == 0) alterError("Không tìm thấy đơn vị thực tập")
 
-//       document.querySelector("#teacher-name").innerHTML=data.teacher.name 
-//       document.querySelector("#teacher-phone").innerHTML=data.teacher.phone
-//       document.querySelector("#teacher-email").innerHTML=data.teacher.email 
+      let row = ""
+      data.forEach((val,index)=>{
+        row +=`<tr><td onclick="window.location.href='/admin/manage/internship-unit/${val._id}';">${index + 1}</td>
+              <td onclick="window.location.href='/admin/manage/internship-unit/${val._id}';">${val.name}</td>
+              <td onclick="window.location.href='/admin/manage/internship-unit/${val._id}';">${val.email}</td>
+              <td onclick="window.location.href='/admin/manage/internship-unit/${val._id}';">${val.address}</td>
+              <td onclick="window.location.href='/admin/manage/internship-unit/${val._id}';">${val.city}</td>
+              <td onclick="window.location.href='/admin/manage/internship-unit/${val._id}';">${val.phone}</td>
+              <td class="delete-intern-unit">
+                <a class="btn border-shadow delete" data-id=${val._id} >
+                  <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
+              </a>
+              </td></tr>`
+      })
+    
+      table.innerHTML = row
+    }else{
+      table.innerHTML = ""
+      alterError("Không tìm thấy đơn vị thực tập")
+    }
 
-//       document.querySelector("#internInfo-status").innerHTML=data.statusStr
-//       document.querySelector("#internInfo-core").innerHTML= data.internInfo.core >= 0 ? data.internInfo.core : "Chưa có"
-      
-//     }
-//   })
+  })
 
   
-//}
+}

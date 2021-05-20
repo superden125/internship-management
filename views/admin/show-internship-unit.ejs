@@ -11,13 +11,34 @@
   <div id="content">
     <%- include('../layouts/navbar') %>
 
-    <div class="row mb-3">
+    <div class="row mb-4">
       <div class="col-auto">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Năm học</span>
+          </div>
+          <select class="custom-select" name="schoolYear-filter" id="schoolYear-filter">
+            <% milestones.forEach((val)=>{ %>
+            <option value="<%= val.schoolYear %>"><%= val.schoolYear %></option>
+            <% }); %>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <button id="filter-schoolyear-semester" class="btn btn-info">
+          Lọc
+          <i class="fas fa-filter ml-2"></i>
+        </button>
+      </div>
+
+      <div class="col-auto ml-auto">
         <a href="/admin/manage/internship-unit/add_internship-unit" class="btn btn-info" type="button">
           Thêm mới
           <i class="fas fa-plus ml-2"></i>
         </a>
       </div>
+      
     </div>
 
     <div class="table-responsive">
@@ -25,9 +46,9 @@
         <thead>
           <tr>
             <th class="text-left align-middle">#</th>
-            <th class="text-left align-middle">Tên công ty</th>
+            <th class="text-left align-middle" style="width: 12%;">Tên công ty</th>
             <th class="text-left align-middle">Email</th>
-            <th class="text-left align-middle">Địa chỉ</th>
+            <th class="text-left align-middle" style="width: 25%;">Địa chỉ</th>
             <th class="text-left align-middle">Thành phố</th>
             <th class="text-left align-middle">Số điện thoại</th>
             <th class="text-left align-middle"></th>
@@ -35,19 +56,19 @@
         </thead>
         <tbody>
           <% for(var i = 0; i < internshipunits.length; i++) { %>
-          <tr id="<%= internshipunits[i]._id %>" onclick="showInternshipUnitDetail(event, this.id)">
-            <td class="text-left align-middle"><%= i + 1 %></td>
-            <td class="text-left align-middle"><%= internshipunits[i].name %></td>
-            <td class="text-left align-middle"><%= internshipunits[i].email %></td>
-            <td class="text-left align-middle text-struncate" style="width: 30%"><%= internshipunits[i].address %></td>
-            <td class="text-left align-middle"><%= internshipunits[i].cityName1 %></td>
-            <td class="text-left align-middle"><%= internshipunits[i].phone %></td>
-            <td class="text-left align-middle delete-intern-unit">
-              <a class="btn" data-id="<%= internshipunits[i]._id%>" data-toggle="tooltip" data-placement="top" title="Xóa">
-                <i class="far fa-trash-alt text-body"></i>
-              </a>
-            </td>
-          </tr>
+            <tr>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= i + 1 %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].name %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].email %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].address %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].cityName1 %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].phone %></td>
+              <td class="text-left align-middle" class="delete-intern-unit">
+                <a class="btn border-shadow delete" data-id=<%= internshipunits[i]._id%> >
+                  <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
+                </a>
+              </td>
+            </tr>
           <% } %>
 
         </tbody>
@@ -58,22 +79,6 @@
 
   <%- include('../layouts/script') %>
   <script src="/js/admin/show-internship-unit.js"></script>
-  <script>
-    function showInternshipUnitDetail(event, id) {
-      var target = event.target
-      while (target) {
-        if (target.tagName === 'TD') {
-          break
-        }
-        target = target.parentElement
-      }
-
-      if (target === null) {return}
-      if (event.target.cellIndex === 6) {return}
-
-      window.location = `/admin/manage/internship-unit/${id}`
-    }
-  </script>
 </body>
 
 </html>

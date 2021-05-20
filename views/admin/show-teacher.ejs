@@ -12,7 +12,7 @@
       <%- include('../layouts/navbar') %>
 
       <div class="row mb-3">
-        <div class="col-auto">
+        <div class="col-auto ml-auto">
           <a href="/admin/manage/teachers/add_teacher" class="btn btn-info" type="button">
             Thêm mới
             <i class="fas fa-plus ml-2"></i>
@@ -34,20 +34,20 @@
           </thead>
           <tbody>
             <% for(var i=0; i < teachers.length; i++) { %>
-              <tr onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
-                <td class="text-left align-middle">
+              <tr>
+                <td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
                   <%= i + 1 %>
-                </td>
-                <td class="text-left align-middle">
+                </td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
+                <td>
                   <%= teachers[i].ms %>
                 </td>
-                <td class="text-left align-middle">
+                <td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
                   <%= teachers[i].name %>
                 </td>
-                <td class="text-left align-middle">
+                <td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
                   <%= teachers[i].major.name %>
                 </td>
-                <td class="text-left align-middle">
+                <td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
                   <%= teachers[i].email %>
                 </td>
                 <td class="text-left align-middle">
