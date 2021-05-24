@@ -111,7 +111,8 @@ $('#filter-schoolyear-semester').click(function() {
     schoolYear: $('#school-year-filter').val(),
     semester: $('#semester-filter').val()
   }
-
+  if(!queries.schoolYear || !queries.semester)
+    return
   var query = '/admin/internship/approve?'
   
   if (queries.schoolYear !== '') {

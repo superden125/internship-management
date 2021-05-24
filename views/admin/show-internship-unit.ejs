@@ -12,26 +12,27 @@
     <%- include('../layouts/navbar') %>
 
     <div class="row mb-4">
-      <div class="col-auto">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Năm học</span>
-          </div>
-          <select class="custom-select" name="schoolYear-filter" id="schoolYear-filter">
-            <% milestones.forEach((val)=>{ %>
-            <option value="<%= val.schoolYear %>"><%= val.schoolYear %></option>
-            <% }); %>
-          </select>
+      <% if(!error.err){%>
+        <div class="col-auto">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Năm học</span>
+            </div>                    
+            <select class="custom-select" name="schoolYear-filter" id="schoolYear-filter">
+              <% milestones.forEach((val)=>{ %>
+                <option value="<%= val.schoolYear %>"><%= val.schoolYear %></option>
+              <% }); %>
+            </select>          
+          </div>  
         </div>
-      </div>
 
-      <div class="col-auto">
-        <button id="filter-schoolyear-semester" class="btn btn-info">
-          Lọc
-          <i class="fas fa-filter ml-2"></i>
-        </button>
-      </div>
-
+        <div class="col-auto">
+          <button id="filter-schoolyear-semester" class="btn btn-info">
+            Lọc
+            <i class="fas fa-filter ml-2"></i>
+          </button>
+        </div>
+      <% } %> 
       <div class="col-auto ml-auto">
         <a href="/admin/manage/internship-unit/add_internship-unit" class="btn btn-info" type="button">
           Thêm mới
@@ -55,21 +56,25 @@
           </tr>
         </thead>
         <tbody>
-          <% for(var i = 0; i < internshipunits.length; i++) { %>
-            <tr>
-              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= i + 1 %></td>
-              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].name %></td>
-              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].email %></td>
-              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].address %></td>
-              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].cityName1 %></td>
-              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].phone %></td>
-              <td class="text-left align-middle" class="delete-intern-unit">
-                <a class="btn border-shadow delete" data-id=<%= internshipunits[i]._id%> >
-                  <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
-                </a>
-              </td>
-            </tr>
-          <% } %>
+          <% if(!error.err && internshipunits.length > 0){%> 
+            <% for(var i = 0; i < internshipunits.length; i++) { %>
+              <tr>
+                <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= i + 1 %></td>
+                <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].name %></td>
+                <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].email %></td>
+                <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].address %></td>
+                <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].cityName1 %></td>
+                <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].phone %></td>
+                <td class="text-left align-middle" class="delete-intern-unit">
+                  <a class="btn border-shadow delete" data-id=<%= internshipunits[i]._id%> >
+                    <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
+                  </a>
+                </td>
+              </tr>
+            <% } %>
+          <% } else {%> 
+            <div class="alert-warning">Không có đơn vị thực tập</div>
+          <% } %> 
 
         </tbody>
       </table>

@@ -41,7 +41,7 @@ module.exports.getAllInternshipUnit = async (req, res) => {
   const milestones = await Milestone.find().limit(12).sort({
     endRegister: -1
   })
-  if (!milestones) return res.render(
+  if (milestones.length <= 0) return res.render(
     "admin/show-internship-unit",
     Object.assign(data, {
       error: {
