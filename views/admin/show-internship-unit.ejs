@@ -1,95 +1,84 @@
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <%- include('../layouts/meta') %>
-      </head>
-      <body>
-        <%- include('../layouts/admin-sidebar') %>
+<!DOCTYPE html>
+<html lang="en">
 
-        <div id="content">
-          <%- include('../layouts/navbar') %>
+<head>
+  <%- include('../layouts/meta') %>
+</head>
 
-          <div class="row mb-4">
-            <div class="col-auto">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Năm học</span>
-                </div>
-                <select class="custom-select" name="schoolYear-filter" id="schoolYear-filter">
-                  <% milestones.forEach((val)=>{ %>
-                  <option value="<%= val.schoolYear %>"><%= val.schoolYear %></option>
-                  <% }); %>
-                </select>
-              </div>
-            </div>
-      
-      
-            <div class="col-auto">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Học kỳ</span>
-                </div>
-                <select class="custom-select" name="semester-filter" id="semester-filter">
-                  <option value="1" <%= milestones[0].semester == 1 ? "selected" : "" %>>1</option>
-                  <option value="2" <%= milestones[0].semester == 2 ? "selected" : "" %>>2</option>
-                  <option value="3" <%= milestones[0].semester == 3 ? "selected" : "" %>>3</option>
-                </select>
-              </div>
-            </div>
-      
-            <div class="col-auto">
-              <button id="filter" class="btn btn-info" onclick="loadData()">Lọc</button>
-              
-            </div>
-      
-            <div class="col-auto ml-auto mb-3">
-              <a href="/admin/manage/internship-unit/add_internship-unit" class="border-shadow btn btn-info">
-                <span class="text-gradient">Thêm <i class="fas fa-user"></i></span>
-              </a>
-            </div>  
+<body>
+  <%- include('../layouts/admin-sidebar') %>
+
+  <div id="content">
+    <%- include('../layouts/navbar') %>
+
+    <div class="row mb-4">
+      <div class="col-auto">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Năm học</span>
           </div>
-
-          <div id="alter"></div>
-
-          <table class="table table-hover">
-              <thead>
-                <tr >
-                    <th>#</th>
-                    <th>Tên công ty</th>
-                    <th>Email</th>
-                    <th>Địa chỉ</th>
-                    <th>Thành phố</th>
-                    <th>Số điện thoại</th>
-                    <th></th>
-                </tr>              
-              </thead>
-              <tbody id="table-body-internUnit">
-                <% for(var i = 0; i < internshipunits.length; i++) { %>
-                  <tr>
-                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= i + 1 %></td>
-                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].name %></td>
-                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].email %></td>
-                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].address %></td>
-                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].cityName1 %></td>
-                    <td onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].phone %></td>
-                    <td class="delete-intern-unit">
-                      
-
-                      <a class="btn border-shadow delete" data-id=<%= internshipunits[i]._id%> >
-                        <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
-                    </a>
-                    </td>
-                  </tr>
-                  
-                  
-                
-                <% } %>
-              
-              </tbody>
-          </table>
+          <select class="custom-select" name="schoolYear-filter" id="schoolYear-filter">
+            <% milestones.forEach((val)=>{ %>
+            <option value="<%= val.schoolYear %>"><%= val.schoolYear %></option>
+            <% }); %>
+          </select>
         </div>
-        
-        <%- include('../layouts/script') %>
-        <script src="/js/admin/show-internship-unit.js"></script>
-      </body>
-    </html>
+      </div>
+
+      <div class="col-auto">
+        <button id="filter-schoolyear-semester" class="btn btn-info">
+          Lọc
+          <i class="fas fa-filter ml-2"></i>
+        </button>
+      </div>
+
+      <div class="col-auto ml-auto">
+        <a href="/admin/manage/internship-unit/add_internship-unit" class="btn btn-info" type="button">
+          Thêm mới
+          <i class="fas fa-plus ml-2"></i>
+        </a>
+      </div>
+      
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover" id="internship-unit">
+        <thead>
+          <tr>
+            <th class="text-left align-middle">#</th>
+            <th class="text-left align-middle" style="width: 12%;">Tên công ty</th>
+            <th class="text-left align-middle">Email</th>
+            <th class="text-left align-middle" style="width: 25%;">Địa chỉ</th>
+            <th class="text-left align-middle">Thành phố</th>
+            <th class="text-left align-middle">Số điện thoại</th>
+            <th class="text-left align-middle"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i = 0; i < internshipunits.length; i++) { %>
+            <tr>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= i + 1 %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].name %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].email %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].address %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].cityName1 %></td>
+              <td class="text-left align-middle" onclick="window.location.href='/admin/manage/internship-unit/<%= internshipunits[i]._id%>';"><%= internshipunits[i].phone %></td>
+              <td class="text-left align-middle" class="delete-intern-unit">
+                <a class="btn border-shadow delete" data-id=<%= internshipunits[i]._id%> >
+                  <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
+                </a>
+              </td>
+            </tr>
+          <% } %>
+
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+
+  <%- include('../layouts/script') %>
+  <script src="/js/admin/show-internship-unit.js"></script>
+</body>
+
+</html>

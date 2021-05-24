@@ -18,7 +18,6 @@ export async function registerInternshipPost(req, res) {
       idSv
     };
     data = Object.assign(data, req.body);
-    console.log("data",data.internshipUnit)
     if(!data.id){
       if (data.internshipUnit == "0" || !data.internshipUnit) {
       
@@ -41,7 +40,6 @@ export async function registerInternshipPost(req, res) {
           idMilestone: data.milestone.trim()
         });
         const result = await internshipUnit.save();
-        console.log("internUnit", result)
         data.idUnit = result._id;
       }
   
@@ -69,18 +67,14 @@ export async function registerInternshipPost(req, res) {
         ],
       });
       const result = await internshipInfo.save();
-      console.log("internInfo", result)
       if (result) {
         return res.redirect("/student");
       }
     }else{
-      console.log("update", data)
       const internInfo = await InternshipInfo.findById(data.id)
       const internUnit = await InternshipUnit.findById(internInfo.idIntern)
       let newIdInternUnit = data.internshipUnit
       let idInternUnit = newIdInternUnit
-      console.log(internUnit._id, newIdInternUnit)
-      console.log(internUnit._id == newIdInternUnit)
       if(internUnit._id == newIdInternUnit){
         if(internUnit.introBy){
           internUnit.name = data.internName
@@ -157,7 +151,6 @@ export async function registerInternshipPost(req, res) {
     }
     
   } catch (error) {
-    console.log(error)
     return res.render("student/home", {
       error: {
         err: true,
@@ -207,7 +200,7 @@ export async function registerInternshipGet(req, res) {
   
   const internInfo = await InternshipInfo.findOne({
     idSv: req.session.user.userId,
-    idMilestone: milestone1[0]._id,    
+    idMilestone: mongoose.Types.ObjectId(milestone1[0]._id),    
   })
   
   if((internInfo && !id) || (internInfo && id && internInfo.status != 2)) {
@@ -220,7 +213,7 @@ export async function registerInternshipGet(req, res) {
   
   const internshipUnit = await InternshipUnit.find({
     introBy: null,
-    idMilestone: milestone1[0]._id
+    idMilestone: mongoose.Types.ObjectId(milestone1[0]._id)
   });
   data.internshipUnit = internshipUnit;
   data.tinh = tinh.sort((a, b) => a.name - b.name);
@@ -257,7 +250,6 @@ export async function getListInternshipUnit(req, res) {
     schoolYears.push(val.schoolYear)
   })
   schoolYears = schoolYears.filter((val,i,a)=>a.indexOf(val)===i)
-  console.log(schoolYears)
   data.schoolYears = schoolYears
   data.currentHk = milestones[0]
   const internUnits = await InternshipUnit.find({
@@ -268,7 +260,6 @@ export async function getListInternshipUnit(req, res) {
     internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
   });
   data.internUnits = internUnits;
-  console.log(data)
   res.render("student/internship-unit", data);
 }
 

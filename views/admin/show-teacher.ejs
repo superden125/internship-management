@@ -11,23 +11,25 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
 
-        <div class="row">
-          <div class="col-auto ml-auto mb-3">
-            <a href="/admin/manage/teachers/add_teacher" class="border-shadow btn btn-info">
-              <span class="text-gradient">Thêm <i class="fas fa-user"></i></span>
-            </a>
-          </div>          
+      <div class="row mb-3">
+        <div class="col-auto ml-auto">
+          <a href="/admin/manage/teachers/add_teacher" class="btn btn-info" type="button">
+            Thêm mới
+            <i class="fas fa-plus ml-2"></i>
+          </a>
         </div>
+      </div>
 
+      <div class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Mã số</th>
-              <th>Họ tên</th>
-              <th>Mã Ngành</th>
-              <th>Email</th>
-              <th></th>
+              <th class="text-left align-middle">#</th>
+              <th class="text-left align-middle">Mã số</th>
+              <th class="text-left align-middle">Họ tên</th>
+              <th class="text-left align-middle">Mã Ngành</th>
+              <th class="text-left align-middle">Email</th>
+              <th class="text-left align-middle"></th>
             </tr>
           </thead>
           <tbody>
@@ -48,20 +50,16 @@
                 <td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
                   <%= teachers[i].email %>
                 </td>
-
-
-                <td>
-                  <a class="btn border-shadow delete" data-id=<%=teachers[i]._id%> >
-                    <span class="text-gradient"><i class="fas fa-trash-alt"></i></span>
+                <td class="text-left align-middle">
+                  <a class="btn border-shadow delete" data-id="<%=teachers[i]._id%>" data-toggle="tooltip" data-placement="top" title="Xóa">
+                    <i class="far fa-trash-alt text-body"></i>
                   </a>
                 </td>
               </tr>
-
-
-
               <% } %>
           </tbody>
-        </table>
+        </table>   
+      </div>
     </div>
 
     <%- include('../layouts/script') %>

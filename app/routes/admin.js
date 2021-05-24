@@ -19,13 +19,13 @@ router.get('/manage/json-teachers', adminController.getJSONTeachers);
 
 router
   .get('/manage/milestone', adminController.milestoneGet)
-  .get('/manage/milestones', adminController.milestoneGets)  
+  .get('/manage/milestones', adminController.milestoneGets)
   .post('/manage/milestone', adminController.milestonePost)
   .put('/manage/milestone', adminController.milestonePut)
 
 
 // Internship
-router.get('/internship/approve', adminController.getAproveInternshipUnitInfo);
+// router.get('/internship/approve', adminController.getAproveInternshipUnitInfo);
 router.get('/internship/approve/:id', adminController.detailApproveInternshipUnit)
   .post('/internship/approve/:id', adminController.detailApproveInternshipUnit);
 
@@ -39,7 +39,7 @@ router.get('/internship/assign/student-list/:id', adminController.getStudentsOfI
 router.get('/', adminController.getAproveInternshipUnitInfo);
 
 //Internship-unit
-router.post('/manage/internship-unit/:id',adminController.updateInternshipUnit);
+router.post('/manage/internship-unit/:id', adminController.updateInternshipUnit);
 router.get('/manage/internship-unit/add_internship-unit', adminController.addInternshipUnit);
 router.post('/manage/internship-unit', adminController.createInternshipUnit);
 router.get('/manage/internship-unit/:id', adminController.getUpdateInternshipUnit);
@@ -50,7 +50,7 @@ router.delete('/manage/internship-unit/:id', adminController.deleteInternshipUni
 
 //Teachers
 router.get('/manage/teachers/add_teacher', adminController.addTeacher);
-router.post('/manage/teachers',adminController.createTeacher);
+router.post('/manage/teachers', adminController.createTeacher);
 router.get('/manage/teachers/:id', adminController.getUpdateTeacher);
 router.post('/manage/teachers/:id', adminController.updateTeacher);
 router.delete('/manage/teachers/:id', adminController.deleteTeacher);

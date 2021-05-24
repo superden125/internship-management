@@ -38,24 +38,32 @@ module.exports.getAllInternshipUnit = async (req, res) => {
     },
   }
 
-  const milestones = await Milestone.find().limit(12).sort({endRegister:-1})
-  if(!milestones) return res.render(
+  const milestones = await Milestone.find().limit(12).sort({
+    endRegister: -1
+  })
+  if (!milestones) return res.render(
     "admin/show-internship-unit",
     Object.assign(data, {
-      error: { err: true, msg: "Not found semester" },
+      error: {
+        err: true,
+        msg: "Not found semester"
+      },
       schoolYears: []
     })
   );
   let schoolYears = []
-  milestones.forEach((val)=>{
+  milestones.forEach((val) => {
     schoolYears.push(val.schoolYear)
   })
-   
-  data.schoolYears = schoolYears.filter((val,i,a)=> a.indexOf(val)===i)
+
+  data.schoolYears = schoolYears.filter((val, i, a) => a.indexOf(val) === i)
 
   data.milestones = milestones
 
-  const internshipunits = await InternshipUnit.find({idMilestone: milestones[0]._id, introBy: null});
+  const internshipunits = await InternshipUnit.find({
+    idMilestone: milestones[0]._id,
+    introBy: null
+  });
   // internshipunits.cityName = tinh.find((tinh) => tinh.id == internshipunits.city).name;
   internshipunits.forEach(internshipunit => {
     internshipunit.cityName1 = tinh.find((tinh) => tinh.id == internshipunit.city).name;
@@ -94,7 +102,9 @@ module.exports.getAllTeachers = async (req, res) => {
 }
 
 module.exports.getJSONTeachers = async (req, res) => {
-  await User.find({ role: 'teacher' })
+  await User.find({
+      role: 'teacher'
+    })
     .exec((err, teachers) => {
       if (!err) return res.json({
         err: false,
@@ -280,31 +290,44 @@ module.exports.getAproveInternshipUnitInfo = async (req, res) => {
 
   if (req.query.hasOwnProperty('schoolYear') && req.query.hasOwnProperty('semester')) {
     var idArr = [];
-    var milestonesTemp = await Milestone.find({ schoolYear: req.query.schoolYear, semester: req.query.semester });
-    
+    var milestonesTemp = await Milestone.find({
+      schoolYear: req.query.schoolYear,
+      semester: req.query.semester
+    });
+
     milestonesTemp.forEach(item => {
       idArr.push(mongoose.Types.ObjectId(item._id));
     });
 
-    matchField.$match.idMilestone = { $in: idArr }
+    matchField.$match.idMilestone = {
+      $in: idArr
+    }
   } else if (req.query.hasOwnProperty('semester')) {
     var idArr = [];
-    var milestonesTemp = await Milestone.find({ semester: req.query.semester });
-    
+    var milestonesTemp = await Milestone.find({
+      semester: req.query.semester
+    });
+
     milestonesTemp.forEach(item => {
       idArr.push(mongoose.Types.ObjectId(item._id));
     });
 
-    matchField.$match.idMilestone = { $in: idArr }
+    matchField.$match.idMilestone = {
+      $in: idArr
+    }
   } else if (req.query.hasOwnProperty('schoolYear')) {
     var idArr = [];
-    var milestonesTemp = await Milestone.find({ schoolYear: req.query.schoolYear });
-    
+    var milestonesTemp = await Milestone.find({
+      schoolYear: req.query.schoolYear
+    });
+
     milestonesTemp.forEach(item => {
       idArr.push(mongoose.Types.ObjectId(item._id));
     });
 
-    matchField.$match.idMilestone = { $in: idArr }
+    matchField.$match.idMilestone = {
+      $in: idArr
+    }
   }
 
   query.splice(0, 0, matchField);
@@ -398,7 +421,7 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
       ])
       .exec(function (err, internInfos) {
         var internInfo = internInfos[0];
-        
+
         internInfo.haveRoomString = !internInfo.haveRoom ? 'Không' : 'Có';
         internInfo.havePCString = !internInfo.havePC ? 'Không' : 'Có';
         internInfo.city = tinh.find((tinh) => tinh.id == internInfo.internshipUnit[0].city).name;
@@ -469,10 +492,39 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
   }
 }
 
-module.exports.loadAssignTeacherPage = (req, res) => {
+module.exports.loadAssignTeacherPage = async (req, res) => {
+  var selectedSchoolYear = req.query.schoolYear || '';
+  var selectedSemester = req.query.semseter || '';
+
+  const milestones = await Milestone.find({})
+    .limit(12)
+    .sort({
+      endRegister: -1
+    });
+
+  if (!milestones) {
+    return res.render('/admin/internship/approve', Object.assign(data, {
+      error: {
+        err: true,
+        msg: 'Không tìm thấy năm học'
+      },
+      schoolYears: []
+    }));
+  }
+
+  let schoolYears = []
+  milestones.forEach((val) => {
+    schoolYears.push(val.schoolYear);
+  });
+
+  schoolYears = schoolYears.filter((val, i, a) => a.indexOf(val) === i);
+
   res.render('admin/assign-teacher', {
     roleName: 'Giáo vụ khoa',
     urlInfo: 'Phân công giáo viên thăm sinh viên',
+    schoolYears,
+    selectedSchoolYear,
+    selectedSemester
   });
 }
 
@@ -518,6 +570,8 @@ module.exports.assignTeacher = async (req, res) => {
           internUnit.cityName = tinh.find((tinh) => tinh.id == internUnit.city).name;
         });
 
+        // return console.log(internshipUnits)
+
         return res.json({
           data: internshipUnits
         });
@@ -559,14 +613,12 @@ module.exports.getStudentsOfInternUnit = async (req, res) => {
         let: {
           internUnit: '$idIntern'
         },
-        pipeline: [
-          {
-            $match: {
-              status: 1,
-              idIntern: mongoose.Types.ObjectId(req.params.id)
-            }
+        pipeline: [{
+          $match: {
+            status: 1,
+            idIntern: mongoose.Types.ObjectId(req.params.id)
           }
-        ],
+        }],
         as: 'internInfos',
       }
     },
@@ -684,7 +736,6 @@ module.exports.milestoneGets = async (req, res) => {
 
 module.exports.milestonePost = async (req, res) => {
   try {
-    console.log(req.body)
     const existMilestone = await Milestone.findOne({
       semester: req.body.semester,
       schoolYear: req.body.schoolYear
@@ -816,7 +867,7 @@ export async function getUpdateInternshipUnit(req, res) {
 
   let data = {
     roleName: 'Giáo vụ khoa',
-    urlInfo: 'Đơn vị thực tập / Thêm mới',
+    urlInfo: 'Đơn vị thực tập / Cập nhật',
     error: {
       err: false
     },

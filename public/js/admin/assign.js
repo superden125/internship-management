@@ -4,7 +4,7 @@ function editTeacher(id) {
 
   var selectElement = `<select name="teacher" id="teacher" class="custom-select teacher-select"><option value="null">-- Hủy phân công --</option>`;
 
-  var saveButton = `<a class="d-block" href="#" data-toggle="tooltip" data-placement="left" title="Phân công" onclick="assignTeacher('${id}');"><i class="fas fa-share-square text-body"></i></a>`;
+  var saveButton = `<a class="d-block" href="#" data-toggle="tooltip" data-placement="left" title="Phân công" onclick="assignTeacher('${id}');"><i class="far fa-share-square text-body"></i></a>`;
 
   $.ajax({
       method: 'GET',
@@ -77,7 +77,7 @@ function loadAssignTeacher() {
           }
 
           if (item.currentSv > 0) {
-            tr += `<td class="align-middle"><a class="d-block" href="#" data-toggle="tooltip" data-placement="left" title="Chỉnh sửa" onclick="editTeacher('${item._id}')"><i class="fas fa-edit text-body"></i></a></td>`;
+            tr += `<td class="align-middle"><a class="d-block" href="#" data-toggle="tooltip" data-placement="top" title="Điều chỉnh" onclick="editTeacher('${item._id}')"><i class="far fa-edit text-body"></i></a></td>`;
           } else {
             tr += '<td></td>'
           }
