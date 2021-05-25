@@ -1,96 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <%- include('../layouts/meta') %>
 </head>
+
 <body>
   <%- include('../layouts/teacher-sidebar') %>
-  
-  <div id="content">
 
-    <%- include('../layouts/navbar') %>    
-    <div class="row mb-4">
-        <!-- <div class="col-md-3">
+    <div id="content">
+
+      <%- include('../layouts/navbar') %>
+        <div class="row mb-4">
+          <!-- <div class="col-md-3">
             <input class="form-control" type="text" name="search" id="search" placeholder="Tìm kiếm theo mssv hoặc tên sinh viên">            
         </div>         -->
-        <div class="col-auto">
+          <div class="col-auto">
             <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Năm học</span>
-                </div>
-                <select class="custom-select" name="schoolYear" id="schoolYear">
-                    <% schoolYears.forEach((val)=>{ %> 
-                        <option value="<%= val %>"><%= val %></option>
-                    <% }) %> 
-                </select>
+              <div class="input-group-prepend">
+                <span class="input-group-text">Năm học</span>
               </div>
-        </div>
-        <div class="col-auto">
+              <select class="custom-select" name="schoolYear" id="schoolYear">
+                <% schoolYears.forEach((val)=>{ %>
+                  <option value="<%= val %>">
+                    <%= val %>
+                  </option>
+                  <% }) %>
+              </select>
+            </div>
+          </div>
+          <div class="col-auto">
             <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Học kỳ</span>
-                </div>
-                <select class="custom-select" name="semester" id="semester">
-                  <option value="1" <%= milestones[0].semester == 1 ? "selected" : "" %>>1</option>
-                  <option value="2" <%= milestones[0].semester == 2 ? "selected" : "" %>>2</option>
-                  <option value="3" <%= milestones[0].semester == 3 ? "selected" : "" %>>3</option>
-                </select>
+              <div class="input-group-prepend">
+                <span class="input-group-text">Học kỳ</span>
               </div>
-        </div>
-        <div class="col-auto">
+              <select class="custom-select" name="semester" id="semester">
+                <option value="1" <%=milestones[0].semester==1 ? "selected" : "" %>>1</option>
+                <option value="2" <%=milestones[0].semester==2 ? "selected" : "" %>>2</option>
+                <option value="3" <%=milestones[0].semester==3 ? "selected" : "" %>>3</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-auto">
             <button id="filter" class="btn btn-info" onclick="loadData()">Lọc</button>
-        </div>
-        <div class="col-md-3">
-       
-        </div>
-        <div class="col-auto ml-auto">
+          </div>
+          <div class="col-md-3">
+
+          </div>
+          <div class="col-auto ml-auto">
             <button class="btn btn-primary mr-2" onclick="saveManyCore()">Lưu tất cả</button>
-            <button class="btn btn-reset ml-2" onclick="loadData()">Huỷ bỏ</button>
+            <button class="btn btn-secondary ml-2" onclick="loadData()">Huỷ bỏ</button>
+          </div>
         </div>
-    </div>
 
-    <div id="alter">
-      
-    </div>
+        <div id="alter">
 
-    <div class="row mb-2">
-      <div class="col-auto">
-        <div class="alert alert-info" role="alert">
-          <i class="far fa-calendar-alt mr-1"></i>
-          <span class="font-weight-bold">Thời hạn nhập điểm:</span>
-          <span id="endCore" class="font-weight-bold ml-3"></span>
         </div>
-      </div>
-    </div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th class="text-left align-middle" scope="col">#</th>
-          <th class="text-left align-middle" scope="col">
-            Mã số sinh viên
-          </th>
-          <th class="text-left align-middle" scope="col">
-            Họ và tên
-          </th>
-          <th class="text-left align-middle" scope="col">
-            Tên công ty
-          </th>
-          <th class="text-left align-middle" scope="col">
-            Tỉnh/ Thành phố
-          </th>
-          <th>Điểm</th>
-          <th></th>
-        </tr>
-        
-      </thead>
-      <tbody id="table-core-body">
-           
-      </tbody>
-    </table>
 
-    <div id="pagination"></div>
+        <div class="row mb-2">
+          <div class="col-auto">
+            <div class="alert alert-info" role="alert">
+              <i class="far fa-calendar-alt mr-1"></i>
+              <span class="font-weight-bold">Thời hạn nhập điểm:</span>
+              <span id="endCore" class="font-weight-bold ml-3"></span>
+            </div>
+          </div>
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-left align-middle" scope="col">#</th>
+              <th class="text-left align-middle" scope="col">
+                Mã số sinh viên
+              </th>
+              <th class="text-left align-middle" scope="col">
+                Họ và tên
+              </th>
+              <th class="text-left align-middle" scope="col">
+                Tên công ty
+              </th>
+              <th class="text-left align-middle" scope="col">
+                Tỉnh/ Thành phố
+              </th>
+              <th>Điểm</th>
+              <th></th>
+            </tr>
 
-  <%- include('../layouts/script') %>
-  <script src="/js/teacher/core.js"></script>
+          </thead>
+          <tbody id="table-core-body">
+
+          </tbody>
+        </table>
+
+        <div id="pagination"></div>
+
+        <%- include('../layouts/script') %>
+          <script src="/js/teacher/core.js"></script>
 </body>
+
 </html>
