@@ -8,61 +8,69 @@
 <body>
   <%- include('../layouts/admin-sidebar') %>
 
-  <div id="content">
-    <%- include('../layouts/navbar') %>
+    <div id="content">
+      <%- include('../layouts/navbar') %>
 
-    <div class="row mb-4">
-      <div class="col-auto">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Năm học</span>
+        <div class="row mb-4">
+          <div class="col-auto">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Năm học</span>
+              </div>
+              <select class="custom-select" name="schoolYear-filter" id="schoolYear-filter">
+                <% milestones.forEach((val)=>{ %>
+                  <option value="<%= val.schoolYear %>">
+                    <%= val.schoolYear %>
+                  </option>
+                  <% }); %>
+              </select>
+            </div>
           </div>
-          <select class="custom-select" name="schoolYear-filter" id="schoolYear-filter">
-            <% milestones.forEach((val)=>{ %>
-            <option value="<%= val.schoolYear %>"><%= val.schoolYear %></option>
-            <% }); %>
-          </select>
-        </div>
-      </div>
 
 
-      <div class="col-auto">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Học kỳ</span>
+          <div class="col-auto">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Học kỳ</span>
+              </div>
+              <select class="custom-select" name="semester-filter" id="semester-filter">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
           </div>
-          <select class="custom-select" name="semester-filter" id="semester-filter">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
+
+          <div class="col-auto">
+            <button id="filter" class="btn btn-info" onclick="loadData()">Lọc</button>
+          </div>
+          <div class="col-auto ml-auto">
+            <button class="btn btn-info" onclick="addMilestone()">
+              Thêm mới
+              <i class="far fa-plus-square ml-2"></i>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div class="col-auto">
-        <button id="filter" class="btn btn-info" onclick="loadData()">Lọc</button>
-      </div>
 
-      <div class="col-auto ml-auto"><button class="btn btn-sub" onclick="addMilestone()">Thêm</button></div>
-    </div>
 
-    <div id="alter"></div>
+        <div id="alter"></div>
 
-    <table class="table table-hover" id="table-milestone">
-      <thead>
-        <tr>
-          <th>Năm học</th>
-          <th>Học kỳ</th>
-          <th>Hạn đăng ký</th>
-          <th>Thời gian bắt đầu</th>
-          <th>Thời gian kết thúc</th>
-          <th>Hạn nhập kết quả</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="table-body-milestone">
-        <tr id="addMilestone">
-          <!-- <td class="edit"> 
+        <table class="table table-hover" id="table-milestone">
+          <thead>
+            <tr>
+              <th>Năm học</th>
+              <th>Học kỳ</th>
+              <th>Hạn đăng ký</th>
+              <th>Thời gian bắt đầu</th>
+              <th>Thời gian kết thúc</th>
+              <th>Hạn nhập kết quả</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="table-body-milestone">
+            <tr id="addMilestone">
+              <!-- <td class="edit"> 
                     <select name="semester" id="semester" class="custom-select"> 
                         <option value="${semester1}">${semester1}</option>
                         <option value="${semester2}">${semester2}</option> 
@@ -91,25 +99,37 @@
                         <i class="fas fa-trash-alt"></i>
                     </span>
                 </td> -->
-        </tr>
-        <% milestones.forEach((val)=>{ %>
-        <tr id="<%= val._id %>">
-          <td><%= val.schoolYear %></td>
-          <td><%= val.semester %></td>
-          <td><%= val.endRegister %></td>
-          <td><%= val.startIntern %></td>
-          <td><%= val.endIntern %></td>
-          <td><%= val.endCore %></td>
-          <td class="align-middle"><span class="sd-icon" id="editMilestone" onclick="editMilestone('<%= val._id %>')"><i
-                class="fas fa-edit"></i></span></td>
-        </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  </div>
+            </tr>
+            <% milestones.forEach((val)=>{ %>
+              <tr id="<%= val._id %>">
+                <td>
+                  <%= val.schoolYear %>
+                </td>
+                <td>
+                  <%= val.semester %>
+                </td>
+                <td>
+                  <%= val.endRegister %>
+                </td>
+                <td>
+                  <%= val.startIntern %>
+                </td>
+                <td>
+                  <%= val.endIntern %>
+                </td>
+                <td>
+                  <%= val.endCore %>
+                </td>
+                <td class="align-middle"><span class="sd-icon" id="editMilestone"
+                    onclick="editMilestone('<%= val._id %>')"><i class="fas fa-edit"></i></span></td>
+              </tr>
+              <% }); %>
+          </tbody>
+        </table>
+    </div>
 
-  <%- include('../layouts/script') %>
-  <script src="/js/admin/milestone.js"></script>
+    <%- include('../layouts/script') %>
+      <script src="/js/admin/milestone.js"></script>
 </body>
 
 </html>

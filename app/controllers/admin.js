@@ -961,7 +961,7 @@ exports.createTeacher = async (req, res) => {
     return;
   }
 
-  var pwd = password.genRandomString(9);
+  var pwd = req.body.password //password.genRandomString(9);
 
   const salt = await bcrypt.genSalt(10);
   const hashPass = await bcrypt.hash(pwd, salt);
@@ -1091,7 +1091,7 @@ exports.createStudent = async (req, res) => {
     return;
   }
 
-  var pwd = password.genRandomString(9);
+  var pwd = req.body.password//password.genRandomString(9);
 
   const salt = await bcrypt.genSalt(10);
   const hashPass = await bcrypt.hash(pwd, salt);

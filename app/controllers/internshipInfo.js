@@ -60,8 +60,7 @@ export async function getInternshipInfo(req, res) {
   if (internInfo.idGv) {
     const teacher = await User.findById(internInfo.idGv);
     data.teacher = teacher;
-  }
-  
+  }  
   data.error = { err: false };
   res.render("student/home", data);
 }
@@ -93,6 +92,6 @@ export async function getInternInfo(req,res){
     const teacher = await User.findById(internInfo.idGv)
     data.teacher = teacher
   }
-
+  
   res.json({success:true, data})
 }

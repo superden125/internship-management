@@ -202,6 +202,7 @@ export async function registerInternshipGet(req, res) {
     idSv: req.session.user.userId,
     idMilestone: mongoose.Types.ObjectId(milestone1[0]._id),    
   })
+  
   if((internInfo && !id) || (internInfo && id && internInfo.status != 2)) {
     data.error = {
       err: true,

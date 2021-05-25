@@ -11,55 +11,60 @@
     <div id="content">
       <%- include('../layouts/navbar') %>
 
-      <div class="row mb-3">
-        <div class="col-auto ml-auto">
-          <a href="/admin/manage/teachers/add_teacher" class="btn btn-info" type="button">
-            Thêm mới
-            <i class="fas fa-plus ml-2"></i>
-          </a>
+        <div class="row mb-3">
+          <div class="col-auto ml-auto">
+            <a href="/admin/manage/teachers/add_teacher" class="btn btn-info" type="button">
+              Thêm mới
+              <i class="far fa-plus-square ml-2"></i>
+            </a>
+          </div>
         </div>
-      </div>
 
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th class="text-left align-middle">#</th>
-              <th class="text-left align-middle">Mã số</th>
-              <th class="text-left align-middle">Họ tên</th>
-              <th class="text-left align-middle">Mã Ngành</th>
-              <th class="text-left align-middle">Email</th>
-              <th class="text-left align-middle"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% for(var i=0; i < teachers.length; i++) { %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
               <tr>
-                <td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
-                  <%= i + 1 %>
-                </td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
-                <td>
-                  <%= teachers[i].ms %>
-                </td>
-                <td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
-                  <%= teachers[i].name %>
-                </td>
-                <td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
-                  <%= teachers[i].major.name %>
-                </td>
-                <td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
-                  <%= teachers[i].email %>
-                </td>
-                <td class="text-left align-middle">
-                  <a class="btn border-shadow delete" data-id="<%=teachers[i]._id%>" data-toggle="tooltip" data-placement="top" title="Xóa">
-                    <i class="far fa-trash-alt text-body"></i>
-                  </a>
-                </td>
+                <th class="text-left align-middle">#</th>
+                <th class="text-left align-middle">Mã số</th>
+                <th class="text-left align-middle">Họ tên</th>
+                <th class="text-left align-middle">Mã Ngành</th>
+                <th class="text-left align-middle">Email</th>
+                <th class="text-left align-middle"></th>
               </tr>
-              <% } %>
-          </tbody>
-        </table>   
-      </div>
+            </thead>
+            <tbody>
+              <% for(var i=0; i < teachers.length; i++) { %>
+                <tr>
+                  <td class="text-left align-middle"
+                    onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
+                    <%= i + 1 %>
+                  </td onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
+                  <td class="text-left align-middle">
+                    <%= teachers[i].ms %>
+                  </td>
+                  <td class="text-left align-middle"
+                    onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
+                    <%= teachers[i].name %>
+                  </td>
+                  <td class="text-left align-middle"
+                    onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
+                    <%= teachers[i].major.name %>
+                  </td>
+                  <td class="text-left align-middle"
+                    onclick="window.location.href='/admin/manage/teachers/<%= teachers[i]._id%>';">
+                    <%= teachers[i].email %>
+                  </td>
+                  <td class="text-left align-middle">
+                    <a class="btn border-shadow delete" data-id="<%=teachers[i]._id%>" data-toggle="tooltip"
+                      data-placement="top" title="Xóa">
+                      <i class="far fa-trash-alt text-body"></i>
+                    </a>
+                  </td>
+                </tr>
+                <% } %>
+            </tbody>
+          </table>
+        </div>
     </div>
 
     <%- include('../layouts/script') %>

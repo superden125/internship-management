@@ -123,7 +123,7 @@ p {
   line-height: 20px;
   color: #fff;
   margin-bottom: 24px;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .login-card .login-btn:hover {
@@ -319,7 +319,7 @@ p {
   transform: scale(1.05, 1.05);
 }
 
-#sidebar ul li.active>a,
+#sidebar ul li.active > a,
 a[aria-expanded="true"] {
   color: var(--white);
   opacity: 1;
@@ -364,15 +364,7 @@ ul ul a {
   background: var(--background);
 }
 
-.btn-sub {
-  color: #fff;
-  background: var(--btn-sub);
-  width: 100px;
-}
-
-.btn-reset {
-  color: #fff;
-  background: var(--btn-reset);
+.btn-width-100 {
   width: 100px;
 }
 
@@ -391,6 +383,15 @@ ul ul a {
 
 .display-none {
   display: none;
+}
+
+.field-icon {
+  float: right;
+  margin-left: 0px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+  right: 10px;
 }
 
 /* Content Style */
@@ -425,7 +426,6 @@ ul ul a {
 #internship-unit th {
   cursor: default;
 }
-
 
 /* Media Custom */
 

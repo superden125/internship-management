@@ -8,98 +8,92 @@
 <body>
   <%- include('../layouts/admin-sidebar') %>
 
-  <div id="content">
-    <%- include('../layouts/navbar') %>
-    
-    <div class="row mb-3">
-      <div class="col-auto">
-        <button id="redirectBack" title="Back" class="btn btn-light" type="button">
-          <i class="fas fa-angle-left mr-2"></i>
-          Trở về
-        </button>
-      </div>
+    <div id="content">
+      <%- include('../layouts/navbar') %>
+
+        <div class="row mb-3">
+          <div class="col-auto">
+            <button id="redirectBack" title="Back" class="btn btn-light" type="button">
+              <i class="fas fa-angle-left mr-2"></i>
+              Trở về
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <% if(error.err) {%>
+            <div class="col-md-6 mx-auto">
+              <%- include("../error.ejs") %>
+            </div>
+            <% }else{ %>
+
+              <!-- update student form -->
+              <div class="col-md-6 mx-auto">
+                <h2 class="text-center mb-3">Cập nhật thông tin sinh viên</h2>
+                <p class="text-muted text-center font-italic mb-4">Sử dụng biểu mẫu dưới đây để cập nhật thông tin sinh
+                  viên</p>
+                <div id="alter"></div>
+                <form action="/admin/manage/students/<%= student._id %>" method="POST" id="update_student">
+                  <input type="hidden" name="id" value="<%= student._id %>">
+                  <input type="hidden" class="form-control" value="<%= student.ms %>">
+                  <div class="mb-3">
+                    <label for="name" class="form-label">Họ tên</label>
+                    <input type="text" class="form-control" name="name" value="<%= student.name%>">
+                    <span class="text-danger" id="err-name"></span>
+                  </div>
+                  <div class="mb-3">
+                    <label for="idClass" class="form-label">Mã lớp</label>
+                    <input type="text" class="form-control" name="idClass" value="<%= student.idClass%>">
+                    <span class="text-danger" id="err-idClass"></span>
+                  </div>
+                  <div class="mb-3">
+                    <label for="idMajor" class="form-label">Mã ngành</label>
+
+                    <select name="idMajor" id="idMajor" class="custom-select">
+                      <% majors.forEach((val)=>{ %>
+                        <% if (val.id==student.idMajor) { %>
+                          <option value="<%= val.id %>" selected>
+                            <%= val.name %>
+                          </option>
+                          <% } else { %>
+                            <option value="<%= val.id%>">
+                              <%= val.name%>
+                            </option>
+                            <% } %>
+                              <% })%>
+                    </select>
+
+
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" class="form-control" name="email" value="<%= student.email%>">
+                    <span class="text-danger" id="err-email"></span>
+                  </div>
+                  <div class="mb-3">
+                    <label for="phone" class="form-label">Số điện thoại</label>
+                    <input type="text" class="form-control" name="phone" value="<%= student.phone%>">
+                    <span class="text-danger" id="err-phone"></span>
+                  </div>
+
+                  <div class="group-btn">
+                    <input type="submit" class="btn btn-info btn-width-100 mt-4" value="Cập nhật" />
+                  </div>
+
+
+                </form>
+              </div>
+              <%}%>
+        </div>
     </div>
 
-      <div class="form-title text-center">
-        <h2 class="text-dark">Cập nhật sinh viên</h2>
-        <span class="text-dark">Sử dụng biểu mẫu dưới đây để cập nhật sinh viên</span>
-      </div>
-      <div class="row">
-        <% if(error.err) {%>
-        <div class="col-md-5">
-          <%- include("../error.ejs") %>
-        </div>
-        <% }else{ %>
-
-        <!-- update student form -->
-        <div class="col-md-5">
-          <div id="alter"></div>
-          <form action="/admin/manage/students/<%= student._id %>" method="POST" id="update_student">
-
-            <div class="mb-3">
-              <label for="ms" class="form-label">Mã số sinh viên</label>
-              <input type="hidden" name="id" value="<%= student._id %>">
-              <input type="text" class="form-control" value="<%= student.ms %>" readonly>
-              <span class="text-danger" id="err-ms"></span>
-            </div>
-            <div class="mb-3">
-              <label for="name" class="form-label">Họ tên</label>
-              <input type="text" class="form-control" name="name" value="<%= student.name%>">
-              <span class="text-danger" id="err-name"></span>
-            </div>
-            <div class="mb-3">
-              <label for="idClass" class="form-label">Mã lớp</label>
-              <input type="text" class="form-control" name="idClass" value="<%= student.idClass%>">
-              <span class="text-danger" id="err-idClass"></span>
-            </div>
-            <div class="mb-3">
-              <label for="idMajor" class="form-label">Mã ngành</label>
-
-              <select name="idMajor" id="idMajor" class="custom-select">
-                <% majors.forEach((val)=>{ %>
-                <% if (val.id==student.idMajor) { %>
-                <option value="<%= val.id %>" selected>
-                  <%= val.name %>
-                </option>
-                <% } else { %>
-                <option value="<%= val.id%>">
-                  <%= val.name%>
-                </option>
-                <% } %>
-                <% })%>
-              </select>
-
-
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="text" class="form-control" name="email" value="<%= student.email%>">
-              <span class="text-danger" id="err-email"></span>
-            </div>
-            <div class="mb-3">
-              <label for="phone" class="form-label">Số điện thoại</label>
-              <input type="text" class="form-control" name="phone" value="<%= student.phone%>">
-              <span class="text-danger" id="err-phone"></span>
-            </div>
-
-            <div class="group-btn">
-              <input type="submit" class="btn btn-sub mr-4" value="Lưu" />
-            </div>
-
-
-          </form>
-        </div>
-        <%}%>
-      </div>
-  </div>
-
-  <%- include('../layouts/script') %>
-  <script src="/js/admin/show-student.js"></script>
-  <script>
-    $('#redirectBack').click(() => {
-      window.location.replace('/admin/manage/students');
-    });
-  </script>
+    <%- include('../layouts/script') %>
+      <script src="/js/admin/show-student.js"></script>
+      <script>
+        $('#redirectBack').click(() => {
+          window.location.replace('/admin/manage/students');
+        });
+      </script>
 </body>
 
 </html>
