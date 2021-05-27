@@ -82,7 +82,7 @@ export async function index (req, res) {
   }
 
   data.milestones = milestones
-
+  console.log("Core", milestones)
   InternshipInfo
     .aggregate([filter, lookupStudent, lookupInternUnit, {$unwind: "$student"}, {$unwind: "$internUnit"}, select])
     .exec((err, internInfos)=>{

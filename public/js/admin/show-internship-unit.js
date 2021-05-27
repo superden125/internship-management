@@ -3,8 +3,9 @@
 
 if(window.location.pathname == "/admin/manage/internship-unit"){
     $ondelete = $(".delete-intern-unit a");
-    console.log($(".delete-intern-unit a"));
+    console.log($(".delete-intern-unit a"));    
     $ondelete.click(function(){
+        console.log("click")
         var id = $(this).attr("data-id")
 
         var request = {

@@ -2,7 +2,7 @@
 
 
 if(window.location.pathname == "/admin/manage/students"){
-    $ondelete = $(".table tbody td a.delete");
+    $ondelete = $(".table tbody td a.delete");    
     $ondelete.click(function(){
         var id = $(this).attr("data-id")
 

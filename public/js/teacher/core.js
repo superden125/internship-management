@@ -106,7 +106,7 @@ function loadData(queries) {
         const currentDate = new Date();
         const endCoreDate = new Date(endCore);
         let content = '';
-
+        console.log(endCoreDate)
         if (currentDate - endCoreDate === 0) {
           content = `${formatDate(endCore)} (Đã đến hạn nhập điểm)`;
         } else if (currentDate - endCoreDate > 0) {

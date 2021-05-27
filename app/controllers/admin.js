@@ -847,7 +847,7 @@ exports.createInternshipUnit = (req, res) => {
     reqTime: req.body.reqTime,
     reqInfo: req.body.reqInfo,
     maxSv: req.body.maxSv,
-    currentSv: req.body.currentSv,
+    currentSv: 0,
     benefit: req.body.benefit,
     note: req.body.note,
     idMilestone: req.body.idMilestone,
