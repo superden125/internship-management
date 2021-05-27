@@ -37,6 +37,16 @@
         <form action="/admin/manage/internship-unit" method="POST" id="add_internship-unit" class="IU-form">
           <div>
             <div class="mb-3">
+              <label for="name" class="form-label">Năm học - Học kỳ</label>
+              <select name="idMilestone" id="idMilestone" class="form-control custom-select">
+                <% milestones.forEach((val)=>{%>                 
+                  <option value="<%= val._id %>"><%= val.schoolYear %> - HK <%= val.semester %></option>
+                <% }) %> 
+              </select>
+              <span class="text-danger" id="err-name"></span>
+            </div>
+
+            <div class="mb-3">
               <label for="name" class="form-label">Tên công ty</label>
               <input type="text" class="form-control" id="name" name="name" value="">
               <span class="text-danger" id="err-name"></span>

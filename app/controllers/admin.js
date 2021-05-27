@@ -3,18 +3,13 @@ import bcrypt, {
 } from "bcryptjs";
 import moment from "moment"
 import InternshipUnit from '../models/internshipUnit';
-import mongoose, {
-  model
-} from 'mongoose';
-import Teacher from '../models/teacher';
-import Student from '../models/student';
+import mongoose from 'mongoose';
 import User from '../models/user';
 import Milestone from '../models/milestone';
 import InternshipInfo from '../models/internshipInfo';
 import {
   tinh
 } from "../lib/tinh";
-import * as password from "../lib/password";
 import Major from '../models/major';
 
 
@@ -133,6 +128,7 @@ module.exports.getAllStudents = async (req, res) => {
       },
     ])
     .exec(function (err, students) {
+      console.log(students)
       return res.render("admin/show-student", {
         students: students,
         roleName: 'Giáo vụ khoa',
@@ -809,6 +805,17 @@ module.exports.addInternshipUnit = async (req, res) => {
   }
   const internshipunits = await InternshipUnit.find({})
   data.internshipunits = internshipunits
+
+  const milestones = await Milestone.find({endRegister: {$gte: Date.now()}}).sort({endRegister: -1}).limit(12).exec();
+  if (milestones.length == 0) {
+    data.error = {
+      err: true,
+      msg: "Không tìm thấy đợt thực tập"
+    }
+    return res.render("admin/add_internship-unit", data)
+  }
+  data.milestones = milestones
+
   data.tinh = tinh.sort((a, b) => a.name - b.name);
   res.render("admin/add_internship-unit", data)
 }
@@ -843,6 +850,7 @@ exports.createInternshipUnit = (req, res) => {
     currentSv: req.body.currentSv,
     benefit: req.body.benefit,
     note: req.body.note,
+    idMilestone: req.body.idMilestone,
     introBy: req.body.introBy
   })
 
