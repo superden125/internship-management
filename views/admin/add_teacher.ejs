@@ -8,99 +8,114 @@
 <body>
   <%- include('../layouts/admin-sidebar') %>
 
-  <div id="content">
-    <%- include('../layouts/navbar') %>
+    <div id="content">
+      <%- include('../layouts/navbar') %>
 
-    <div class="row mb-3">
-      <div class="col-auto">
-        <button id="redirectBack" title="Back" class="btn btn-light" type="button">
-          <i class="fas fa-angle-left mr-2"></i>
-          Trở về
-        </button>
-      </div>
-    </div>
-
-      <div class="form-title text-center">
-        <h2 class="text-dark">Giáo viên mới</h2>
-        <span class="text-dark">Sử dụng biểu mẫu dưới đây để tạo giáo viên mới</span>
-      </div>
-    <div class="row">
-      <% if(error.err) {%>
-      <div class="col-md-5">
-        <%- include("../error.ejs") %>
-      </div>
-      <% }else{ %>
-      <div class="col-md-5">
-        <div id="alter"></div>
-
-      <!-- add teacher form -->
-      <form action="/admin/manage/teachers" method="POST" id="add_teacher" class="Teacher-form">
-          <div>
-              <div class="mb-3">
-                  <label for="ms" class="form-label">Mã số cán bộ</label>
-                  <input type="text" class="form-control" id="ms" name="ms" value="">
-                  <span class="text-danger" id="err-ms"></span>
-              </div>
-
-              <div class="mb-3">                                            
-                  <label for="password" class="form-label">Mật khẩu</label>
-                  <input type="text" class="form-control" id="password" name="password" value="">                                            
-                  <span toggle="#password-field" id="toggle-password" class="fa fa-fw fa-eye field-icon toggle-password" onclick="togglePassword()"></span>
-                  <span class="text-danger" id="err-password"></span>    
-              </div>
-              
-              <div class="md-3">
-                  <input onclick="randomPassword(8,'password')" type="button" class="btn btn-primary mb-4" value="Tạo mật khẩu"/>                                            
-              </div>
-              
-
-              <div class="mb-3">
-                  <label for="name" class="form-label">Họ tên</label>
-                  <input type="text" class="form-control" id="name" name="name" value="">
-                  <span class="text-danger" id="err-name"></span>
-              </div>
-              <div class="mb-3">
-                  <label for="idMajor" class="form-label">Mã ngành</label>
-              <select name="major" id="major" class="custom-select">
-                <% majors.forEach(val=> { %>
-                <option value="<%= val._id%>">
-                  <%= val.name%>
-                </option>
-                <%})%>
-              </select>
-              <span class="text-danger" id="err-major"></span>
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="text" class="form-control" id="email" name="email" value="">
-              <span class="text-danger" id="err-email"></span>
-            </div>
-
-            <div class="mb-3">
-                <label for="phone" class="form-label">Số điện thoại</label>
-                <input type="text" class="form-control" id="phone" name="phone" value="">
-                <span class="text-danger" id="err-phone"></span>
-            </div>                                        
-
-            <div class="group-btn">
-              <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
-              <input type="reset" class="btn btn-reset ml-4" value="Huỷ bỏ" onclick="resetFormTeacher()" />
-            </div>
-
+        <div class="row mb-3">
+          <div class="col-auto">
+            <button id="redirectBack" title="Back" class="btn btn-light" type="button">
+              <i class="fas fa-angle-left mr-2"></i>
+              Trở về
+            </button>
           </div>
-        </form>
-      </div>
-      <%}%>
-    </div>
-  </div>
+        </div>
 
-  <%- include('../layouts/script') %>
-  <script src="/js/admin/show-teacher.js"></script>
-  <script>
-    $('#redirectBack').click(() => {
-      window.location.replace('/admin/manage/teachers');
-    });
-  </script>
+        <div class="row">
+          <% if(error.err) {%>
+            <div class="col-md-6 mx-auto">
+              <%- include("../error.ejs") %>
+            </div>
+            <% }else{ %>
+              <div class="col-md-6 mx-auto">
+                <h2 class="text-center mb-3">Nhập thông tin giáo viên mới</h2>
+                <p class="text-muted text-center font-italic mb-4">Sử dụng biểu mẫu dưới đây để tạo giáo viên mới</p>
+                <div id="alter"></div>
+
+                <!-- add teacher form -->
+                <form action="/admin/manage/teachers" method="POST" id="add_teacher" class="needs-validation mb-4"
+                  novalidate>
+                  <div>
+                    <div class="mb-3">
+                      <label for="ms" class="form-label">Mã số cán bộ</label>
+                      <input type="text" class="form-control" id="ms" name="ms" value="" required>
+                    </div>
+
+                    <label for="password" class="form-label">Mật khẩu</label>
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" id="password" name="password" value="" required>
+                      <div class="input-group-append">
+                        <span class="input-group-text" onclick="togglePassword()">
+                          <i id="toggle-password" class="fa fa-fw fa-eye"></i>
+                        </span>
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                          onclick="randomPassword(8,'password')">Tạo mật khẩu</button>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Họ tên</label>
+                      <input type="text" class="form-control" id="name" name="name" value="" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="idMajor" class="form-label">Mã ngành</label>
+
+                      <select name="major" id="major" class="custom-select" required>
+                        <option selected disabled value="">Chọn...</option>
+                        <% majors.forEach(val=> { %>
+                          <option value="<%= val._id%>">
+                            <%= val.name%>
+                          </option>
+                          <%})%>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="email" name="email" value="" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="phone" class="form-label">Số điện thoại</label>
+                      <input type="text" class="form-control" id="phone" name="phone" value="" required>
+                    </div>
+
+                    <div class="group-btn mt-4">
+                      <input type="submit" class="btn btn-info btn-width-100 mr-4" value="Tạo" />
+                      <input type="reset" class="btn btn-secondary btn-width-100 ml-4" value="Huỷ bỏ"
+                        onclick="resetFormTeacher()" />
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+              <%}%>
+        </div>
+    </div>
+
+    <%- include('../layouts/script') %>
+      <script src="/js/admin/show-teacher.js"></script>
+      <script>
+        $('#redirectBack').click(() => {
+          window.location.replace('/admin/manage/teachers');
+        });
+
+        (function () {
+          'use strict';
+          window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+              form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+              }, false);
+            });
+          }, false);
+        })();
+      </script>
 </body>
 
 </html>

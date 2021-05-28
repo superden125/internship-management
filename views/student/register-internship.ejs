@@ -1,328 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('../layouts/meta') %>
-  </head>
-  <body>
-    <%- include('../layouts/student-sidebar') %>
+
+<head>
+  <%- include('../layouts/meta') %>
+</head>
+
+<body>
+  <%- include('../layouts/student-sidebar') %>
 
     <div id="content">
       <%- include('../layouts/navbar') %>
-      <div class="row">
-        
-        <% if(error.err) {%>
-          <div class="col-md-5">
-            <%- include("../error.ejs") %> 
-          </div> 
-        <% }else{ %> 
-          
-          <div class="col-md-5">
-            <div id="alter"></div>
-            <form
-              action="/student/register-internship"
-              method="post"
-              class="sd-form"
-              id="formTT"
-            >
-              <div><input type="hidden" name="id" value="<%= internInfo._id %>"></div>
-              <div class="mb-3">
-                <label for="milestone" class="form-label">Học kỳ thực tập</label>
-                <select class="form-control" id="milestone" name="milestone" onchange="getInternUnit()">
-                  <% milestone.forEach((val)=>{%>
-                  <option value="<%= val._id %> ">
-                    <%= "Năm học "+val.schoolYear+", HK "+val.semester+", Hạn đăng ký "+val.endRegister %>
-                  </option>
-                  <%});%>
-                </select>
-                <span class="text-danger" id="err-milestone"></span>
+        <div class="row">
+
+          <% if(error.err) {%>
+            <div class="col-md-7">
+              <%- include("../error.ejs") %>
+            </div>
+            <% }else{ %>
+
+              <div class="col-md-7">
+                <div id="alter"></div>
+                <form action="/student/register-internship" method="post" class="sd-form border border-black rounded"
+                  id="formTT">
+                  <div><input type="hidden" name="id" value="<%= internInfo._id %>"></div>
+                  <div class="mb-3">
+                    <label for="milestone" class="form-label">Học kỳ thực tập</label>
+                    <select class="form-control" id="milestone" name="milestone" onchange="getInternUnit()">
+                      <% milestone.forEach((val)=>{%>
+                        <option value="<%= val._id %> ">
+                          <%= "Năm học " +val.schoolYear+", HK "+val.semester+" , Hạn đăng ký "+val.endRegister %>
+                      </option>
+                      <%});%>
+                    </select>
+                    <span class=" text-danger" id="err-milestone"></span>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="svPhone" class="form-label">Số điện thoại của SV (SĐT thường sử dụng để GV có thể liên
+                      hệ)</label>
+                    <input type="text" class="form-control" id="svPhone" name="svPhone"
+                      value="<%= internInfo.phone %>" />
+                    <span class="text-danger" id="err-svPhone"></span>
+                  </div>
+                  <div class="mb-3">
+                    <label for="internshipUnit" class="form-label">Đơn vị thực tập</label>
+                    <select class="form-control" id="internshipUnit" name="internshipUnit" onchange="changeInternUnit()"
+                      <%=internUnit.introBy ? "disabled" : "" %>
+                      >
+                      <option value="0" selected>Chọn đơn vị thực tập từ khoa ...</option>
+
+                      <% internshipUnit.forEach((unit)=>{%>
+                        <option value="<%= unit._id%>" <%=internUnit._id ?
+                          unit._id.toString()==internUnit._id.toString() ? "selected" :"":""%>><%=unit.name%>
+                        </option>
+                        <%});%>
+
+                    </select>
+                    <span class="text-danger" id="err-internshipUnit"></span>
+                  </div>
+
+                  <div class="form-check md-3">
+                    <input class="form-check-input" type="checkbox" id="isSelf" name="isSelf" <%=internUnit.introBy
+                      ? "checked" : "" %>
+                    />
+                    <label class="form-check-label mb-3" for="isSelf">
+                      Đơn vị sinh viên tự liên hệ
+                    </label>
+                  </div>
+                  <div class="intern-new" <%=internUnit.introBy ? "style=display:block" : "none" %>>
+                    <div class="mb-3">
+                      <label for="internName" class="form-label">Tên công ty</label>
+                      <input type="text" class="form-control" id="internName" name="internName"
+                        value="<%= internUnit.name %>" />
+                      <span class="text-danger" id="err-internName"></span>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="internAddress">Địa chỉ công ty</label>
+                      <textarea class="form-control" id="internAddress" name="internAddress"
+                        style="height: 100px"><%= internUnit.address %></textarea>
+                      <span class="text-danger" id="err-internAddress"></span>
+                    </div>
+                    <div class="mb-3">
+                      <label for="internshipCity" class="form-label">Tỉnh/ Thành phố
+                      </label>
+                      <select class="form-control" id="internshipCity" name="internshipCity">
+                        <option value="0">Chọn Tỉnh/ Thành phố ...</option>
+
+                        <% tinh.forEach((val)=>{ %>
+                          <option value="<%= val.id%>" <%=internUnit.city==val.id ? "selected" :"" %>><%= val.name%>
+                          </option>
+                          <% })%>
+                      </select>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="internPhone" class="form-label">Số điện thoại đơn vị thực tập</label>
+                      <input type="text" class="form-control" id="internPhone" name="internPhone"
+                        value="<%= internUnit.phone %>" />
+                      <span class="text-danger" id="err-internPhone"></span>
+                    </div>
+                    <div class="mb-3">
+                      <label for="internEmail" class="form-label">Email đơn vị thực tập</label>
+                      <input type="text" class="form-control" id="internEmail" name="internEmail"
+                        value="<%= internUnit.email %>" />
+                      <span class="text-danger" id="err-internEmail"></span>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="internWebsite" class="form-label">Website đơn vị thực tập</label>
+                      <input type="text" class="form-control" id="internWebsite" name="internWebsite"
+                        value="<%= internUnit.website %>" />
+                      <span class="text-danger" id="err-internWebsite"></span>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="mentorName" class="form-label">Tên người hướng dẫn</label>
+                      <input type="text" class="form-control" id="mentorName" name="mentorName"
+                        value="<%= internUnit.mentor ? internUnit.mentor.name : "" %>" />
+                      <span class="text-danger" id="err-mentorName"></span>
+                    </div>
+                    <div class="mb-3">
+                      <label for="mentorPhone" class="form-label">Số điện thoại người hướng dẫn</label>
+                      <input type="text" class="form-control" id="mentorPhone" name="mentorPhone"
+                        value="<%= internUnit.mentor ? internUnit.mentor.phone : "" %>" />
+                      <span class="text-danger" id="err-mentorPhone"></span>
+                    </div>
+                    <div class="mb-3">
+                      <label for="mentorEmail" class="form-label">Email người hướng dẫn</label>
+                      <input type="text" class="form-control" id="mentorEmail" name="mentorEmail"
+                        value="<%= internUnit.mentor ? internUnit.mentor.email : "" %>" />
+                      <span class="text-danger" id="err-mentorEmail"></span>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="internRequire" class="form-label">Yêu cầu của đơn vị thực tập</label>
+                      <input type="text" class="form-control" id="internRequire" name="internRequire"
+                        value="<%= internUnit.reqInfo %>" />
+                      <span class="text-danger" id="err-internRequire"></span>
+                    </div>
+                    <div class="mb-3">
+                      <label for="internBenefit" class="form-label">Hỗ trợ của đơn vị thực tập</label>
+                      <input type="text" class="form-control" id="internBenefit" name="internBenefit"
+                        value="<%= internUnit.benefit %>" />
+                      <span class="text-danger" id="err-internBenefit"></span>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="internReqTime" class="form-label">Số giờ thực tập trên tuần</label>
+                      <input type="number" class="form-control" id="internReqTime" name="internReqTime"
+                        value="<%= internUnit.reqTime %>" />
+                      <span class="text-danger" id="err-internReqTime"></span>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <p class="form-label">Môi trường làm việc</p>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="haveRoom"
+                        <%=internInfo.haveRoom ? "checked" : "" %>
+                      />
+                      <label class="form-check-label" for="inlineCheckbox1">Có phòng làm việc</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="havePc"
+                        <%=internInfo.havePC ? "checked" : "" %>
+                      />
+                      <label class="form-check-label" for="inlineCheckbox2">Có máy tính</label>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="shiftPerWeek" class="form-label">Số buổi thực tập trên tuần ( >= 6 mới chấp nhập thực
+                      tập)</label>
+                    <input type="number" class="form-control" id="shiftPerWeek" name="shiftPerWeek"
+                      value="<%= internInfo.shiftPerWeek %>" />
+                    <span class="text-danger" id="err-shiftPerWeek"></span>
+                  </div>
+                  <% for(var i=0; i<8; i++){ %>
+                    <div class="mb-3">
+                      <label for="work<%= i + 1 %>" class="form-label">Công việc tuần <%= i + 1 %></label>
+                      <input type="text" class="form-control" id="work<%= i + 1 %>" name="work<%= i + 1 %>"
+                        value="<%= internInfo.work ? internInfo.work[i] : "" %>" />
+                      <span class="text-danger" id="err-work<%= i + 1 %>"></span>
+                    </div>
+                    <% } %>
+                      <div class="group-btn mt-4">
+                        <input type="submit" class="btn btn-info btn-width-100 mr-4" value="Gửi" />
+                        <input type="reset" class="btn btn-secondary btn-width-100 ml-4" value="Huỷ bỏ"
+                          onclick="resetForm()" />
+                      </div>
+                </form>
               </div>
-  
-              <div class="mb-3">
-                <label for="svPhone" class="form-label"
-                  >Số điện thoại của SV (SĐT thường sử dụng để GV có thể liên
-                  hệ)</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="svPhone"
-                  name="svPhone"
-                  value="<%= internInfo.phone %>"
-                />
-                <span class="text-danger" id="err-svPhone"></span>
-              </div>
-              <div class="mb-3">
-                <label for="internshipUnit" class="form-label"
-                  >Đơn vị thực tập</label
-                >
-                <select
-                  class="form-control"
-                  id="internshipUnit"
-                  name="internshipUnit"
-                  onchange="changeInternUnit()"
-                  <%= internUnit.introBy ? "disabled" : "" %>
-                >
-                  <option value="0" selected>Chọn đơn vị thực tập từ khoa ...</option>
-  
-                  <% internshipUnit.forEach((unit)=>{%>
-                    <option value="<%= unit._id%>" <%= internUnit._id ? unit._id.toString() == internUnit._id.toString() ? "selected":"":""%>><%=unit.name%></option>
-                  <%});%>
-                  
-                </select>
-                <span class="text-danger" id="err-internshipUnit"></span>
-              </div>
-  
-              <div class="form-check md-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="isSelf"
-                  name="isSelf"
-                  <%= internUnit.introBy ? "checked" : "" %> 
-                />
-                <label class="form-check-label mb-3" for="isSelf">
-                  Đơn vị sinh viên tự liên hệ
-                </label>
-              </div>
-              <div class="intern-new" <%=internUnit.introBy ? "style=display:block" : "none" %>>
-                <div class="mb-3">
-                  <label for="internName" class="form-label">Tên công ty</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="internName"
-                    name="internName"
-                    value="<%= internUnit.name %>"
-                  />
-                  <span class="text-danger" id="err-internName"></span>
+              <%}%>
+                <div class="col-md-5 ml-auto">
+                  <div class="sd-form border border-black rounded">
+                    <h4>Chú ý</h4>
+                    <p>
+                      (1) Sinh viên phải nhập đầy đủ thông tin vào mẫu đăng ký, không viết tắt,
+                      không viết sai chính tả
+                    </p>
+                    <p>
+                      (2) Sinh viên phải đảm bảo rằng, mọi thông tin điền vào biểu mẫu là chính
+                      xác
+                    </p>
+                    <p>
+                      (3) Phiếu đã nộp rồi thì sẽ không đổi phiếu khác, sinh viên phải cân nhắc
+                      trước khi nộp
+                    </p>
+                  </div>
                 </div>
-  
-                <div class="mb-3">
-                  <label for="internAddress">Địa chỉ công ty</label>
-                  <textarea
-                    class="form-control"
-                    id="internAddress"
-                    name="internAddress"
-                    style="height: 100px"
-                  ><%= internUnit.address %></textarea>
-                  <span class="text-danger" id="err-internAddress"></span>
-                </div>
-                <div class="mb-3">
-                  <label for="internshipCity" class="form-label"
-                    >Tỉnh/ Thành phố
-                  </label>
-                  <select
-                    class="form-control"
-                    id="internshipCity"
-                    name="internshipCity"
-                  >
-                    <option value="0">Chọn Tỉnh/ Thành phố ...</option>
-  
-                    <% tinh.forEach((val)=>{ %>
-                    <option value="<%= val.id%>" <%= internUnit.city == val.id ? "selected":"" %>><%= val.name%></option>
-                    <% })%>
-                  </select>
-                </div>
-  
-                <div class="mb-3">
-                  <label for="internPhone" class="form-label"
-                    >Số điện thoại đơn vị thực tập</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="internPhone"
-                    name="internPhone"
-                    value="<%= internUnit.phone %>"
-                  />
-                  <span class="text-danger" id="err-internPhone"></span>
-                </div>
-                <div class="mb-3">
-                  <label for="internEmail" class="form-label"
-                    >Email đơn vị thực tập</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="internEmail"
-                    name="internEmail"
-                    value="<%= internUnit.email %>"
-                  />
-                  <span class="text-danger" id="err-internEmail"></span>
-                </div>
-  
-                <div class="mb-3">
-                  <label for="internWebsite" class="form-label"
-                    >Website đơn vị thực tập</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="internWebsite"
-                    name="internWebsite"
-                    value="<%= internUnit.website %>"
-                  />
-                  <span class="text-danger" id="err-internWebsite"></span>
-                </div>
-  
-                <div class="mb-3">
-                  <label for="mentorName" class="form-label"
-                    >Tên người hướng dẫn</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="mentorName"
-                    name="mentorName"
-                    value="<%= internUnit.mentor ? internUnit.mentor.name : "" %>"
-                  />
-                  <span class="text-danger" id="err-mentorName"></span>
-                </div>
-                <div class="mb-3">
-                  <label for="mentorPhone" class="form-label"
-                    >Số điện thoại người hướng dẫn</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="mentorPhone"
-                    name="mentorPhone"
-                    value="<%= internUnit.mentor ? internUnit.mentor.phone : "" %>"
-                  />
-                  <span class="text-danger" id="err-mentorPhone"></span>
-                </div>
-                <div class="mb-3">
-                  <label for="mentorEmail" class="form-label"
-                    >Email người hướng dẫn</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="mentorEmail"
-                    name="mentorEmail"
-                    value="<%= internUnit.mentor ? internUnit.mentor.email : "" %>"
-                  />
-                  <span class="text-danger" id="err-mentorEmail"></span>
-                </div>
-  
-                <div class="mb-3">
-                  <label for="internRequire" class="form-label"
-                    >Yêu cầu của đơn vị thực tập</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="internRequire"
-                    name="internRequire"
-                    value="<%= internUnit.reqInfo %>"
-                  />
-                  <span class="text-danger" id="err-internRequire"></span>
-                </div>
-                <div class="mb-3">
-                  <label for="internBenefit" class="form-label"
-                    >Hỗ trợ của đơn vị thực tập</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="internBenefit"
-                    name="internBenefit"
-                    value="<%= internUnit.benefit %>"
-                  />
-                  <span class="text-danger" id="err-internBenefit"></span>
-                </div>
-  
-                <div class="mb-3">
-                  <label for="internReqTime" class="form-label"
-                    >Số giờ thực tập trên tuần</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="internReqTime"
-                    name="internReqTime"
-                    value="<%= internUnit.reqTime %>"
-                  />
-                  <span class="text-danger" id="err-internReqTime"></span>
-                </div>
-              </div>
-  
-              <div class="mb-3">
-                <p class="form-label">Môi trường làm việc</p>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox1"
-                    name="haveRoom"
-                    <%= internInfo.haveRoom ? "checked" : "" %> 
-                  />
-                  <label class="form-check-label" for="inlineCheckbox1"
-                    >Có phòng làm việc</label
-                  >
-                </div>
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox2"
-                    name="havePc"
-                    <%= internInfo.havePC ? "checked": "" %> 
-                  />
-                  <label class="form-check-label" for="inlineCheckbox2"
-                    >Có máy tính</label
-                  >
-                </div>
-              </div>
-  
-              <div class="mb-3">
-                <label for="shiftPerWeek" class="form-label"
-                  >Số buổi thực tập trên tuần (>= 6 mới chấp nhập thực tập)</label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  id="shiftPerWeek"
-                  name="shiftPerWeek"
-                  value="<%= internInfo.shiftPerWeek %>"
-                />
-                <span class="text-danger" id="err-shiftPerWeek"></span>
-              </div>
-              <% for(var i = 0; i<8; i++){ %> 
-                <div class="mb-3">
-                  <label for="work<%= i + 1 %>" class="form-label">Công việc tuần <%= i + 1 %></label>
-                  <input type="text" class="form-control" id="work<%= i + 1 %>" name="work<%= i + 1 %>" value="<%= internInfo.work ? internInfo.work[i] : "" %>"/>
-                  <span class="text-danger" id="err-work<%= i + 1 %>"></span>
-                </div>  
-              <% } %>               
-              <div class="group-btn">
-                <input type="submit" class="btn btn-sub mr-4" value="Gửi" />
-                <input type="reset" class="btn btn-reset ml-4" value="Huỷ bỏ" onclick="resetForm()"/>
-              </div>
-            </form>
-          </div>
-        <%}%>
-        <div class="col-md-4 offset-md-1">
-          <div class="sd-form">
-            <h4>Chú ý</h4>
-            <p>
-              (1) SV phải nhập đầy đủ thông tin vào mẫu đăng ký, không viết tắt,
-              không viết sai chính tả
-            </p>
-            <p>
-              (2) SV phải đảm bảo rằng, mọi thông tin điền vào biểu mẫu là chính
-              xác
-            </p>
-            <p>
-              (3) Phiếu đã nộp rồi thì sẽ không đổi phiếu khác, SV phải cân nhắc
-              trước khi nộp
-            </p>
-          </div>
         </div>
-      </div>
     </div>
 
     <%- include('../layouts/script') %>
-    <script src="/js/student/student.js"></script>
-  </body>
+      <script src="/js/student/student.js"></script>
+</body>
+
 </html>
