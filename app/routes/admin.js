@@ -1,8 +1,6 @@
 import express from 'express';
 
-import {
-  isAdmin
-} from '../middleware/auth';
+import { isAdmin } from '../middleware/auth';
 
 import * as adminController from '../controllers/admin';
 
@@ -21,32 +19,45 @@ router
   .get('/manage/milestone', adminController.milestoneGet)
   .get('/manage/milestones', adminController.milestoneGets)
   .post('/manage/milestone', adminController.milestonePost)
-  .put('/manage/milestone', adminController.milestonePut)
-
+  .put('/manage/milestone', adminController.milestonePut);
 
 // Internship
 // router.get('/internship/approve', adminController.getAproveInternshipUnitInfo);
-router.get('/internship/approve/:id', adminController.detailApproveInternshipUnit)
+router
+  .get('/internship/approve/:id', adminController.detailApproveInternshipUnit)
   .post('/internship/approve/:id', adminController.detailApproveInternshipUnit);
 
 router.get('/internship/assign', adminController.loadAssignTeacherPage);
 
-router.get('/internship/assign-method', adminController.assignTeacher)
+router
+  .get('/internship/assign-method', adminController.assignTeacher)
   .put('/internship/assign-method', adminController.assignTeacher);
 
-router.get('/internship/assign/student-list/:id', adminController.getStudentsOfInternUnit);
+router.get(
+  '/internship/assign/student-list/:id',
+  adminController.getStudentsOfInternUnit
+);
 
 router.get('/', adminController.getAproveInternshipUnitInfo);
 
 //Internship-unit
-router.post('/manage/internship-unit/:id', adminController.updateInternshipUnit);
-router.get('/manage/internship-unit/add_internship-unit', adminController.addInternshipUnit);
+router.post(
+  '/manage/internship-unit/:id',
+  adminController.updateInternshipUnit
+);
+router.get(
+  '/manage/internship-unit/add_internship-unit',
+  adminController.addInternshipUnit
+);
 router.post('/manage/internship-unit', adminController.createInternshipUnit);
-router.get('/manage/internship-unit/:id', adminController.getUpdateInternshipUnit);
-router.delete('/manage/internship-unit/:id', adminController.deleteInternshipUnit);
-
-
-
+router.get(
+  '/manage/internship-unit/:id',
+  adminController.getUpdateInternshipUnit
+);
+router.delete(
+  '/manage/internship-unit/:id',
+  adminController.deleteInternshipUnit
+);
 
 //Teachers
 router.get('/manage/teachers/add_teacher', adminController.addTeacher);
