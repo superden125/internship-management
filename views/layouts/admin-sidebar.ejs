@@ -2,32 +2,56 @@
 <nav id="sidebar">
   <div class="sidebar-header">
     <a href="/">
-      <img src="/img/logo-white.png" class="py-3" alt="logo" width="200px">
+      <img src="/img/logo-white.png" class="py-3" alt="logo" width="200px" />
     </a>
   </div>
-  <hr class="separate-line">
+  <hr class="separate-line" />
 
   <ul class="list-unstyled components">
     <li>
-      <a href="/admin">Xét duyệt điểm thực tập</a>
+      <a
+        href="#mgmSubmenu"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+        >Quản lý</a
+      >
+      <ul class="collapse list-unstyled" id="mgmSubmenu">
+        <li>
+          <a href="/admin/manage/internship-unit">Đơn vị thực tập</a>
+        </li>
+        <li>
+          <a href="/admin/manage/teachers">Giáo viên</a>
+        </li>
+        <li>
+          <a href="/admin/manage/students">Sinh viên</a>
+        </li>
+        <li>
+          <a href="/admin/manage/milestone">Thời gian thực tập</a>
+        </li>
+        <li>
+          <a href="/admin/manage/milestone">Quản lý thời gian thực tập</a>
+        </li>
+      </ul>
     </li>
     <li>
-        <a href="/admin/internship/assign">Phân công thăm sinh viên</a>
-    </li>
-    <li>
-        <a href="/admin/manage/internship-unit">Quản lý đơn vị thực tập</a>
-    </li>
-    <li>
-        <a href="/admin/manage/teachers">Quản lý giáo viên</a>
-    </li>
-    <li>
-        <a href="/admin/manage/students">Quản lý sinh viên</a>
-    </li>
-    <li>
-      <a href="/admin/manage/milestone">Quản lý thời gian thực tập</a>
+      <a
+        href="#internshipSubmenu"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+        >Thực tập thực tế</a
+      >
+      <ul class="collapse list-unstyled" id="internshipSubmenu">
+        <li>
+          <a href="/admin">Xét duyệt điểm thực tập</a>
+        </li>
+        <li>
+          <a href="/admin/internship/assign">Phân công thăm sinh viên</a>
+        </li>
+      </ul>
     </li>
   </ul>
 
-  <hr class="separate-line">
-  
+  <hr class="separate-line" />
 </nav>
