@@ -929,9 +929,13 @@ exports.updateInternshipUnit = (req, res) => {
 };
 
 // Delete a user with specified user id in the request
-exports.deleteInternshipUnit = (req, res) => {
+exports.deleteInternshipUnit = async (req, res) => {
   const id = req.params.id;
 
+  const internInfo = await InternshipInfo.find({idIntern: id})
+  console.log(internInfo)
+  if(internInfo.length > 0) return res.send({ message : "Đơn vị thực tập đã có sinh viên đăng ký. Không thể xoá"})
+  
   InternshipUnit.findByIdAndDelete(id)
     .then((data) => {
       if (!data) {
@@ -940,7 +944,7 @@ exports.deleteInternshipUnit = (req, res) => {
         });
       } else {
         res.send({
-          message: 'User was deleted successfully!',
+          message: 'Xoá đơn vị thực tập thành công',
         });
       }
     })

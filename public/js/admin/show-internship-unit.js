@@ -13,9 +13,9 @@ if(window.location.pathname == "/admin/manage/internship-unit"){
             "method" : "DELETE"
         }
 
-        if(confirm("Do you really want to delete this record?")){
+        if(confirm("Xoá đơn vị thực tập?")){
             $.ajax(request).done(function(response){
-                alert("Data Deleted Successfully!");
+                alert(response.message);
                 location.reload();
             })
         }
