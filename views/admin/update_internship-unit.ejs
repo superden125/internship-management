@@ -8,161 +8,145 @@
 <body>
   <%- include('../layouts/admin-sidebar') %>
 
-    <div id="content">
-      <%- include('../layouts/navbar') %>
+  <div id="content">
+    <%- include('../layouts/navbar') %>
 
-        <div class="row mb-3">
-          <div class="col-auto">
-            <button id="redirectBack" title="Back" class="btn btn-light" type="button">
-              <i class="fas fa-angle-left mr-2"></i>
-              Trở về
-            </button>
+    <div class="row mb-3">
+      <div class="col-auto">
+        <button id="redirectBack" title="Back" class="btn btn-light" type="button">
+          <i class="fas fa-angle-left mr-2"></i>
+          Trở về
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <% if(error.err) {%>
+      <div class="col-md-6 mx-auto"><%- include("../error.ejs") %></div>
+      <% }else{ %>
+      <!-- update internship-unit form -->
+      <div class="col-md-6 mx-auto">
+        <h2 class="text-center mb-3">Cập nhật thông tin đơn vị thực tập</h2>
+        <p class="text-muted text-center font-italic mb-4">
+          Sử dụng biểu mẫu dưới đây để cập nhật thông tin đơn vị thực tập
+        </p>
+        <div id="alter"></div>
+        <form action="/admin/manage/internship-unit/<%= internshipunits._id %>" method="POST"
+          id="update_internship-unit">
+          <div class="mb-3">
+            <label for="name" class="form-label">Tên công ty</label>
+            <input type="hidden" name="id" value="<%= internshipunits._id %>" />
+            <input type="text" class="form-control" id="name" name="name" value="<%= internshipunits.name %>" />
+            <span class="text-danger" id="err-name"></span>
           </div>
-        </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" id="email" value="<%= internshipunits.email%>" />
+            <span class="text-danger" id="err-email"></span>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Địa chỉ</label>
+            <textarea class="form-control" id="address" name="address"
+              style="height: 100px"><%= internshipunits.address%></textarea>
+            <span class="text-danger" id="err-address"></span>
+          </div>
 
-        <div class="row">
-          <% if(error.err) {%>
-            <div class="col-md-6 mx-auto">
-              <%- include("../error.ejs") %>
-            </div>
-            <% }else{ %>
-              <!-- update internship-unit form -->
-              <div class="col-md-6 mx-auto">
-                <h2 class="text-center mb-3">Cập nhật thông tin đơn vị thực tập</h2>
-                <p class="text-muted text-center font-italic mb-4">Sử dụng biểu mẫu dưới đây để cập nhật thông tin đơn
-                  vị thực tập</p>
-                <div id="alter"></div>
-                <form action="/admin/manage/internship-unit/<%= internshipunits._id %>" method="POST"
-                  id="update_internship-unit">
+          <div class="mb-3">
+            <label for="city" class="form-label">Thành phố</label>
+            <select class="form-control" id="city" name="city">
+              <% tinh.forEach((val)=>{ %> <% if (val.id==internshipunits.city)
+                { %>
+              <option value="<%= val.id %>" selected><%= val.name %></option>
+              <% } else { %>
+              <option value="<%= val.id%>"><%= val.name%></option>
+              <% } %> <% })%>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" name="phone" id="phone" value="<%= internshipunits.phone%>" />
+            <span class="text-danger" id="err-phone"></span>
+          </div>
+          <div class="mb-3">
+            <label for="website" class="form-label">Website</label>
+            <input type="text" class="form-control" name="website" id="website" value="<%= internshipunits.website%>" />
+            <span class="text-danger" id="err-website"></span>
+          </div>
+          <div class="mb-3">
+            <label for="mentorName" class="form-label">Tên người hướng dẫn</label>
+            <input type="text" class="form-control" name="mentorName" id="mentorName"
+              value="<%= internshipunits.mentor.name%>" />
+            <span class="text-danger" id="err-mentorName"></span>
+          </div>
 
-                  <div class="mb-3">
-                    <label for="name" class="form-label">Tên công ty</label>
-                    <input type="hidden" name="id" value="<%= internshipunits._id %>">
-                    <input type="text" class="form-control" id="name" name="name" value="<%= internshipunits.name %>">
-                    <span class="text-danger" id="err-name"></span>
-                  </div>
-                  <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" id="email"
-                      value="<%= internshipunits.email%>">
-                    <span class="text-danger" id="err-email"></span>
-                  </div>
-                  <div class="mb-3">
-                    <label for="address" class="form-label">Địa chỉ</label>
-                    <textarea class="form-control" id="address" name="address"
-                      style="height: 100px"><%= internshipunits.address%></textarea>
-                    <span class="text-danger" id="err-address"></span>
-                  </div>
+          <div class="mb-3">
+            <label for="mentorPhone" class="form-label">Số điện thoại người hướng dẫn</label>
+            <input type="text" class="form-control" name="mentorPhone" id="mentorPhone"
+              value="<%= internshipunits.mentor.phone%>" />
+            <span class="text-danger" id="err-mentorPhone"></span>
+          </div>
+          <div class="mb-3">
+            <label for="mentorEmail" class="form-label">Email người hướng dẫn</label>
+            <input type="text" class="form-control" name="mentorEmail" id="mentorEmail"
+              value="<%= internshipunits.mentor.email%>" />
+            <span class="text-danger" id="err-mentorEmail"></span>
+          </div>
 
-                  <div class="mb-3">
-                    <label for="city" class="form-label">Thành phố</label>
-                    <select class="form-control" id="city" name="city">
+          <div class="mb-3">
+            <label for="workEnv" class="form-label">Môi trường làm việc</label>
+            <input type="text" class="form-control" name="workEnv" id="workEnv" value="<%= internshipunits.workEnv%>" />
+            <span class="text-danger" id="err-workEnv"></span>
+          </div>
+          <div class="mb-3">
+            <label for="workContent" class="form-label">Nội dung thực tập</label>
+            <input type="text" class="form-control" name="workContent" id="workContent"
+              value="<%= internshipunits.workContent%>" />
+            <span class="text-danger" id="err-workContent"></span>
+          </div>
+          <div class="mb-3">
+            <label for="reqTime" class="form-label">Giờ thực tập tối thiểu trên tuần</label>
+            <input type="number" class="form-control" name="reqTime" id="reqTime"
+              value="<%= internshipunits.reqTime%>" />
+            <span class="text-danger" id="err-reqTime"></span>
+          </div>
+          <div class="mb-3">
+            <label for="reqInfo" class="form-label">Yêu cầu của đơn vị thực tập</label>
+            <input type="text" class="form-control" name="reqInfo" id="reqInfo" value="<%= internshipunits.reqInfo%>" />
+            <span class="text-danger" id="err-reqInfo"></span>
+          </div>
+          <div class="mb-3">
+            <label for="maxSv" class="form-label">Số lượng tối đa</label>
+            <input type="number" class="form-control" name="maxSv" id="maxSv" value="<%= internshipunits.maxSv%>" />
+            <span class="text-danger" id="err-maxSv"></span>
+          </div>
 
-                      <% tinh.forEach((val)=>{ %>
-                        <% if (val.id==internshipunits.city) { %>
-                          <option value="<%= val.id %>" selected>
-                            <%= val.name %>
-                          </option>
-                          <% } else { %>
-                            <option value="<%= val.id%>">
-                              <%= val.name%>
-                            </option>
-                            <% } %>
-                              <% })%>
-                    </select>
-
-                  </div>
-                  <div class="mb-3">
-                    <label for="phone" class="form-label">Số điện thoại</label>
-                    <input type="text" class="form-control" name="phone" id="phone" value="<%= internshipunits.phone%>">
-                    <span class="text-danger" id="err-phone"></span>
-                  </div>
-                  <div class="mb-3">
-                    <label for="website" class="form-label">Website</label>
-                    <input type="text" class="form-control" name="website" id="website"
-                      value="<%= internshipunits.website%>">
-                    <span class="text-danger" id="err-website"></span>
-                  </div>
-                  <div class="mb-3">
-                    <label for="mentorName" class="form-label">Tên người hướng dẫn</label>
-                    <input type="text" class="form-control" name="mentorName" id="mentorName"
-                      value="<%= internshipunits.mentor.name%>">
-                    <span class="text-danger" id="err-mentorName"></span>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="mentorPhone" class="form-label">Số điện thoại người hướng
-                      dẫn</label>
-                    <input type="text" class="form-control" name="mentorPhone" id="mentorPhone"
-                      value="<%= internshipunits.mentor.phone%>">
-                    <span class="text-danger" id="err-mentorPhone"></span>
-                  </div>
-                  <div class="mb-3">
-                    <label for="mentorEmail" class="form-label">Email người hướng dẫn</label>
-                    <input type="text" class="form-control" name="mentorEmail" id="mentorEmail"
-                      value="<%= internshipunits.mentor.email%>">
-                    <span class="text-danger" id="err-mentorEmail"></span>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="workEnv" class="form-label">Môi trường làm việc</label>
-                    <input type="text" class="form-control" name="workEnv" id="workEnv"
-                      value="<%= internshipunits.workEnv%>">
-                    <span class="text-danger" id="err-workEnv"></span>
-                  </div>
-                  <div class="mb-3">
-                    <label for="workContent" class="form-label">Nội dung thực tập</label>
-                    <input type="text" class="form-control" name="workContent" id="workContent"
-                      value="<%= internshipunits.workContent%>">
-                    <span class="text-danger" id="err-workContent"></span>
-                  </div>
-                  <div class="mb-3">
-                    <label for="reqTime" class="form-label">Giờ thực tập tối thiểu trên tuần</label>
-                    <input type="number" class="form-control" name="reqTime" id="reqTime"
-                      value="<%= internshipunits.reqTime%>">
-                    <span class="text-danger" id="err-reqTime"></span>
-
-                  </div>
-                  <div class="mb-3">
-                    <label for="reqInfo" class="form-label">Yêu cầu của đơn vị thực tập</label>
-                    <input type="text" class="form-control" name="reqInfo" id="reqInfo"
-                      value="<%= internshipunits.reqInfo%>">
-                    <span class="text-danger" id="err-reqInfo"></span>
-                  </div>
-                  <div class="mb-3">
-                    <label for="maxSv" class="form-label">Số lượng tối đa</label>
-                    <input type="number" class="form-control" name="maxSv" id="maxSv"
-                      value="<%= internshipunits.maxSv%>">
-                    <span class="text-danger" id="err-maxSv"></span>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="benefit" class="form-label">Quyền lợi</label>
-                    <input type="text" class="form-control" name="benefit" id="benefit"
-                      value="<%= internshipunits.benefit%>">
-                    <span class="text-danger" id="err-benefit"></span>
-                  </div>
-                  <div class="group-btn">
-
-                    <input type="submit" class="btn btn-info btn-width-100 mt-4" value="Cập nhật" />
-
-                  </div>
-
-
-                </form>
-              </div>
-              <%}%>
-        </div>
-
-
+          <div class="mb-3">
+            <label for="benefit" class="form-label">Quyền lợi</label>
+            <input type="text" class="form-control" name="benefit" id="benefit" value="<%= internshipunits.benefit%>" />
+            <span class="text-danger" id="err-benefit"></span>
+          </div>
+          <div class="group-btn">
+            <input type="submit" class="btn btn-info btn-width-100 mt-4 mr-4" value="Cập nhật" />
+          </div>
+        </form>
+      </div>
+      <%}%>
+      </div>
     </div>
 
     <%- include('../layouts/script') %>
+      <script src="js/main.js"></script>
       <script src="/js/admin/show-internship-unit.js"></script>
       <script>
         $('#redirectBack').click(() => {
           window.location.replace('/admin/manage/internship-unit');
         });
+
+        var msg = '<%= msg %>';
+        if (msg.length != 0) {
+          alterSuccess(msg);
+        }
+
       </script>
 </body>
 

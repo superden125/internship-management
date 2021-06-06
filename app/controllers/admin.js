@@ -1,4 +1,6 @@
-import bcrypt, { hashSync } from 'bcryptjs';
+import bcrypt, {
+  hashSync
+} from 'bcryptjs';
 import moment from 'moment';
 import InternshipUnit from '../models/internshipUnit';
 import mongoose from 'mongoose';
@@ -67,8 +69,7 @@ module.exports.getAllInternshipUnit = async (req, res) => {
 };
 
 module.exports.getAllTeachers = async (req, res) => {
-  const teachers = await User.aggregate([
-    {
+  const teachers = await User.aggregate([{
       $match: {
         role: 'teacher',
       },
@@ -106,8 +107,7 @@ module.exports.getJSONTeachers = async (req, res) => {
 };
 
 module.exports.getAllStudents = async (req, res) => {
-  const students = await User.aggregate([
-    {
+  const students = await User.aggregate([{
       $match: {
         role: 'student',
       },
@@ -203,8 +203,7 @@ module.exports.getAproveInternshipUnitInfo = async (req, res) => {
   var sort = sortType.column;
   sortField['$sort'][sort] = sortType.type;
 
-  const query = [
-    {
+  const query = [{
       $lookup: {
         from: 'users',
         localField: 'idSv',
@@ -228,16 +227,14 @@ module.exports.getAproveInternshipUnitInfo = async (req, res) => {
     },
     {
       $facet: {
-        metadata: [
-          {
-            $group: {
-              _id: null,
-              total: {
-                $sum: 1,
-              },
+        metadata: [{
+          $group: {
+            _id: null,
+            total: {
+              $sum: 1,
             },
           },
-        ],
+        }, ],
         data: [sortField, skipField, limitField],
       },
     },
@@ -441,49 +438,37 @@ module.exports.detailApproveInternshipUnit = async (req, res) => {
     var type = req.body.type;
 
     if (type === 'approve') {
-      InternshipInfo.findOneAndUpdate(
-        {
-          shortId: idInternInfo,
+      InternshipInfo.findOneAndUpdate({
+        shortId: idInternInfo,
+      }, {
+        $set: {
+          status: 1,
         },
-        {
-          $set: {
-            status: 1,
+      }, {
+        new: true,
+      }).exec(function (err, item) {
+        InternshipUnit.findOneAndUpdate({
+          _id: item.idIntern,
+        }, {
+          $inc: {
+            currentSv: 1,
           },
-        },
-        {
+        }, {
           new: true,
-        }
-      ).exec(function (err, item) {
-        InternshipUnit.findOneAndUpdate(
-          {
-            _id: item.idIntern,
-          },
-          {
-            $inc: {
-              currentSv: 1,
-            },
-          },
-          {
-            new: true,
-          }
-        ).exec(function (err, item1) {
+        }).exec(function (err, item1) {
           res.redirect('/admin');
         });
       });
     } else if (type === 'refuse') {
-      InternshipInfo.findOneAndUpdate(
-        {
-          shortId: idInternInfo,
+      InternshipInfo.findOneAndUpdate({
+        shortId: idInternInfo,
+      }, {
+        $set: {
+          status: 2,
         },
-        {
-          $set: {
-            status: 2,
-          },
-        },
-        {
-          new: true,
-        }
-      ).exec(function (err, item) {
+      }, {
+        new: true,
+      }).exec(function (err, item) {
         res.redirect('/admin');
       });
     }
@@ -529,8 +514,7 @@ module.exports.loadAssignTeacherPage = async (req, res) => {
 
 module.exports.assignTeacher = async (req, res) => {
   if (req.method == 'GET') {
-    const query = [
-      {
+    const query = [{
         $lookup: {
           from: 'internshipinfos',
           localField: '_id',
@@ -580,19 +564,15 @@ module.exports.assignTeacher = async (req, res) => {
     if (req.body.type == 'each') {
       var teacherId = req.body.teacherId != 'null' ? req.body.teacherId : null;
 
-      InternshipInfo.findOneAndUpdate(
-        {
-          idIntern: req.body.internUnitId,
+      InternshipInfo.findOneAndUpdate({
+        idIntern: req.body.internUnitId,
+      }, {
+        $set: {
+          idGv: teacherId,
         },
-        {
-          $set: {
-            idGv: teacherId,
-          },
-        },
-        {
-          new: true,
-        }
-      ).exec(function (err, internInfo) {
+      }, {
+        new: true,
+      }).exec(function (err, internInfo) {
         res.json({
           success: true,
           data: internInfo,
@@ -603,8 +583,7 @@ module.exports.assignTeacher = async (req, res) => {
 };
 
 module.exports.getStudentsOfInternUnit = async (req, res) => {
-  var query = [
-    {
+  var query = [{
       $match: {
         _id: mongoose.Types.ObjectId(req.params.id),
       },
@@ -615,14 +594,12 @@ module.exports.getStudentsOfInternUnit = async (req, res) => {
         let: {
           internUnit: '$idIntern',
         },
-        pipeline: [
-          {
-            $match: {
-              status: 1,
-              idIntern: mongoose.Types.ObjectId(req.params.id),
-            },
+        pipeline: [{
+          $match: {
+            status: 1,
+            idIntern: mongoose.Types.ObjectId(req.params.id),
           },
-        ],
+        }, ],
         as: 'internInfos',
       },
     },
@@ -699,7 +676,10 @@ module.exports.milestoneGet = async (req, res) => {
 };
 
 module.exports.milestoneGets = async (req, res) => {
-  const { semester, schoolYear } = req.query;
+  const {
+    semester,
+    schoolYear
+  } = req.query;
   const milestones = await Milestone.find({
     schoolYear,
     semester: parseInt(semester),
@@ -813,7 +793,13 @@ module.exports.addInternshipUnit = async (req, res) => {
   const internshipunits = await InternshipUnit.find({})
   data.internshipunits = internshipunits
 
-  const milestones = await Milestone.find({endRegister: {$gte: Date.now()}}).sort({endRegister: -1}).limit(12).exec();
+  const milestones = await Milestone.find({
+    endRegister: {
+      $gte: Date.now()
+    }
+  }).sort({
+    endRegister: -1
+  }).limit(12).exec();
   if (milestones.length == 0) {
     data.error = {
       err: true,
@@ -823,7 +809,9 @@ module.exports.addInternshipUnit = async (req, res) => {
   }
   data.milestones = milestones
 
-  data.tinh = tinh.sort((a, b) => a.name - b.name);
+  data.tinh = tinh.sort((a, b) => {
+    return a.name.localeCompare(b.name);
+  });
   res.render('admin/add_internship-unit', data);
 };
 
@@ -869,8 +857,7 @@ exports.createInternshipUnit = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message ||
+        message: err.message ||
           'some error occurred while creating a create operation',
       });
     });
@@ -888,18 +875,30 @@ export async function getUpdateInternshipUnit(req, res) {
     error: {
       err: false,
     },
+    msg: ''
   };
   const internshipunits = await InternshipUnit.findOne({
     _id: req.params.id,
   });
   //internshipunits.cityName = tinh.find((tinh) => tinh.id == internshipunits.city).name;
-  data.tinh = tinh.sort((a, b) => a.name - b.name);
+  data.tinh = tinh.sort((a, b) => {
+    return a.name.localeCompare(b.name);
+  });
   data.internshipunits = internshipunits;
   res.render('admin/update_internship-unit', data);
 }
 
 //Update a new idetified internship-unit by internship-unit id
 exports.updateInternshipUnit = (req, res) => {
+  let data = {
+    roleName: 'Giáo vụ khoa',
+    urlInfo: 'Đơn vị thực tập / Cập nhật',
+    error: {
+      err: false,
+    },
+    msg: ''
+  };
+
   if (!req.body) {
     return res.status(400).send({
       message: 'Data to update cannot be empty',
@@ -910,15 +909,21 @@ exports.updateInternshipUnit = (req, res) => {
 
   // return res.json(req.body)
   InternshipUnit.findByIdAndUpdate(id, req.body, {
-    useFindAndModify: false,
-  })
-    .then((data) => {
-      if (!data) {
+      useFindAndModify: false,
+    })
+    .then((internshipunits) => {
+      if (!internshipunits) {
         res.status(404).send({
           message: `Cannot Update internship-unit with ${id}. Maybe internship-unit not found!`,
         });
       } else {
-        res.redirect('/admin/manage/internship-unit');
+        data.tinh = tinh.sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
+        data.internshipunits = internshipunits;
+        data.msg = 'Cập nhật thành công';
+        // return res.json(data);
+        return res.render('admin/update_internship-unit', data);
       }
     })
     .catch((err) => {
@@ -1003,8 +1008,7 @@ exports.createTeacher = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message ||
+        message: err.message ||
           'some error occurred while creating a create operation',
       });
     });
@@ -1043,8 +1047,8 @@ exports.updateTeacher = (req, res) => {
 
   // return res.json(req.body)
   User.findByIdAndUpdate(id, req.body, {
-    useFindAndModify: false,
-  })
+      useFindAndModify: false,
+    })
     .then((data) => {
       if (!data) {
         res.status(404).send({
@@ -1133,8 +1137,7 @@ exports.createStudent = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message ||
+        message: err.message ||
           'some error occurred while creating a create operation',
       });
     });
@@ -1168,8 +1171,8 @@ exports.updateStudent = (req, res) => {
 
   // return res.json(req.body)
   User.findByIdAndUpdate(id, req.body, {
-    useFindAndModify: false,
-  })
+      useFindAndModify: false,
+    })
     .then((data) => {
       if (!data) {
         res.status(404).send({

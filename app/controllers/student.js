@@ -3,11 +3,13 @@ import mongoose from 'mongoose';
 import InternshipUnit from "../models/internshipUnit";
 import InternshipInfo from "../models/internshipInfo";
 import Milestone from "../models/milestone"
-import {tinh} from "../lib/tinh"
+import {
+  tinh
+} from "../lib/tinh"
 
 export async function registerInternshipPost(req, res) {
   try {
-    let idSv = req.session.user.userId;    
+    let idSv = req.session.user.userId;
     let data = {
       error: {
         err: false
@@ -18,9 +20,9 @@ export async function registerInternshipPost(req, res) {
       idSv
     };
     data = Object.assign(data, req.body);
-    if(!data.id){
+    if (!data.id) {
       if (data.internshipUnit == "0" || !data.internshipUnit) {
-      
+
         const internshipUnit = new InternshipUnit({
           name: data.internName,
           address: data.internAddress,
@@ -42,7 +44,7 @@ export async function registerInternshipPost(req, res) {
         const result = await internshipUnit.save();
         data.idUnit = result._id;
       }
-  
+
       const idIntern = data.internshipUnit !== undefined ? data.internshipUnit : data.idUnit;
       const internshipInfo = new InternshipInfo({
         idSv: data.idSv,
@@ -70,17 +72,17 @@ export async function registerInternshipPost(req, res) {
       if (result) {
         return res.redirect("/student");
       }
-    }else{
+    } else {
       const internInfo = await InternshipInfo.findById(data.id)
       const internUnit = await InternshipUnit.findById(internInfo.idIntern)
       let newIdInternUnit = data.internshipUnit
       let idInternUnit = newIdInternUnit
-      if(internUnit._id == newIdInternUnit){
-        if(internUnit.introBy){
+      if (internUnit._id == newIdInternUnit) {
+        if (internUnit.introBy) {
           internUnit.name = data.internName
           internUnit.address = data.internAddress
-          internUnit.city = data.internshipCity        
-          internUnit.email = data.internWebsite        
+          internUnit.city = data.internshipCity
+          internUnit.email = data.internWebsite
           internUnit.phone = data.internPhone
           internUnit.website = data.internWebsite
           internUnit.mentor = {
@@ -91,14 +93,14 @@ export async function registerInternshipPost(req, res) {
           internUnit.reqTime = data.internReqTime
           internUnit.reqInfo = data.internRequire
           internUnit.benefit = data.internBenefit
-  
+
           await internUnit.save()
         }
-      }else{
-        if(internUnit.introBy){          
-          await InternshipUnit.findByIdAndDelete(internUnit._id)          
-        }else{
-          if(!newIdInternUnit) {
+      } else {
+        if (internUnit.introBy) {
+          await InternshipUnit.findByIdAndDelete(internUnit._id)
+        } else {
+          if (!newIdInternUnit) {
             const internshipUnit = new InternshipUnit({
               name: data.internName,
               address: data.internAddress,
@@ -120,11 +122,11 @@ export async function registerInternshipPost(req, res) {
             await internshipUnit.save();
             idInternUnit = internshipUnit._id
           }
-          
+
         }
       }
-      
-      
+
+
       //const idIntern = data.internshipUnit ? data.internshipUnit : internInfo.idIntern
 
       internInfo.idIntern = idInternUnit
@@ -149,7 +151,7 @@ export async function registerInternshipPost(req, res) {
         return res.redirect("/student");
       }
     }
-    
+
   } catch (error) {
     return res.render("student/home", {
       error: {
@@ -164,7 +166,7 @@ export async function registerInternshipPost(req, res) {
 }
 
 export async function registerInternshipGet(req, res) {
-  
+
   const id = req.params.id
   let data = {
     error: {
@@ -176,8 +178,14 @@ export async function registerInternshipGet(req, res) {
     internInfo: {},
     internUnit: {}
   };
-  
-  const milestone = await Milestone.find({endRegister: {$gte: Date.now()}}).sort({endRegister: -1}).limit(5);
+
+  const milestone = await Milestone.find({
+    endRegister: {
+      $gte: Date.now()
+    }
+  }).sort({
+    endRegister: -1
+  }).limit(5);
   if (milestone.length == 0) {
     data.error = {
       err: true,
@@ -197,36 +205,40 @@ export async function registerInternshipGet(req, res) {
     milestone1.push(obj)
   }
 
-  
+
   const internInfo = await InternshipInfo.findOne({
     idSv: req.session.user.userId,
-    idMilestone: mongoose.Types.ObjectId(milestone1[0]._id),    
+    idMilestone: mongoose.Types.ObjectId(milestone1[0]._id),
   })
-  
-  if((internInfo && !id) || (internInfo && id && internInfo.status != 2)) {
+
+  if ((internInfo && !id) || (internInfo && id && internInfo.status != 2)) {
     data.error = {
       err: true,
       msg: `Bạn đã đăng ký thực tập năm học ${milestone1[0].schoolYear}, học kỳ  ${milestone1[0].semester}`
     }
     return res.render("student/register-internship", data)
   }
-  
+
   const internshipUnit = await InternshipUnit.find({
     introBy: null,
     idMilestone: mongoose.Types.ObjectId(milestone1[0]._id)
   });
   data.internshipUnit = internshipUnit;
-  data.tinh = tinh.sort((a, b) => a.name - b.name);
+  data.tinh = tinh.sort((a, b) => {
+    return a.name.localeCompare(b.name);
+  });
   data.milestone = milestone1;
-  
-  if(id){
+
+  if (id) {
     const internInfo = await InternshipInfo.findById(id);
-    if(!internInfo) return res.render("student/register-internship", data);
+    if (!internInfo) return res.render("student/register-internship", data);
     const internUnit = await InternshipUnit.findById(internInfo.idIntern);
     data.internInfo = internInfo
-    data.internUnit = internUnit.introBy ? internUnit : {_id: internUnit._id}
+    data.internUnit = internUnit.introBy ? internUnit : {
+      _id: internUnit._id
+    }
   }
-  
+
   res.render("student/register-internship", data);
 }
 
@@ -234,22 +246,27 @@ export async function getListInternshipUnit(req, res) {
   let data = {
     title: "Internship Management System",
     roleName: "Sinh viên",
-    urlInfo: "Danh sách đơn vị thực tập",    
+    urlInfo: "Danh sách đơn vị thực tập",
   };
 
-  const milestones = await Milestone.find({}).limit(12).sort({endRegister: -1})
-  
-  if(milestones.length === 0) return res.render(
-      "student/internship-unit",
-      Object.assign(data, {
-        error: { err: true, msg: "Not found internship unit is this semester" },
-      })
+  const milestones = await Milestone.find({}).limit(12).sort({
+    endRegister: -1
+  })
+
+  if (milestones.length === 0) return res.render(
+    "student/internship-unit",
+    Object.assign(data, {
+      error: {
+        err: true,
+        msg: "Not found internship unit is this semester"
+      },
+    })
   );
   let schoolYears = []
-  milestones.forEach((val)=>{
+  milestones.forEach((val) => {
     schoolYears.push(val.schoolYear)
   })
-  schoolYears = schoolYears.filter((val,i,a)=>a.indexOf(val)===i)
+  schoolYears = schoolYears.filter((val, i, a) => a.indexOf(val) === i)
   data.schoolYears = schoolYears
   data.currentHk = milestones[0]
   const internUnits = await InternshipUnit.find({
@@ -263,13 +280,22 @@ export async function getListInternshipUnit(req, res) {
   res.render("student/internship-unit", data);
 }
 
-export async function getListInternUnit(req, res){
+export async function getListInternUnit(req, res) {
   let data = {};
-  const {semester, schoolYear} = req.query  
-  const milestone = await Milestone.findOne({schoolYear ,semester: parseInt(semester)})  
-  data.milestone = milestone 
-  if(!milestone) return res.json({success: false, msg:"Milestone not found"})  
-  
+  const {
+    semester,
+    schoolYear
+  } = req.query
+  const milestone = await Milestone.findOne({
+    schoolYear,
+    semester: parseInt(semester)
+  })
+  data.milestone = milestone
+  if (!milestone) return res.json({
+    success: false,
+    msg: "Milestone not found"
+  })
+
   const internUnits = await InternshipUnit.find({
     introBy: null,
     idMilestone: milestone._id
@@ -278,7 +304,10 @@ export async function getListInternUnit(req, res){
     internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
   });
   data.internUnits = internUnits;
-  res.json({success: true, data})
+  res.json({
+    success: true,
+    data
+  })
 }
 
 export async function getInternshipUnitById(req, res) {
