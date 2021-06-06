@@ -1,135 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <%- include('../layouts/meta') %>
+  </head>
 
-<head>
-  <%- include('../layouts/meta') %>
-</head>
+  <body>
+    <%- include('../layouts/admin-sidebar') %>
 
-<body>
-  <%- include('../layouts/admin-sidebar') %>
+    <div id="content">
+      <%- include('../layouts/navbar') %>
 
-  <div id="content">
-    <%- include('../layouts/navbar') %>
-
-    <div class="row mb-4">
-      <div class="col-auto">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Năm học</span>
-          </div>
-          <select name="" id="school-year-filter" class="custom-select">
-            <option value="">-- Chọn năm học --</option>
-            <% schoolYears.forEach(item => { %>
-              <% if (selectedSchoolYear == item) { %>
-                <option value="<%= item %>" selected><%= item %></option>  
+      <div class="row mb-4">
+        <div class="col-auto">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Năm học</span>
+            </div>
+            <select name="" id="school-year-filter" class="custom-select">
+              <option value="" selected>-- Chọn năm học --</option>
+              <% schoolYears.forEach(item => { %> <% if (selectedSchoolYear ==
+              item) { %>
+              <option value="<%= item %>" selected><%= item %></option>
               <% } else { %>
-                <option value="<%= item %>"><%= item %></option>
-              <% } %>
-            <% }) %>
-          </select>
-        </div>
-      </div>
-
-      <div class="col-auto">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Học kỳ</span>
+              <option value="<%= item %>"><%= item %></option>
+              <% } %> <% }) %>
+            </select>
           </div>
-          <select name="" id="semester-filter" class="custom-select">
-            <option value="">-- Chọn học kỳ --</option>
-            <% for (var i = 1; i <= 3; i++) { %>
-              <% if (i == selectedSemester) { %>
-                <option value="<%= i %>" selected><%= i %></option>
+        </div>
+
+        <div class="col-auto">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Học kỳ</span>
+            </div>
+            <select name="" id="semester-filter" class="custom-select">
+              <option value="" selected>-- Chọn học kỳ --</option>
+              <% for (var i = 1; i <= 3; i++) { %> <% if (i == selectedSemester)
+              { %>
+              <option value="<%= i %>" selected><%= i %></option>
               <% } else { %>
-                <option value="<%= i %>"><%= i %></option>
-              <% } %>
-            <% } %>
-          </select>
+              <option value="<%= i %>"><%= i %></option>
+              <% } %> <% } %>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <button id="filter-schoolyear-semester" class="btn btn-info">
+            Lọc
+            <i class="fas fa-filter ml-2"></i>
+          </button>
+        </div>
+
+        <div class="col-auto ml-auto">
+          <button
+            class="btn btn-primary"
+            id="assign-all-button"
+            onclick="assignMultipleTeacher()"
+          >
+            Phân công
+          </button>
+          <button class="btn btn-secondary ml-3" onclick="loadAssignTeacher()">
+            Hủy bỏ
+          </button>
         </div>
       </div>
 
-      <div class="col-auto">
-        <button id="filter-schoolyear-semester" class="btn btn-info">
-          Lọc
-          <i class="fas fa-filter ml-2"></i>
-        </button>
+      <div class="alert alert-success d-none" id="success-alert" role="alert">
+        Phân công giảng viên thành công
       </div>
 
-      <div class="col-auto ml-auto">
-        <button class="btn btn-primary" id="assign-all-button" onclick="assignMultipleTeacher()">Phân công</button>
-        <button class="btn btn-secondary ml-3" onclick="loadAssignTeacher()">Hủy bỏ</button>
-      </div>
-    </div>
-
-    <div class="alert alert-success d-none" id="success-alert" role="alert">
-      Phân công giảng viên thành công
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-      
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Danh sách sinh viên</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body"></div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+        <div
+          class="
+            modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable
+          "
+        >
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">
+                Danh sách sinh viên
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Đóng
+              </button>
+            </div>
           </div>
         </div>
-        
+      </div>
+
+      <table class="table table-hover" id="assign-info">
+        <thead>
+          <tr>
+            <th class="align-middle" scope="col">#</th>
+            <th class="align-middle" scope="col">
+              Đơn vị thực tập
+              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="align-middle" scope="col">
+              Số lượng sinh viên
+              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="align-middle" scope="col">
+              Tỉnh/ Thành phố
+              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="align-middle" scope="col">
+              Họ và tên giáo viên
+              <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
+            </th>
+            <th class="align-middle" scope="col"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="d-flex justify-content-center" id="loading">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
     </div>
 
-    <table class="table table-hover" id="assign-info">
-      <thead>
-        <tr>
-          <th class="align-middle" scope="col">#</th>
-          <th class="align-middle" scope="col">
-            Đơn vị thực tập
-            <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
-          </th>
-          <th class="align-middle" scope="col">
-            Số lượng sinh viên
-            <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
-          </th>
-          <th class="align-middle" scope="col">
-            Tỉnh/ Thành phố
-            <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
-          </th>
-          <th class="align-middle" scope="col">
-            Họ và tên giáo viên
-            <a class="ml-1" href="#"><i class="fas fa-sort text-body"></i></a>
-          </th>
-          <th class="align-middle" scope="col"></th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <%- include('../layouts/script') %>
+    <script src="/js/admin/assign.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        window.onload = function () {
+          loadAssignTeacher();
+          // $('#success-alert').hide();
+        };
+      });
 
-    <div class="d-flex justify-content-center" id="loading">
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
+      $('#filter-schoolyear-semester').click(() => {
+        const schoolYear = $('#school-year-filter').val();
+        const semester = $('#semester-filter').val();
 
-  </div>
-
-  <%- include('../layouts/script') %>
-  <script src="/js/admin/assign.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      window.onload = function () {
-        loadAssignTeacher();
-        // $('#success-alert').hide();
-      }
-    });
-  </script>
-</body>
-
+        filter(schoolYear, semester);
+      });
+    </script>
+  </body>
 </html>
