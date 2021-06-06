@@ -241,8 +241,8 @@ function getInternUnit() {
     const internUnitDom = document.getElementById('internshipUnit');
 
     let options = `<option value="0">Chọn đơn vị thực tập từ khoa ...</option>`;
-    if (res.length > 0) {
-      res.forEach((val) => {
+    if (res.success) {
+      res.data.forEach((val) => {
         options += `<option value="${val._id}">${val.name}</option>`;
       });
     }
