@@ -92,7 +92,7 @@ function loadData(queries) {
   let row = ""
   const table = document.querySelector('#table-core-body')
   table.innerHTML = "<tbody></tbody>"
-
+  document.getElementById('endCore').innerHTML = "";
   $.ajax({
     type: 'get',
     url: `/teacher/get-many-interninfo`,
