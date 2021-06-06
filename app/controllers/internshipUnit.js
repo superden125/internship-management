@@ -13,6 +13,7 @@ module.exports = {
   getManyInternUnit: async (req,res)=>{
     let query = req.query
     let {schoolYear, semester} = query
+    console.log("query", query)
     delete query.schoolYear
     delete query.semester
     if(!query.introBy) query.introBy = null
@@ -28,7 +29,7 @@ module.exports = {
       internUnit.city = getNameTinh(internUnit.city)
       
     })
-    
+    console.log("data", internshipUnits)
     res.json({success: true, data: internshipUnits})
   }
   
