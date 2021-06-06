@@ -11,48 +11,46 @@
       <%- include('../layouts/navbar') %>
 
       <div class="row mb-4">
-        <!-- <div class="col-auto">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Năm học</span>
-          </div>
-          <select name="" id="school-year-filter" class="custom-select">
-            <option value="">-- Chọn năm học --</option>
-            <% schoolYears.forEach(item => { %>
-              <% if (selectedSchoolYear == item) { %>
-                <option value="<%= item %>" selected><%= item %></option>  
+        <div class="col-auto">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Năm học</span>
+            </div>
+            <select name="" id="school-year-filter" class="custom-select">
+              <option value="" selected>-- Chọn năm học --</option>
+              <% schoolYears.forEach(item => { %> <% if (selectedSchoolYear ==
+              item) { %>
+              <option value="<%= item %>" selected><%= item %></option>
               <% } else { %>
-                <option value="<%= item %>"><%= item %></option>
-              <% } %>
-            <% }) %>
-          </select>
-        </div>
-      </div>
-
-      <div class="col-auto">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Học kỳ</span>
+              <option value="<%= item %>"><%= item %></option>
+              <% } %> <% }) %>
+            </select>
           </div>
-          <select name="" id="semester-filter" class="custom-select">
-            <option value="">-- Chọn học kỳ --</option>
-            <% for (var i = 1; i <= 3; i++) { %>
-              <% if (i == selectedSemester) { %>
-                <option value="<%= i %>" selected><%= i %></option>
-              <% } else { %>
-                <option value="<%= i %>"><%= i %></option>
-              <% } %>
-            <% } %>
-          </select>
         </div>
-      </div>
 
-      <div class="col-auto">
-        <button id="filter-schoolyear-semester" class="btn btn-info">
-          Lọc
-          <i class="fas fa-filter ml-2"></i>
-        </button>
-      </div> -->
+        <div class="col-auto">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Học kỳ</span>
+            </div>
+            <select name="" id="semester-filter" class="custom-select">
+              <option value="" selected>-- Chọn học kỳ --</option>
+              <% for (var i = 1; i <= 3; i++) { %> <% if (i == selectedSemester)
+              { %>
+              <option value="<%= i %>" selected><%= i %></option>
+              <% } else { %>
+              <option value="<%= i %>"><%= i %></option>
+              <% } %> <% } %>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <button id="filter-schoolyear-semester" class="btn btn-info">
+            Lọc
+            <i class="fas fa-filter ml-2"></i>
+          </button>
+        </div>
 
         <div class="col-auto ml-auto">
           <button
@@ -149,6 +147,13 @@
           loadAssignTeacher();
           // $('#success-alert').hide();
         };
+      });
+
+      $('#filter-schoolyear-semester').click(() => {
+        const schoolYear = $('#school-year-filter').val();
+        const semester = $('#semester-filter').val();
+
+        filter(schoolYear, semester);
       });
     </script>
   </body>
