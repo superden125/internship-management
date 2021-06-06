@@ -609,7 +609,7 @@ module.exports.assignTeacher = async (req, res) => {
     if (req.body.type == 'each') {
       var teacherId = req.body.teacherId != 'null' ? req.body.teacherId : null;
 
-      InternshipInfo.findOneAndUpdate(
+      InternshipInfo.updateMany(
         {
           idIntern: req.body.internUnitId,
         },
@@ -622,6 +622,7 @@ module.exports.assignTeacher = async (req, res) => {
           new: true,
         }
       ).exec(function (err, internInfo) {
+
         res.json({
           success: true,
           data: internInfo,

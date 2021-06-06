@@ -271,7 +271,7 @@ export async function getListInternshipUnit(req, res) {
   data.currentHk = milestones[0]
   const internUnits = await InternshipUnit.find({
     introBy: null,
-    idMilestone: milestones[0]._id
+    idMilestone: mongoose.Types.ObjectId(milestones[0]._id)
   });
   internUnits.forEach((internUnit) => {
     internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
@@ -298,7 +298,7 @@ export async function getListInternUnit(req, res) {
 
   const internUnits = await InternshipUnit.find({
     introBy: null,
-    idMilestone: milestone._id
+    idMilestone: mongoose.Types.ObjectId(milestone._id)
   });
   internUnits.forEach((internUnit) => {
     internUnit.city = tinh.find((tinh) => tinh.id == internUnit.city).name;
